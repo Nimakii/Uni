@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Pixel
+comment0.text=\r\n\ Models\ a\ single\ greyscale\ pixel\ in\ an\ image\r\n\ \r\n\ @author\ Nikolaj\ Schwartzbach\r\n\ @version\ 2016.12.08\r\n
+comment1.params=value
+comment1.target=Pixel(int)
+comment1.text=\r\n\ Constructor\ for\ Pixel\ objects.\r\n\ \r\n\ @param\ value\ \ \ \ Initial\ value\ of\ the\ pixel.\r\n
+comment2.params=
+comment2.target=int\ getValue()
+comment2.text=\r\n\ Returns\ the\ value\ in\ the\ pixel.\r\n\ \r\n\ @return\ \ \ Value\ of\ pixel.\r\n
+comment3.params=value
+comment3.target=void\ setValue(int)
+comment3.text=\r\n\ Sets\ the\ value\ of\ the\ pixel\ to\ the\ value\ specified\ by\ the\ parameter.\r\n\ If\ the\ specified\ value\ is\ less\ than\ 0,\ the\ value\ is\ it\ set\ to\ 0.\r\n\ If\ the\ specified\ value\ is\ larger\ than\ 255,\ the\ value\ is\ it\ set\ to\ 255.\r\n\ \r\n\ @param\ value\ \ \ \ New\ value\ of\ \ pixel.\r\n
+numComments=4

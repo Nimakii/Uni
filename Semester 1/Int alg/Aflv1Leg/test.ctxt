@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=test
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ test\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=test()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ test\r\n
+comment2.params=
+comment2.target=int\ sampleMethod()
+comment2.text=\r\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\r\n\r\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\r\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\r\n
+comment3.params=y\ X\ n\ m
+comment3.target=int\ binSearch(double,\ java.util.ArrayList,\ int,\ int)
+comment4.params=y\ X
+comment4.target=int\ infSearchR(double,\ java.util.ArrayList)
+numComments=5
