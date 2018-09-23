@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Filters
-comment0.text=\r\n\ This\ class\ implements\ a\ number\ of\ filters,\ i.e.\ methods\ that\ can\ be\ used\ to\r\n\ manipulate\ Image\ objects,\ e.g.\ make\ the\ image\ darker\ or\ mirrored.\r\n\ The\ filter\ methods\ operates\ on\ the\ image\ in\ the\ field\ (feltvariabel)\ image.\r\n\ The\ filter\ methods\ change\ the\ original\ image\ and\ return\ the\ new\ image.\r\n\r\n\ @author\ Kurt\ Jensen\r\n\ @version\ 2017-08-04\r\n
+comment0.text=\r\n\ This\ class\ implements\ a\ number\ of\ filters,\ i.e.\ methods\ that\ can\ be\ used\ to\r\n\ manipulate\ Image\ objects,\ e.g.\ make\ the\ image\ darker\ or\ mirrored.\r\n\ The\ filter\ methods\ operates\ on\ the\ image\ in\ the\ field\ (feltvariabel)\ image.\r\n\ The\ filter\ methods\ change\ the\ original\ image\ and\ return\ the\ new\ image.\r\n\r\n\ @author\ Kurt\ Jensen\r\n\ @version\ 2017-08-04\r\n\ Doing\ some\ github\ testing\ 23-09-18\r\n
 comment1.params=image
 comment1.target=Filters(Image)
 comment1.text=\r\n\ The\ constructor\ takes\ as\ input\ an\ instance\ of\ Image.\r\n\ \r\n\ @param\ image\ \ \ Image\ to\ apply\ filters\ to.\r\n

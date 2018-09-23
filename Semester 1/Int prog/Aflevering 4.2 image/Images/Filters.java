@@ -8,6 +8,7 @@ import java.util.*;
  *
  * @author Kurt Jensen
  * @version 2017-08-04
+ * Doing some github testing 23-09-18
  **/
 public class Filters
 {
