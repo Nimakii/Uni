@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=DieCup
+comment1.params=newDies
+comment1.target=DieCup(java.util.ArrayList)
+comment1.text=\r\n\ Constructor\ for\ DieCup\ objects\r\n
+comment2.params=
+comment2.target=void\ roll()
+comment2.text=\r\n\ Obtain\ a\ new\ number\ of\ eyes\ for\ both\ dies\r\n
+comment3.params=
+comment3.target=int\ getEyes()
+comment3.text=\r\n\ Return\ the\ sum\ of\ the\ number\ of\ eyes\ shown\ by\ the\ two\ dies\r\n
+comment4.params=
+comment4.target=int\ maxEyes()
+comment4.text=\r\n\ Return\ zhe\ maximum\ numberr\ of\ eyes\ EVER\ rolled\r\n
+comment5.params=
+comment5.target=void\ resetMaxEyes()
+comment5.text=\r\n\ Reset\ the\ max\ eyes\ variable\r\n
+comment6.params=noOfRolls
+comment6.target=void\ mulitpleRolls(int)
+numComments=7

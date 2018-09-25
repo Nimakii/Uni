@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Musician
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Musician\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name\ instrument\ skillLevel
+comment1.target=Musician(java.lang.String,\ java.lang.String,\ int)
+comment2.params=
+comment2.target=java.lang.String\ toString()
+comment3.params=
+comment3.target=int\ getSkill()
+comment4.params=
+comment4.target=java.lang.String\ getName()
+comment5.params=
+comment5.target=java.lang.String\ getInstrument()
+comment6.params=m
+comment6.target=int\ compareTo(Musician)
+numComments=7

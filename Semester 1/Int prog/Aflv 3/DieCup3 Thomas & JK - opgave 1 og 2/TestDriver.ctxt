@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=TestDriver
+comment0.text=\r\n\ Opret\ klassen\ TestDriver\ og\ implementer\ nedenst\u00E5ende\ metode.\r\n\ void\ test()\r\n\ Metoden\ skal\ skabe\ et\ rafleb\u00E6ger\ med\ to\ terninger,\ foretage\ et\ kast\ med\ b\u00E6geret\ og\ dets\ to\r\n\ terninger,\ for\ til\ sidste\ at\ udskrive\ antallet\ af\ \u00F8jne\ p\u00E5\ terminalen\ ved\ hj\u00E6lp\ af\r\n\ System.out.println\ metoden,\ der\ blev\ beskrevet\ i\ en\ af\ forel\u00E6sningerne.\r\n\ Hvis\ I\ foran\ metodens\ navn\ skriver\ public\ static\ i\ stedet\ for\ blot\ public,\ kan\ metoden\ kaldes\r\n\ ved\ at\ h\u00F8jreklikke\ p\u00E5\ den\ lysebrune\ boks,\ der\ repr\u00E6senterer\ TestDriver\ klassen\ \u2013\ i\ stedet\ for\r\n\ f\u00F8rst\ at\ skulle\ skabe\ et\ TestDriver\ objekt\ og\ s\u00E5\ kalde\ metoden\ ved\ at\ h\u00F8jreklikke\ p\u00E5\ den\ r\u00F8de\r\n\ boks,\ der\ repr\u00E6senterer\ dette\ objekt.\ Herved\ sparer\ I\ jer\ selv\ for\ arbejdet\ med,\ efter\ hver\r\n\ overs\u00E6ttelse\ (compilering),\ at\ skabe\ et\ TestDriver\ objekt,\ som\ I\ ikke\ har\ andet\ at\ bruge\ til\ end\r\n\ kaldet\ af\ test\ metoden.\r\n\ \r\n\r\n\ @Thomas\ &\ JK\r\n\ @V\ 0\r\n
+comment1.params=noOfDies
+comment1.target=void\ test(int)
+comment1.text=\r\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\r\n\r\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\r\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\r\n
+comment2.params=noOfRolls\ noOfDies
+comment2.target=void\ testMultiple(int,\ int)
+comment3.params=rafle1noOfDies\ rafle2noOfDies\ noOfRolls
+comment3.target=void\ compareDieCups(int,\ int,\ int)
+numComments=4
