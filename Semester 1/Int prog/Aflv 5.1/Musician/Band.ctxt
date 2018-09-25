@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Band
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Band\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name
+comment1.target=Band(java.lang.String)
+comment2.params=m
+comment2.target=void\ add(Musician)
+comment3.params=m
+comment3.target=void\ remove(Musician)
+comment4.params=requiredSkill
+comment4.target=java.lang.Integer\ skilledMusicians(int)
+comment5.params=instrument
+comment5.target=Musician\ withInstrument(java.lang.String)
+comment6.params=
+comment6.target=void\ printBand()
+numComments=7

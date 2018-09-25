@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Maximum
+comment1.params=input
+comment1.target=int\ computeMaximum(java.util.ArrayList)
+comment2.params=
+comment2.target=void\ testAll()
+comment3.params=
+comment3.target=void\ test1()
+comment4.params=
+comment4.target=void\ test2()
+comment5.params=
+comment5.target=void\ clearTerminal()
+comment6.params=testName
+comment6.target=void\ outputPass(java.lang.String)
+comment7.params=testName\ message
+comment7.target=void\ outputFail(java.lang.String,\ java.lang.String)
+comment8.params=args
+comment8.target=void\ main(java.lang.String[])
+numComments=9
