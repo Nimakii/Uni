@@ -12,15 +12,19 @@ public class ClosestBall {
         int M = balls.size();
         int n = 0;
         int m = 0;
+        //players.add(0);
+        //balls.add(0);
         while (count < N+M){
             if (n == N){
                 mergedList.add(-1*balls.get(m));
+                m++;
             } else
             if (m == M){
                 mergedList.add(players.get(n));
+                n++;
             }
             else {
-                if (players.get(n) >= balls.get(m)){
+                if (players.get(n) <= balls.get(m)){
                     mergedList.add(players.get(n));
                     n++;
                 } else {
@@ -32,11 +36,10 @@ public class ClosestBall {
         }
         ArrayList<Integer> diff = new ArrayList<Integer>();
         count = 0;
-        while (count < N+M){
-            if (mergedList.get(count) + mergedList.get(count+1) > 0) {
-                diff.add(mergedList.get(count) + mergedList.get(count+1)); 
+        while (count < N+M-1){
+            if (Math.signum(mergedList.get(count)) != Math.signum(mergedList.get(count+1))){
+                diff.add(Math.abs(mergedList.get(count)+mergedList.get(count+1)));
             }
-            else{ diff.add(1000000000);}
             count++;
         }
         
