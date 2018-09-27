@@ -49,30 +49,11 @@
 \section{Analysis of dairy heaps}
 A d-ary heap is like a binary heap, but (with one possible exception) non-leaf nodes have d children instead of 2 children. In the following we assume that A=A[1],\dots,A[n] is an array of length n>0.\\\\
 \subsection{Subtask a.)} How would you represent a d-ary heap in an array\\
-We represent the d-ary heap as an array by maintaining the heap property $A[Parent(i)] \geq A[i]$ but we change the Parent function as follows
-\\Parent(i)
-\\\begin{tabular}{l | c | l}
-	Time & Line nr & Code \\ \hline
-	1 & 1 & if i = 1\\
-	\indent 1 & 2 & \indent return 0\\
-	1 & 3 & if i < d+2 \\
-	\indent 1 & 4 & \indent return 1 \\
-	1 & 5 & m = 2 \\
-	n/d & 6 & while i > md+1\\
-	\indent 1 & 7 & \indent m++ \\
-	1 & 8 & return m 
-\end{tabular}\\\\
-This amounts to the function
-\begin{equation}
-	\text{Parent}(i) = \begin{cases}
-	0 & \text{if }i = 1\\
-	1 & \text{if }1<i<d+2\\
-	m & \text{if }i=(m-1)d+2,\dots,md+1
-	\end{cases}
-\end{equation}
-\textbf{Correctness:} It is clear that the algorithm works for $i<d+2$. Now if $i>d+2$ we set $m=2$ and as long as $i>md+1$ we count up $m$, the first time the while loop doesnt activate we have $i<md+1$ but we saw that $i>kd+1$ for all $k\in[2,m)$, especially for $k = m-1$ so we get the inequality $(m-1)d+2 \leq i \leq md+1$ which is what we wanted. $\qed$\\
+We represent the d-ary heap as an array by maintaining the heap property $A[Parent(i)] \geq A[i]$ but we change the Parent function as follows, (because we were gracefully given it), the parent funtion becomes:
+\\Parent(i)$=\lfloor{1+\frac{(i-1)}{d}}\rfloor $\\
+And the children function to i is then given as: \\
+Children(i)=$[(i-1)d+2,(i-1)d+3,\dots,di+1]$ which is a list containing d children to i.\\
 With this version of the parent function we get an array where $A[1]$ is the root and\\ $A[2],\dots,A[d+1]$ are its children. Now the d elements $A[d+2],\dots,A[2d+1]$ become the children of $A[2]$ and so on.\\
-This algorithm has worst case runtime $O(n/d)$, we will later see the importance of keeping the $n/d$ notation.
 \newpage \subsection{Subtask b.)} What is the height of a d-ary jeap of n elements in terms of n and d
 \\The zeroth level of a d-ary tree has 1 element, this element has d children, and each of these in turn have d children, so in total we end up having $d^h$ nodes at the h'th level. So in total for a full d-ary tree we get
 \begin{align*}
@@ -115,19 +96,10 @@ This shows that $h = \Theta(\log_d(n))$
 	1 & 1 & if key < A[i] \\
 	\indent 1 & 2 & \indent error \\
 	1 & 3 & A[i] = key \\
-	$\log_d(n)$+n/d & 4 & while i > 1 and A[Parent(i)]<A[i] \\
-	\indent 3+n/d & 5 & \indent exchange A[i] with A[Parent(i)] \\
-	\indent 1+n/d & 6 & \indent i = Parent(i) 
+	$\log_d(n)$+1 & 4 & while i > 1 and A[Parent(i)]<A[i] \\
+	\indent 3+1 & 5 & \indent exchange A[i] with A[Parent(i)] \\
+	\indent 1+1 & 6 & \indent i = Parent(i) 
 \end{tabular}\\\\
-The n/d is from the Parent function. In total we get
-\begin{align*}
-	\sum_{j = 0}^{\log_d(n)} \frac{n}{d^j} &= n \sum_{j = 0}^{\log_d(n)} \frac{1}{d^j} = \sum_{j = 0}^{\log_d(n)} \bigg(\frac{1}{d}\bigg)^j\\
-	&= n \bigg(\frac{(\frac{1}{d})^{\log_d(n)}-1}{\frac{1}{d}-1}\bigg) \\
-	&= n\bigg(\frac{(\frac{1}{n})-1}{\frac{1}{d}-1}\bigg)\\
-	&= \bigg(\frac{(1-n}{\frac{1-d}{d}}\bigg)\\
-	&= (1-n)\frac{d}{1-d}\\
-	& = \frac{d(n-1)}{d-1}
-\end{align*}
-Here the $\frac{n}{d^j}$ summands represent the Parent function being called j times on n, because the parent funciton pretty much just represents division by d. And we call it $\log_d(n)$ times. In total the new version runs in linear time.
+In the worst case we will enter the while loop $\log_d(n)$ times, the rest of the steps are performed in constant time, including MAX-HEAP-INSERT, so in total we get a runtime of $\log_d(n)$ however, note that $\log_d(n) = \frac{\log_e(n)}{\log_e(2)} = \frac{\log_e(2)\log_2(n)}{\log_e(n)}$ so $O(\log_d(n)) = O(\log_2(n))$ and $O(\log_2(n)) = O(\log_2(n))$, in conclusion there is nothing to be saved by using dairy heaps instead of the binary heaps we have seen in the lectures. 
 \\\textbf{Correctness: }The correctness of this algorithm depends entirely on the correctness of the Parent function. Since we start out with a legal max-heap, we can safely assume that if A[Parent(i)]<A[i] we can exchange A[Parent(i)] with A[i] and maintain the heap structure, because\\ A[i]>A[Parent(i)]$\geq$A[k] for k$\in$kids(i)=[(i-1)d+2,\dots,id+1] as wanted. If however A[Parent(i)]$\geq$A[i] we do nothing, which in this case preserves the heap structure $\qed$
 \end{document}

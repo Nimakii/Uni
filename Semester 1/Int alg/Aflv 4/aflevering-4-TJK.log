@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.7)  27 SEP 2018 11:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.7)  27 SEP 2018 11:45
 entering extended mode
-**./aflv3-TJK.tex
-(aflv3-TJK.tex
+**./aflevering-4-TJK.tex
+(aflevering-4-TJK.tex
 LaTeX2e <2017-04-15>
 Babel <3.15> and hyphenation patterns for 75 language(s) loaded.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
@@ -779,8 +779,9 @@ Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
 \c@theorem=\count137
- (aflv3-TJK.aux)
-\openout1 = `aflv3-TJK.aux'.
+
+(aflevering-4-TJK.aux)
+\openout1 = `aflevering-4-TJK.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
 LaTeX Font Info:    ... okay on input line 44.
@@ -795,7 +796,7 @@ LaTeX Font Info:    ... okay on input line 44.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
 LaTeX Font Info:    ... okay on input line 44.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 44.
-("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 *geometry* driver: auto-detecting
@@ -942,75 +943,133 @@ LaTeX Font Info:    Try loading font information for U+rsfs on input line 48.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\jknappen\ursfs.fd"
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 50.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 50.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 50.
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--57
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 50--51
+Underfull \hbox (badness 10000) in paragraph at lines 65--71
 
  []
 
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 52.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 52.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 52.
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--57
+Underfull \hbox (badness 10000) in paragraph at lines 74--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--100
+
+ []
+
+
+Overfull \hbox (1.55457pt too wide) in paragraph at lines 74--100
+\T1/lmr/m/n/10 The run-ning ti-me for each if-sentence is bo-un-ded by $\OML/lm
+m/m/it/10 m$ \T1/lmr/m/n/10 and $\OML/lmm/m/it/10 n$ \T1/lmr/m/n/10 and the EXT
+EACT-MIN-TABLEAU
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--100
 
  []
 
 [1
 
 {C:/Users/Jens Kristian/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 102--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 105--111
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 105--111
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 105--111
+
+ []
+
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 77--92
+Underfull \hbox (badness 10000) in paragraph at lines 112--138
 
  []
 
-[3] 
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--138
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--138
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--138
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--138
+
+ []
+
+
 AED: lastpage setting LastPage
-
-Underfull \hbox (badness 10000) in paragraph at lines 92--105
-
- []
-
-
-Overfull \hbox (3.0877pt too wide) in paragraph at lines 92--105
-\T1/lmr/m/n/10 A[i]>A[Parent(i)]$\OMS/lmsy/m/n/10 $\T1/lmr/m/n/10 A[k] for k$\
-OMS/lmsy/m/n/10 2$\T1/lmr/m/n/10 kids(i)=[(i-1)d+2,...,id+1] as wan-ted. If how
-e-ver A[Parent(i)]$\OMS/lmsy/m/n/10 $\T1/lmr/m/n/10 A[i]
- []
-
-[4] (aflv3-TJK.aux) ) 
+[3] [4] (aflevering-4-TJK.aux) ) 
 Here is how much of TeX's memory you used:
- 8893 strings out of 493312
- 126667 string characters out of 3138874
- 224007 words of memory out of 3000000
- 12210 multiletter control sequences out of 15000+200000
- 72268 words of font info for 77 fonts, out of 3000000 for 9000
+ 8896 strings out of 493312
+ 126750 string characters out of 3138874
+ 227017 words of memory out of 3000000
+ 12211 multiletter control sequences out of 15000+200000
+ 75243 words of font info for 78 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,11n,94p,1050b,303s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files
-/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc
-/dvips/lm/lm-mathex.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-math
-sy.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX 2.
-9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
-lic/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi5.pfb>
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi7.pfb><C:/Program Files/
-MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr
-17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr5.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fo
-nts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
-lm/lmsy7.pfb>
-Output written on aflv3-TJK.pdf (4 pages, 208128 bytes).
+ 60i,11n,94p,805b,301s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm
+/lm-mathex.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Pr
+ogram Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.
+9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips
+/lm/lm-mathsy.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm
+/lmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 
+2.9/fonts/type1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
+blic/lm/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb>
+
+Output written on aflevering-4-TJK.pdf (4 pages, 183588 bytes).
 PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
+ 62 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
