@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Boat
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ wasd\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name\ value\ forSale
+comment1.target=Boat(java.lang.String,\ int,\ boolean)
+comment2.params=
+comment2.target=java.lang.String\ toString()
+comment3.params=
+comment3.target=int\ getValue()
+comment4.params=
+comment4.target=boolean\ getSale()
+comment5.params=
+comment5.target=java.lang.String\ getName()
+comment6.params=b
+comment6.target=int\ compareTo(Boat)
+numComments=7
