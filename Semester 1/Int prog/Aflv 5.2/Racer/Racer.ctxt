@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Racer
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Racer\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name\ year\ topSpeed
+comment1.target=Racer(java.lang.String,\ int,\ int)
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment3.params=
+comment3.target=int\ getYear()
+comment4.params=
+comment4.target=java.lang.String\ toString()
+comment5.params=
+comment5.target=int\ getSpeed()
+comment6.params=r
+comment6.target=int\ compareTo(Racer)
+numComments=7
