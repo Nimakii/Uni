@@ -3,31 +3,50 @@ import java.io.*;
 import java.util.*;
 
 public class Inversions {
+    private int inversionCounter;
     public int countInversions(ArrayList<Integer> input) {
-        int inversions = 0;
-        int N = input.size();
-        int count = 0;
-        while (count < N){
-            if (n == N){
-                mergedList.add(-1*balls.get(m));
-                m++;
-            } else
-            if (m == M){
-                mergedList.add(players.get(n));
-                n++;
-            }
-            else {
-                if (players.get(n) <= balls.get(m)){
-                    mergedList.add(players.get(n));
-                    n++;
-                } else {
-                    mergedList.add(-1*balls.get(m));
-                    m++;
-                }
-            }
-            count++;
+        inversionCounter = 0;
+        MergeSort(input,0,input.size()-1);
+        
+        return inversionCounter;
+    }
+    
+    public void MergeSort(ArrayList<Integer> A, int p, int r){
+        if (p < r){
+            int q = (int) ((p+r)/2);
+            MergeSort(A,p,q);
+            MergeSort(A,q+1,r);
+            Merge(A,p,q,r);
         }
-        return 42;
+    }
+    
+    public ArrayList<Integer> Merge(ArrayList<Integer> A , int p , int q , int r){
+        int n = q-p+1;
+        int m = r-q;
+        ArrayList<Integer> L = new ArrayList<Integer>();
+        ArrayList<Integer> R = new ArrayList<Integer>();
+        for (int i = 0;i<n;i++){
+            L.add(A.get(p+i));
+        }
+        for (int i = 0;i<m;i++){
+            R.add(A.get(q+i+1));
+        }
+        L.add(65537);
+        R.add(65537);
+        int i = 0;
+        int j = 0;
+        for (int k = p; k<=r;k++){                                                                                                                                                                                                                                                                                                                                                                   
+            if (L.get(i)<=R.get(j) && L.get(i)< 65537){
+                A.set(k , L.get(i)); //A.set(index , value)
+                i++;
+            }
+            else if (R.get(j) < 65537) {
+                A.set(k , R.get(j));
+                j++;
+                inversionCounter += L.size()-i-1;
+            }
+        }
+        return A;
     }
 
     public static void testAll() {
