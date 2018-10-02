@@ -19,12 +19,19 @@ public class FilmCollection
     public void add(Film f) { films.add(f); }
     
     public Optional<Film> filmOfGenre ( String genre){
-        return films.stream().filter(b -> b.getGenre().equals(genre))
+        return films.stream().filter(f -> f.getGenre().equals(genre))
                     .findFirst();
     }
     
     public Optional<Film> bestFilmOfGenre(String genre){
-        return films.stream().filter(b -> b.getGenre().equals(genre))
-                             .max(Comparator.comparing(b -> b.getScore()));
+        return films.stream().filter(f -> f.getGenre().equals(genre))
+                             .max(Comparator.comparing(f -> f.getScore()));
+    }
+    
+    public void printFilmCollection(){
+        System.out.println("In the film collection owned by "+ owner + " resides the following films:");
+        Collections.sort(films, Comparator.comparing( (Film f) -> f.getGenre())
+                                          .thenComparing( (Film f) -> f.getScore()));
+        films.forEach(f -> System.out.println(f));
     }
 }
