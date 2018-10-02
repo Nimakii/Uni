@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Film
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ wasd\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=title\ genre\ score\ ageLimit
+comment1.target=Film(java.lang.String,\ java.lang.String,\ int,\ int)
+comment2.params=
+comment2.target=java.lang.String\ toString()
+comment3.params=
+comment3.target=java.lang.String\ getTitle()
+comment4.params=
+comment4.target=java.lang.String\ getGenre()
+comment5.params=
+comment5.target=int\ getScore()
+comment6.params=
+comment6.target=int\ getAgeLimit()
+numComments=7

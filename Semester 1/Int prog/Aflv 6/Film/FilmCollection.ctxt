@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=FilmCollection
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ FilmCollection\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=owner
+comment1.target=FilmCollection(java.lang.String)
+comment2.params=f
+comment2.target=void\ add(Film)
+comment3.params=genre
+comment3.target=java.util.Optional\ filmOfGenre(java.lang.String)
+comment4.params=genre
+comment4.target=java.util.Optional\ bestFilmOfGenre(java.lang.String)
+numComments=5

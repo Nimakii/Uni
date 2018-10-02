@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=MotorcycleClub
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ MotorcycleClub\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name
+comment1.target=MotorcycleClub(java.lang.String)
+comment2.params=b
+comment2.target=void\ add(Biker)
+comment3.params=
+comment3.target=java.util.Optional\ leastRespectedBiker()
+comment4.params=maxAmount
+comment4.target=java.util.List\ readyBikers(int)
+comment5.params=
+comment5.target=void\ printMotorcycleClub()
+numComments=6
