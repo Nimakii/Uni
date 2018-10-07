@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Tool
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ was\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name\ electric\ price
+comment1.target=Tool(java.lang.String,\ boolean,\ int)
+comment2.params=
+comment2.target=java.lang.String\ toString()
+comment3.params=t
+comment3.target=int\ compareTo(Tool)
+comment4.params=
+comment4.target=java.lang.String\ getName()
+comment5.params=
+comment5.target=boolean\ getElectric()
+comment6.params=
+comment6.target=int\ getPrice()
+numComments=7

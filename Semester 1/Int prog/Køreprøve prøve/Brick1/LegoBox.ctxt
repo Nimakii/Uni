@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=LegoBox
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ LegoBox\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name
+comment1.target=LegoBox(java.lang.String)
+comment2.params=b
+comment2.target=void\ add(Brick)
+comment3.params=color
+comment3.target=int\ area(java.lang.String)
+comment4.params=color
+comment4.target=int\ areaF(java.lang.String)
+comment5.params=
+comment5.target=Brick\ most()
+comment6.params=
+comment6.target=java.util.Optional\ mostF()
+comment7.params=
+comment7.target=void\ printLegoBox()
+comment8.params=
+comment8.target=void\ printLegoBoxF()
+numComments=9

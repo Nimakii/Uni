@@ -35,9 +35,9 @@ public class Kennel
     }
     
     public Dog youngestOfBreed(String breed){
-        Dog youngest = new Dog("","",true,100);
+        Dog youngest = null;
         for (Dog d : dogs){
-            if (d.getBreed().equals(breed) && d.getAge() < youngest.getAge()){
+            if (youngest == null || (d.getBreed().equals(breed) && d.getAge() < youngest.getAge())){
                 youngest = d;
             }
         }
