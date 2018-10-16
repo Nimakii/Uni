@@ -1,0 +1,7 @@
+queue
+fads18-da7-20
+Ahsho3chah
+
+This file contains the Task ID, username and password
+last used when submitting a solution.
+This file is used when you call Submit.submit() with no arguments.

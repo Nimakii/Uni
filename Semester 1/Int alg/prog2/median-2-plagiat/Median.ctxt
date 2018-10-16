@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Median
+comment1.params=
+comment1.target=Median()
+comment2.params=x
+comment2.target=void\ add(int)
+comment3.params=
+comment3.target=int\ median()
+numComments=4

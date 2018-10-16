@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=QueueSimulation
+comment1.params=input
+comment1.target=int\ simulate(java.util.ArrayList)
+comment10.params=testName
+comment10.target=void\ outputPass(java.lang.String)
+comment11.params=testName\ message
+comment11.target=void\ outputFail(java.lang.String,\ java.lang.String)
+comment12.params=args
+comment12.target=void\ main(java.lang.String[])
+comment2.params=
+comment2.target=void\ testAll()
+comment3.params=
+comment3.target=void\ test1()
+comment4.params=
+comment4.target=void\ test2()
+comment5.params=
+comment5.target=void\ test3()
+comment6.params=
+comment6.target=void\ test1024()
+comment7.params=
+comment7.target=void\ test513()
+comment8.params=
+comment8.target=void\ test100()
+comment9.params=
+comment9.target=void\ clearTerminal()
+numComments=13
