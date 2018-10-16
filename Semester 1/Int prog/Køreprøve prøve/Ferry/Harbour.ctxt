@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Harbour
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Harbour\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name
+comment1.target=Harbour(java.lang.String)
+comment2.params=f
+comment2.target=void\ add(Ferry)
+comment3.params=maxLength
+comment3.target=java.util.ArrayList\ smallFerries(int)
+comment4.params=name
+comment4.target=Ferry\ longFerry(java.lang.String)
+comment5.params=
+comment5.target=void\ printHarbour()
+comment6.params=min\ max
+comment6.target=java.util.List\ findFerries(int,\ int)
+comment7.params=name
+comment7.target=int\ findLength(java.lang.String)
+numComments=8

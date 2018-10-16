@@ -31,6 +31,6 @@ public class Driver
         System.out.println();
         System.out.println(mine.bestFilmOfGenre("space opera"));
         System.out.println();
-        mine.printFilmCollection();
+        mine.printFilmCollection(15);
     }
 }

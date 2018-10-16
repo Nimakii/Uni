@@ -28,10 +28,10 @@ public class FilmCollection
                              .max(Comparator.comparing(f -> f.getScore()));
     }
     
-    public void printFilmCollection(){
-        System.out.println("In the film collection owned by "+ owner + " resides the following films:");
+    public void printFilmCollection(int age){
+        System.out.println("In the film collection owned by "+ owner + " resides the following films which are legal to watch at the age of "+ age);
         Collections.sort(films, Comparator.comparing( (Film f) -> f.getGenre())
                                           .thenComparing( (Film f) -> f.getScore()));
-        films.forEach(f -> System.out.println(f));
+        films.stream().filter(f -> f.getAgeLimit()> age).collect(Collectors.toList()).forEach(f -> System.out.println(f));
     }
 }
