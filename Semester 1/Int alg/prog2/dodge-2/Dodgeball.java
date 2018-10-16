@@ -26,6 +26,7 @@ public class Dodgeball {
         return high;
     }
     public ArrayList<Integer> getP(){
+        int abe = 0;
         return line;
     }
     
