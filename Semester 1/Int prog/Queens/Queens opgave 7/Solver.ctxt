@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Solver
+comment0.text=\r\n\ This\ class\ attempts\ to\ solve\ the\ n\ queen\ problem\r\n\r\n\ @author\ JKT\r\n\ @version\ 1\r\n
+comment1.params=noOfQueens
+comment1.target=void\ findAllSolutions(int)
+comment1.text=\r\n\ Finds\ solutions\ to\ n\ queen\ problem\r\n\r\n\ @param\ \ noOfQueens,\ the\ number\ of\ queens\r\n\ @return\ void\r\n
+comment2.params=row
+comment2.target=void\ positionQueens(int)
+comment2.text=\r\n\ puts\ a\ queen\ in\ a\ legal\ position\ in\ the\ paramater\ row\r\n\r\n\ @param\ \ row,\ the\ row\ we\ make\ a\ play\ in\r\n\ @return\ void\r\n
+comment3.params=row\ col
+comment3.target=boolean\ legal(int,\ int)
+comment3.text=\r\n\ Is\ it\ legal\ to\ make\ a\ move\ in\ the\ row,col\ position?\r\n\r\n\ @param\ \ row\r\n\ @param\ \ col\r\n\ @return\ \ boolean,\ is\ this\ move\ legal?\r\n
+comment4.params=set
+comment4.target=void\ setShowSolutions(boolean)
+comment4.text=\r\n\ Do\ you\ want\ to\ see\ the\ solutions\ printed\ ?\r\n\ \r\n\ @param\ set,\ set\ the\ showSolutions\ variable\ to\ set\r\n
+comment5.params=
+comment5.target=void\ printSolution()
+comment5.text=\r\n\ prints\ the\ solutions\ we\ have\ found\r\n
+comment6.params=row\ col
+comment6.target=java.lang.String\ convert(int,\ int)
+comment6.text=\r\n\ Converts\ the\ row,col\ structure\ from\ {0,..,n-1}^2\ to\ {a,..,n'th\ letter}x{1,..,n}\r\n\r\n\ @param\ \ row\r\n\ @param\ \ col\r\n\ @return\ "col,row"\r\n
+comment7.params=min\ max
+comment7.target=void\ findNoOfSolutions(int,\ int)
+comment7.text=\r\n\ Finds\ solutions\ for\ each\ number\ of\ queens\ in\ the\ interval\ [min,max]\r\n\ \r\n\ @param\ min\ smallest\ number\r\n\ @param\ max\ highest\ number\r\n
+comment8.params=
+comment8.target=void\ testSolver()
+numComments=9
