@@ -4,22 +4,53 @@ import java.util.*;
 
 public class Median {
     // Add your private fields here
-    private TreeMap<Integer,Integer> tree;
-    private int nodeCount;
+    private TreeMap<Integer,Integer> treeLeast;
+    private TreeMap<Integer,Integer> treeHigh;
+    private int median;
+    private int count;
+    private boolean high;
     public Median(){
-        tree = new TreeMap<Integer,Integer>();
-        nodeCount = 1;
+        treeLeast= new TreeMap<>();
+        treeHigh= new TreeMap<>();
+        this.median=0;
+        this.count=0;
+        this.high=true;
     }
-    
+
     public void add(int x) {
+
         // Implement your method to add x to the data structure
-        tree.put(x,nodeCount);
-        nodeCount++;
+        if(x>median){
+            treeHigh.put(x,count);
+            count++;
+            if(treeLeast.size()<treeHigh.size()){
+                int y = treeHigh.firstKey();   
+                treeHigh.remove(y);
+                treeLeast.put(y,count);
+                count++;
+            }
+            high=true;
+        }
+        else{
+            treeLeast.put(x,count);
+            count++;
+            if(treeLeast.size()>treeHigh.size()){
+                int y = treeLeast.lastKey();   
+                treeLeast.remove(y);
+                treeHigh.put(y,count);
+                count++;
+            }
+            high=false;
+        }
+        if(treeLeast.size()<=treeHigh.size()){
+            median = treeHigh.firstKey();
+        }
+        else{
+            median=treeLeast.lastKey();
+        }
     }
 
     public int median() {
-        // Implement your method to return the median of the numbers added so far
-        if(tree.
-        return tree.get(nodeCount/2);
+        return median;
     }
 }

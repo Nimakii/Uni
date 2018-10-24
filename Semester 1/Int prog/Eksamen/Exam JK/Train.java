@@ -4,6 +4,7 @@ import java.util.*;
  *
  * @author (your name)
  * @version (a version number or a date)
+*/
 public class Train implements Comparable<Train>
 {
     private String departure;
