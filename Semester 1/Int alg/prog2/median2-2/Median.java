@@ -8,7 +8,7 @@ public class Median {
     private int nodeCount;
     public Median(){
         tree = new TreeMap<Integer,Integer>();
-        nodeCount = 0;
+        nodeCount = 1;
     }
     
     public void add(int x) {
@@ -19,6 +19,7 @@ public class Median {
 
     public int median() {
         // Implement your method to return the median of the numbers added so far
-        return 0;
+        if(tree.
+        return tree.get(nodeCount/2);
     }
 }
