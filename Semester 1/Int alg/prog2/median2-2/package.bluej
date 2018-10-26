@@ -19,6 +19,7 @@ package.frame.width=800
 package.numDependencies=1
 package.numTargets=3
 package.showExtends=true
+package.showUses=true
 project.charset=UTF-8
 readme.height=58
 readme.name=@README
