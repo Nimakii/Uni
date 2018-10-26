@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=RedBlackTree
+comment1.params=
+comment1.target=int\ minGap()
+comment2.params=key
+comment2.target=Node\ find(int)
+comment3.params=key
+comment3.target=void\ insert(int)
+comment4.params=key
+comment4.target=void\ erase(int)
+comment5.params=n
+comment5.target=void\ rotate_left(Node)
+comment6.params=n
+comment6.target=void\ rotate_right(Node)
+comment7.params=n
+comment7.target=void\ update_augments_to_root(Node)
+numComments=8

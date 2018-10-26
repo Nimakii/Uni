@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Augment
+comment1.params=left\ right\ key
+comment1.target=Augment\ combine(Augment,\ Augment,\ int)
+comment2.params=
+comment2.target=Augment\ leaf()
+numComments=3

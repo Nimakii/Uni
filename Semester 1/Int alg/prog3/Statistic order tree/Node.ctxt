@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Node
+comment1.params=
+comment1.target=boolean\ isRightChild()
+comment2.params=
+comment2.target=boolean\ isLeftChild()
+comment3.params=key
+comment3.target=Node(int)
+comment4.params=
+comment4.target=void\ update_augment()
+comment5.params=
+comment5.target=Augment\ getLeftAugment()
+comment6.params=
+comment6.target=Augment\ getRightAugment()
+numComments=7

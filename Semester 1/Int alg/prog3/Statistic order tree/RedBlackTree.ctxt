@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=RedBlackTree
+comment1.params=x\ rank
+comment1.target=Node\ select(Node,\ int)
+comment1.text=\r\n\ Return\ the\ Node\ in\ x's\ subtree\ that\ comes\ after\ the\ first\ 'rank'\ nodes\r\n\ in\ an\ in-order\ traversal.\r\n\r\n\ The\ node\ with\ smallest\ key\ has\ rank\ 0,\ and\ the\ node\ with\ largest\ key\r\n\ has\ rank\ N-1,\ where\ N\ is\ the\ number\ of\ nodes\ in\ x's\ subtree.\r\n\r\n\ Note\ that\ we\ use\ a\ different\ convention\ than\ the\ CLRS\ book,\r\n\ in\ which\ 1\ is\ the\ smallest\ rank\ and\ N\ is\ the\ largest\ rank.\r\n
+comment10.params=n
+comment10.target=void\ update_augments_to_root(Node)
+comment2.params=rank
+comment2.target=Node\ select(int)
+comment3.params=x
+comment3.target=int\ rank(Node)
+comment3.text=\r\n\ Return\ the\ rank\ of\ x\ in\ the\ tree.\r\n\r\n\ The\ node\ with\ smallest\ key\ has\ rank\ 0,\ and\ the\ node\ with\ largest\ key\r\n\ has\ rank\ N-1,\ where\ N\ is\ the\ number\ of\ nodes\ in\ the\ tree.\r\n\r\n\ Note\ that\ we\ use\ a\ different\ convention\ than\ the\ CLRS\ book,\r\n\ in\ which\ 1\ is\ the\ smallest\ rank\ and\ N\ is\ the\ largest\ rank.\r\n
+comment4.params=k
+comment4.target=int\ key_rank(int)
+comment5.params=key
+comment5.target=Node\ find(int)
+comment6.params=key
+comment6.target=void\ insert(int)
+comment7.params=key
+comment7.target=void\ erase(int)
+comment8.params=n
+comment8.target=void\ rotate_left(Node)
+comment9.params=n
+comment9.target=void\ rotate_right(Node)
+numComments=11
