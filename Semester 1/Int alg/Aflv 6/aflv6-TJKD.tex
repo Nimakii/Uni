@@ -1,0 +1,148 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Thomas Vinther \& Jens Kristian Refsgaard Nielsen}
+	\title{Handin 6}
+	\date{25-10-18}
+	\maketitle
+	\section{Skyline}
+	We wish to make an algorithm that produces the silhouette of a city. Each building in the city is represented by a tripple (l,h,r) where l (r) is the coordinate on the horizontal line where the building begins (ends) and h is the height of the building.
+	\\The sihouette of the city is a vector $(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)$ where $x_j<x_{j+1}$ and $h_j$ represents the height between point $x_{j-1}$ and $x_j$.
+	\subsection{a)}
+	A silhouette: %$X=(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)$ 
+	\begin{align}
+	X&=(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)
+	\end{align}
+	Assume, we are given a silhouette and a building ($l,h,r$) How does one update the silhouette to include the building.
+	We use the following algorithm from hell\\
+	
+	\noindent \begin{tabular}{l | c | l}
+		Time & Line nr & Pseudocode \\ \hline
+		            &   & addBuilding($X,(l,h,r))$\\
+		1           & 1 & if $l>x_n$ //case 1\\
+		\indent 4   & 2 & \indent add($0,l,h,r$) onto the end of $X$\\
+		\indent 1   & 3 &	\indent return \\
+		1           & 4 & if $r< x_0 $ //case 2\\
+		\indent 4   & 5 & \indent add($l,h,r,0$) onto the front of $X$\\
+		\indent 1   & 6 & \indent return\\
+		$\log_2(n)$ & 7 & $i=\min\{k|l<x_k\}$  //using binary search \\
+		$\log_2(n)$ & 8 & $j=\max\{k|x_k<r\}$ //using binary search \\
+		1           & 9 &  if $l<x_0$ // case 3 \\
+		\indent 4   & 10 & \indent add($l,h$) to the front of $X$\\
+		1           & 11 & else if $l=x_{i-1}\text{ } \& \&\text{ } h> h_i $//case 4\\
+		\indent 1   & 12 & \indent $h_i=h$\\
+		1           & 13 & else $x_{i-1}<l<x_i \text{ } \& \&\text{ } h>h_i$ //case 5\\
+		\indent 2   & 14 & \indent add($l,h$) after $h_i$\\
+		n           & 15 & while $i \leq j$\\
+		\indent 1   & 16 & \indent if  $h>h_i$\\
+		\indent\indent 1   & 17 & \indent \indent $h_i=h$\\
+		\indent 1   & 18 & \indent $i\texttt{++}$ \\
+		1           & 19 & if $j=n$ //case 6\\
+		\indent 2   & 20 & \indent add $(h,r)$ on the end of $X$ \\
+		3           & 21 & else if $j<n\text{ } \& \&\text{ } r=x_{j+1}\text{ } \& \&\text{ } h> h_{j+1}$ //case 7\\
+		\indent 2   & 22 & \indent $h_{j+1}=h$\\
+		3           & 23 & else $j<n\text{ } \& \&\text{ } x_j <r < x_{j+1}\text{ } \& \& \text{ }h > h_{j+1}$ //case 8\\
+		\indent 2   & 24 & \indent add($h,r$) after $x_j$\\
+		n           & 25 & cleanUpAisle4($X$)\\
+	\end{tabular}\\\\
+	With helping algorithm.\\
+	\begin{tabular}{l | c | l}
+		Time & Line nr & Pseudocode \\ \hline
+		           &   & cleanUpAisle4($X$)\\
+		n          & 1 & for $i=1,\dots ,n-1$\\
+		\indent 1  & 2 & \indent if $h_i=h_{i+1}$\\
+		\indent\indent 2& 3 & \indent \indent delete $h_{i},x_{i}$
+	\end{tabular}\\\\
+	From the analysis done alongside the code we see that the addBuilding algorithm runs in linear time.
+	\\\textbf{Correctness:} There is 8 start up cases that we need to take care of.\\
+	\textbf{Case 1:} the building we are adding to the silhouette lies completely to the right of the silhouette iff $l>x_n$ so we add $(0,l,h,r)$ onto the end of the silhouette. \textbf{Case 2:} is analogous to to case 1, the case where the building is to the left of our silhouette, so we add $(l,h,r,0)$ onto the front.
+	\\\textbf{Case 3:} before starting case 3, we compute $i=\min\{k|l<x_k\}$ and $j=\max\{k|x_k<r\}$ using binary search, the x values assosiated with these indicies will be the first we have to compare our building to, and case 1 and 2 ensure their existence. In case 3 we have $l<x_0$ in which case we add $(l,h)$ to the front of the silhouette. \textbf{Case 4:} now we have $l=x_{i-1}$, which is well defined because if $l=x_0$ we get $i = 1$, and if $l>x_n$ we are in case 1. Having taken care of the formalities we change $h_i$ to $h$ iff $h>h_i$ since our building is on a perfect line with another building in the silhouette we take the height to be the highest of the two. \textbf{Case 5:} here we have $x_{i-1}<l<x_i$ pr definition of i, if also $h>h_i$ we add $(l,h)$ after $h_i$ to indicate that the skyline rises with the new building, between $x_{i-1}$ and $x_i$.
+	\\At this stage we look at the intermediate buildings, and update their height if needed.
+	\\The remaining cases 6-8 are analogous to 3-5. 
+	\\The cleanUpAisle4 algorithm overkills the problem and runs through the entirety of X and if $h_i = h_{i+1}$ we are in a situation with superflous information, so we delete $h_{i},x_{i}$, this because we are in a situation $(\dots, x_{i-1},h_i,x_{i},h_i,x_{i+1},\dots )$ so we can choose to delete the height to the left of $x_i$ or the height to the right, since they are equal, we choose to delete the left for no particular reason. $\qed$
+	\subsection{b)}
+	Given 2 silhouettes
+	\begin{align}
+	X&=(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots\dots,h_n,x_n)\\
+	Y&=(y_0,h'_1,y_1,\dots,y_{i-1}.h'_i,y_i,\dots,h'_m,y_m)
+	\end{align}
+	We wish to combine them into one. Assume without loss of generality that $m\leq n$\\
+	\begin{tabular}{l | c | l}
+		Time & Line nr & Pseudocode \\ \hline
+		&&CombineSilhouette(X,Y)\\
+		m & 1 & for k = 1 to k=m\\
+		\indent n & 2 & \indent addBuilding(X,$(y_{k-1},h'_k,y_k)$))\\
+	\end{tabular}\\\\
+	If addBuilding works, so does CombineSilhouette. The time for this algorithm is $O(mn) = O(n^2)$ since $m\leq n$.
+	\subsection{c)}
+	We wish to write the divide and conquer algorithm to take care of this problem.
+	\\The following algorithm takes an input on the form 
+	\begin{align*}
+		X=\big( &(x_{0,0},h_{0,0},\dots x_{i,0},h_{i,0},\dots,h_{n_0-1,0},x_{n_0,0}),
+		\\ &(x_{0,1},h_{0,1},\dots x_{i,1},h_{i,1},\dots,h_{n_1-1,1},x_{n_1,1}), 
+		\\ &\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\text{ }\vdots
+		\\ &(x_{0,m},h_{0,m},\dots x_{i,m},h_{i,m},\dots,h_{n_m-1,1},x_{n_m,1}) \big)
+	\end{align*}
+	Which is a collections of $m=: X.size$ silhouettes each of size $n_i$.
+	\\\noindent\begin{tabular}{l | c | l}
+		Time & Line nr & Pseudocode \\ \hline
+		          &   & DnCCombine($X$)\\
+		1         & 1 & if $X.size = 1$\\
+		\indent 1 & 2 & \indent return $X$\\
+		m/2       & 3 & for(i = 0 : i<X.size/2 : i++)\\
+		\indent $\max\{n_i^2,n_{m-i}^2\}$ & 4 & \indent CombineSilhouette($X_i, X_{X.size-i}$)\\
+		\indent 1 & 5 & \indent delete $X_{X.size-i}$ from $X$\\
+		T(m)      & 6 & DnCCombine($X$)
+	\end{tabular}\\\\
+	This algorithm is very general and overshoots our purposes a bit, since we wish to use it initially on a collection of buildings, 
+	\begin{equation}\label{buildings}
+		X = \big( (l_0,h_0,r_0), \dots ,(l_n,h_n,r_n) \big)
+	\end{equation}
+	and be able to reuse the algorithm all the way to the top. We also start from behind, compared to the way for example Merge-Sort works, which first divides up the input and the gathers it back together. We do not have to use effort to divide up our problem, because we only intend to use DnCCombine once and if later on we wish to add another building we just use addBuilding.
+	\\So what happens when we call DnCCombine on a collection like (\ref{buildings})? We get a binary tree turned on its head with $n$ nodes at the top each of size 1, in the second layer we get $n/2$ nodes of size 2, and at the third layer we have $n/4$ nodes of size 4, and at the i'th level we have $n/2^{i-1}$ nodes of size $2^{i-1}$, until we reach the bottom with 1 node of size n, after $\log_2(n)$ levels. This isnt the usual way the recurrence formula/tree works, but it is \textit{clearly} equivivalent to
+	\begin{equation}
+		T(n) = 2T(n/2)+n^2 \stackrel{\text{Master Th}eorem}{\iff} T(n) = \Theta(n^2)
+	\end{equation}
+	There exists an Indian man on youtube that has a way to solve this problem in $n\log(n)$ time, but we do not wish to plagerise him ;) \qed
+\end{document}
