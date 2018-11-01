@@ -133,7 +133,7 @@
 		m/2       & 3 & for(i = 0 : i<X.size/2 : i++)\\
 		\indent $\max\{n_i^2,n_{m-i}^2\}$ & 4 & \indent CombineSilhouette($X_i, X_{X.size-i}$)\\
 		\indent 1 & 5 & \indent delete $X_{X.size-i}$ from $X$\\
-		T(m)      & 6 & DnCCombine($X$)
+		T(m/2)      & 6 & DnCCombine($X$)
 	\end{tabular}\\\\
 	This algorithm is very general and overshoots our purposes a bit, since we wish to use it initially on a collection of buildings, 
 	\begin{equation}\label{buildings}

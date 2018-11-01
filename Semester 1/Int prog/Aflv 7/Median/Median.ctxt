@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Median
+comment0.text=\r\n\ Class\ to\ be\ debugged\ and\ tested\r\n\ \r\n\ @author\ Kurt\ Jensen\r\n\ @version\ Oct\ 2017-10-17\r\n
+comment1.params=x\ y\ z
+comment1.target=int\ medianWrong(int,\ int,\ int)
+comment1.text=\ \r\n\ Returns\ the\ median\ of\ the\ three\ parameters\ (i.e.\ the\ numerical\ middle).\r\n\ The\ method\ contains\ a\ bug,\ and\ hence\ it\ sometimes\ returns\ a\ wrong\ result\r\n
+comment2.params=x\ y\ z
+comment2.target=int\ medianCorrect(int,\ int,\ int)
+comment2.text=\ \r\n\ Returns\ the\ median\ of\ the\ three\ parameters\ (i.e.\ the\ numerical\ middle).\r\n\ \r\n
+numComments=3
