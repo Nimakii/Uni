@@ -26,10 +26,9 @@ public class Median {
         }
         return m;
     }
-    
+
     /** 
      * Returns the median of the three parameters (i.e. the numerical middle).
-     * 
      */
     public static int medianCorrect(int x, int y, int z) {
         int m = z;
@@ -43,6 +42,29 @@ public class Median {
             if(x > y) { m = y; }
             else {
                 if (x > z) { m = x; }
+            }
+        }
+        return m;
+    }
+
+    public static int medianWrongPrintTest(int x, int y, int z) {
+        int m = z;
+        if(y < z) {
+            if (x < y) { m = y; 
+                System.out.println("The error is in line 53");}
+            else {
+                if (x < z) { m = y; 
+                    System.out.println("The error is in line 56");}
+                else {System.out.println("The error is after line 56");}
+            }
+        }
+        else {
+            if(x > y) { m = y; 
+                System.out.println("The error is in line 62");}
+            else {
+                if (x > z) { m = x; 
+                    System.out.println("The error is in line 65");}
+                else {System.out.println("The error is after line 65");}
             }
         }
         return m;

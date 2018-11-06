@@ -25,7 +25,7 @@ Manuel gennemgang af koden:
     if(y<z)
         if(x<y)         case x<y<z og m=y
         else x>=y
-            if(x<z)     case y<=x<z så m=x
+            if(x<z)     case y<=x<z så m=x <--- her bor fejlen i koden
             else x>=z   case y<=z<= x så m skal ikke ændres da m=z i toppen
     else y>=z
         if(x>y)         case x>y>=z så m=y
@@ -33,7 +33,16 @@ Manuel gennemgang af koden:
             if(x>z)     case z<x<=y så m=x
             else x<=z   case x<=z<=y så m skal ikke ændres da m=z i toppen
         
-Det giver næsten ikke mening at benytte metoderne "indsættelse af ekstra print sætninger" eller
-"BlueJ's debugger" da koden kun udfører et par sammenligninger og én variabel modifikation.
-Man kunne have benyttet "indsættelse af ekstra print sætninger" til at finde ud af hvilken linje
-de forskellige kald benytter. 
+Indsættelse af printsætninger:
+    Ved metodekald Median.medianWrongPrintTest(2,1,3) får vi printet
+    The error is in line 56
+    Så vi kigger i linje 56 og ser som før at det er her fejlen ligger, denne anvendelse
+    viser imidlertid ikke at det er præcis her fejlen er, men at det er når vi ender her
+    at der er sket fejl undervejs. I vort tilfælde er det imidlertid i den seneste
+    kodestreng m=y det går galt
+
+Denne måde at bruge printsætninger på giver et fint overblik over hvor i koden der er bøvl
+hvormed vi kan afgrænse vores fejfinding til at kigge i "strengen" af kode der får os ud i
+det sted der bliver printet. Herefter er en manuel gennemgang stadig nødvendig, men
+begrænset i omfang i forhold til at læse hele koden igennem. Vi er dog på ingen måde sikret
+imod at der så ikke kommer fejl et andet sted, men den tid den sorg.

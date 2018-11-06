@@ -35,4 +35,18 @@ public class Driver
         System.out.println(myShop.organicF());
         myShop.printShopF();
     }
+    public static void eksspg2Test(){
+        Vegetable v1 = new Vegetable("carrots",true,2);
+        Vegetable v2 = new Vegetable("carrots",false,50);
+        Vegetable v3 = new Vegetable("tatoes",false,2);
+        Vegetable v4 = new Vegetable("tatoes",true,75);
+        Vegetable v5 = new Vegetable("greens",false,250);
+        Shop myShop = new Shop("JK");
+        myShop.add(v1);
+        myShop.add(v2);
+        myShop.add(v3);
+        myShop.add(v4);
+        myShop.add(v5);
+        System.out.println(myShop.eksSpgTest());
+    }
 }
