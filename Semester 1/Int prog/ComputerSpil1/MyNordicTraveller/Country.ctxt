@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Country
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Country\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=name\ network
+comment1.target=Country(java.lang.String,\ java.util.Map)
+comment10.params=city
+comment10.target=Position\ position(City)
+comment11.params=from\ to
+comment11.target=Position\ readyToTravel(City,\ City)
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment3.params=
+comment3.target=java.util.Map\ getNetwork()
+comment4.params=c
+comment4.target=java.util.List\ getRoads(City)
+comment5.params=
+comment5.target=java.util.List\ getCities()
+comment6.params=name
+comment6.target=City\ getCity(java.lang.String)
+comment7.params=
+comment7.target=void\ reset()
+comment8.params=value
+comment8.target=int\ bonus(int)
+comment9.params=a\ b\ length
+comment9.target=void\ addRoads(City,\ City,\ int)
+comment9.text=\r\n\ map.put()\r\n\ If\ the\ map\ previously\ contained\ a\ mapping\ for\ the\ key,\r\n\ the\ old\ value\ is\ replaced\ by\ the\ specified\ value.\r\n
+numComments=12
