@@ -1,16 +1,16 @@
 #BlueJ package file
-dependency1.from=Driver
+dependency1.from=Shop
 dependency1.to=Vegetable
 dependency1.type=UsesDependency
 dependency2.from=Driver
-dependency2.to=Shop
+dependency2.to=Vegetable
 dependency2.type=UsesDependency
-dependency3.from=Shop
-dependency3.to=Vegetable
+dependency3.from=Driver
+dependency3.to=Shop
 dependency3.type=UsesDependency
-editor.fx.0.height=0
-editor.fx.0.width=0
-editor.fx.0.x=0
+editor.fx.0.height=1047
+editor.fx.0.width=974
+editor.fx.0.x=-7
 editor.fx.0.y=0
 objectbench.height=99
 objectbench.width=556
