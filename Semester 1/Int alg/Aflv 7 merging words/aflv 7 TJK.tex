@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Thomas Vinther \& Jens Kristian Refsgaard Nielsen}
+	\title{Handin 7}
+	\date{07-11-18}
+	\maketitle
+	\section{Merging words}
+	
+	\subsection{b)}
+	We wish to determine if a word $z$ is a weave of the words $x$ and $y$. To solve this problem we use the following divine algorithm based upon the recursion formula (\ref{recursion})\\\\
+	\noindent \begin{tabular}{l | c | l}
+		Time & Line nr & Pseudocode \\ \hline
+		               &   & MergingWords?(z,x,y)\\
+		O(n+m)         & 1 & Let $A$ = charset(x), $B$ = charset(y) and $C$ = charset(z)\\
+		\indent O(n+m) & 2 & if $A\cup B != C$\\
+		\indent 1      & 3 & \indent return no\\
+		nm           & 4 & Let $F[0..n , 0..m]$ be a matrix\\
+		n   & 5 & for $i = 0,\dots,n$\\
+		\indent m   & 6 & \indent for $j = 0,\dots,m$\\
+		\indent\indent 1	    & 7 & \indent\indent if $i == 0$ \&\& $j == 0$\\
+		\indent\indent\indent 1 & 8 & \indent\indent\indent $F[i,j]=0$ \\
+		\indent\indent 1 		& 9 & \indent\indent else if $i == 0$ \text{ }\text{ }$\backslash\backslash$ $j>0$\\
+		\indent\indent\indent 2	& 10 & \indent\indent\indent if $z_j == y_j$ \&\& $F[0,j-1] == 1$ \\
+		\indent\indent\indent\indent 1 & 11 & \indent\indent\indent\indent $F[0,j] = 1$ \\
+		\indent\indent\indent 1 & 12 & \indent\indent\indent else $F[0,j]=0$\\
+		\indent\indent 1 & 13 & \indent\indent else if $j == 0$ \text{ }\text{ }$\backslash\backslash$ $i>0$ \\
+		\indent\indent\indent 2  & 14 & \indent\indent\indent if $z_j == y_j$ \&\& $F[i-1,0] == 1 $ \\
+		\indent\indent\indent\indent 1  & 15 & \indent\indent\indent\indent  $F[i,0]=1$\\
+		\indent\indent\indent 1  & 16 & \indent\indent\indent else $F[i,0] = 0$ \\
+		\indent\indent 0  & 17 & \indent\indent else \text{ }\text{ }$\backslash\backslash i,j \geq 1$ \\
+		\indent\indent\indent 4 & 18 & \indent\indent\indent if $\bigg( ( z_{i+j} == x_i \&\& F[i-1,j] == 1 ) ||$\\
+		\indent\indent  &   & \indent\indent\indent \text{ }\text{ }\text{ }$( z_{i+j} == y_j \&\& F[i,j-1] == 1 ) \bigg)$\\
+		\indent\indent\indent\indent 1 & 19 & \indent\indent\indent\indent $F[i,j]=1$\\
+		\indent\indent\indent 1  & 20 & \indent\indent\indent else $F[i,j]=0$\\
+		1  & 21 & if $F[n,m] == 1$\\
+		\indent 1  & 22 & \indent return yes\\
+		1  & 23 & else return rick roll\\
+	\end{tabular}\\\\
+	\textbf{Correctness:} We follow the instructions given by the function F in lines 4 to 20. In line 1-3 we compute the letters used in each of the sequences, this is a quick way to see if a solutions is possible. Since if there is a letter in x or y that is not in z, there clearly cannot be a solution, and wise versa.\\
+	In line 21-23 we check if there is a solution in accordance with the considerations made around \ref{Solution}
+	
+	\subsection{c)}
+	\noindent \begin{tabular}{l | c | l}
+		Time & Line nr & Pseudocode \\ \hline
+			 &   & Reconstructor$(i,j,Index,F)$\\
+		1	       & 1 & if $i = 0$ \\
+		\indent 1  & \indent 1 & \indent return Index \\
+		$\max(n,m)$& 1 & while $(F[i-1,j] != 0)$\\
+		\indent 1  & 2 & \indent $j--$\\
+		1          & 3 & Index.add$(i+j)$\\
+		1          & 4 & $i--$\\
+		&&\\
+		  &   & RC-start(F,n,m)\\
+		1 & 1 & Let Index be a vector of length n\\
+		1 & 2 & Reconstructior(n,m,Index,F) \\
+		1 & 3 & Reverse Index \\
+		1 & 4 & Print Index \\
+	\end{tabular}
+\end{document}
