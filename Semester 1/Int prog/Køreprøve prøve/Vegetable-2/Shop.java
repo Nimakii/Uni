@@ -69,13 +69,10 @@ public class Shop
         Collections.shuffle(vegs);
     }
     
-    public int cheapest(boolean electric){
-        Tool res = null;
-        for(Tool t : tb){
-            if(t.getE() == electric && (t.getPrice()<res.getPrice() || res == null){
-                res = t;
-            }
-        }
-        return t.getPrice();
+    public Integer eksSpgTest(){
+        return vegs.stream()
+                   .map(v -> v.getNumber())
+                   .filter(v -> v>2)
+                   .reduce(0, (total,v)->total+v);
     }
 }

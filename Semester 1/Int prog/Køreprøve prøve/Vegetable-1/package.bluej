@@ -8,10 +8,17 @@ dependency2.type=UsesDependency
 dependency3.from=Driver
 dependency3.to=Shop
 dependency3.type=UsesDependency
+<<<<<<< HEAD
+editor.fx.0.height=739
+editor.fx.0.width=816
+editor.fx.0.x=552
+editor.fx.0.y=100
+=======
 editor.fx.0.height=1047
 editor.fx.0.width=974
 editor.fx.0.x=-7
 editor.fx.0.y=0
+>>>>>>> 615ee9ece257b06d6e0be658cdc2795e84e2cc89
 objectbench.height=99
 objectbench.width=556
 package.divider.horizontal=0.6002132196162047

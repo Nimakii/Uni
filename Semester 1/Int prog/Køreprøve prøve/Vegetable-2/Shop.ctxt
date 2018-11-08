@@ -17,4 +17,6 @@ comment7.params=
 comment7.target=void\ printShopI()
 comment8.params=
 comment8.target=void\ printShopF()
-numComments=9
+comment9.params=
+comment9.target=java.lang.Integer\ eksSpgTest()
+numComments=10
