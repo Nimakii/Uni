@@ -1,9 +1,7 @@
 // Version: 2017103102
 import java.util.NoSuchElementException;
 public class RedBlackTree {
-
     private Node root;
-
     /**
      * Return the Node in x's subtree that comes after the first 'rank' nodes
      * in an in-order traversal.

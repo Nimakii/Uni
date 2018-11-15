@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=PositionTest
-comment0.text=\r\n\ The\ test\ class\ PositionTest.\r\n\r\n\ @author\ \ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ The\ test\ class\ PositionTest.\r\n\r\n\ @author\ \ Jens\ Kristian\ Nielsen\ &\ Thomas\ Vinther\r\n\ @version\ Computerspil\ 2\r\n
 comment1.params=
 comment1.target=void\ setUp()
 comment1.text=\r\n\ Sets\ up\ the\ test\ fixture.\r\n\r\n\ Called\ before\ every\ test\ case\ method.\r\n

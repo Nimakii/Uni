@@ -46,7 +46,7 @@ public class City implements Comparable<City>
     }
 
     /**
-     * Reduces the current value of the city with the given amount.
+     * Increases the current value of the city with the given amount.
      * @param amount      The amount we wish to reduce the City's value.  
      */
     public void changeValue(int amount){

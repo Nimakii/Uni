@@ -78,18 +78,22 @@ public class RoadTest
         Road road4 = new Road(cityA, cityB, 3);
         /**Test of reflexivity x = x*/
         assertEquals(0,road1.compareTo(road1));        
+        
         /**Test of transitivity of < a<b & b<c => a<c*/
         assertTrue(road1.compareTo(road2) < 0);
         assertTrue(road2.compareTo(road3) < 0);
         assertTrue(road1.compareTo(road3) < 0);
+        
         /**Test of transitivity of > */
         assertTrue(road3.compareTo(road2) > 0);
         assertTrue(road2.compareTo(road1) > 0);
         assertTrue(road3.compareTo(road1) > 0);
+        
         /**Test of antisymmetry a<=b & b<=a => a=b*/
         assertTrue(road1.compareTo(road4) >= 0);
         assertTrue(road1.compareTo(road4) <= 0);
         assertEquals(0,road1.compareTo(road4));
+        
         /**Test of symmetry a=b <=> b=a*/
         assertEquals(0,road1.compareTo(road4));
         assertEquals(0,road4.compareTo(road1));
