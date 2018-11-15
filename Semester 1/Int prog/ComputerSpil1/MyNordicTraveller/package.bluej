@@ -1,18 +1,18 @@
 #BlueJ package file
-dependency1.from=Road
-dependency1.to=City
+dependency1.from=CGTest
+dependency1.to=Country
 dependency1.type=UsesDependency
-dependency2.from=Position
+dependency2.from=CGTest
 dependency2.to=City
 dependency2.type=UsesDependency
 dependency3.from=CGTest
-dependency3.to=Country
+dependency3.to=Road
 dependency3.type=UsesDependency
-dependency4.from=CGTest
+dependency4.from=Position
 dependency4.to=City
 dependency4.type=UsesDependency
-dependency5.from=CGTest
-dependency5.to=Road
+dependency5.from=Road
+dependency5.to=City
 dependency5.type=UsesDependency
 dependency6.from=Country
 dependency6.to=City
