@@ -103,29 +103,33 @@ public class CityTest
     
     @Test
     public void compareTo(){
-        //cityA = new City("City A", 80, country1);
-        //cityB = new City("City B", 60, country1);
-        //cityC = new City("City C", 40, country1);
-        //cityD = new City("City D", 100, country1);
         /**Test of reflexivity x = x*/
-        assertEquals(0,cityA.compareTo(cityA));        
+        assertEquals(0,cityA.compareTo(cityA));
+        
         /**Test of transitivity of < a<b & b<c => a<c*/
         assertTrue(cityA.compareTo(cityB) < 0);
         assertTrue(cityB.compareTo(cityC) < 0);
         assertTrue(cityA.compareTo(cityC) < 0);
+        
         /**Test of transitivity of > */
         assertTrue(cityC.compareTo(cityB) > 0);
         assertTrue(cityB.compareTo(cityA) > 0);
         assertTrue(cityC.compareTo(cityA) > 0);
+        
         /**Test of antisymmetry a<=b & b<=a => a=b*/
         City cityK = new City("City A", 50, country1);
         assertTrue(cityA.compareTo(cityK) >= 0);
         assertTrue(cityA.compareTo(cityK) <= 0);
         assertEquals(0,cityA.compareTo(cityK));
+        
         /**Test of symmetry a=b <=> b=a*/
         assertEquals(0,cityA.compareTo(cityK));
         assertEquals(0,cityK.compareTo(cityA));
         assertTrue(cityA.compareTo(cityK) == cityK.compareTo(cityA));
+        /**Both symmetry tests fail since the value of cityA and cityK
+         * are unequal. As a result we should compare values aswell,
+         * however in the current iteration of the program we do not
+         * need to compare values for the program to run as intended*/
     }
     
     @Test
