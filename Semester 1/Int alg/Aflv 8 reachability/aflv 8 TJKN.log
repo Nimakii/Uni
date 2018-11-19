@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6730 64-bit) (preloaded format=pdflatex 2018.7.12)  19 NOV 2018 12:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6730 64-bit) (preloaded format=pdflatex 2018.7.12)  19 NOV 2018 13:44
 entering extended mode
-**./aflv7-TJKD.tex
-(aflv7-TJKD.tex
+**"./aflv 8 TJKN.tex"
+("aflv 8 TJKN.tex"
 LaTeX2e <2018-04-01> patch level 5
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
@@ -465,8 +465,9 @@ Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
 \c@theorem=\count139
- (aflv7-TJKD.aux)
-\openout1 = `aflv7-TJKD.aux'.
+
+("aflv 8 TJKN.aux")
+\openout1 = `"aflv 8 TJKN.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
 LaTeX Font Info:    ... okay on input line 45.
@@ -635,68 +636,49 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 51.
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--52
 
+LaTeX Warning: Command \o invalid in math mode on input line 61.
+
+
+AED: lastpage setting LastPage
+
+Overfull \hbox (47.4888pt too wide) in paragraph at lines 53--69
+[] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 72--73
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 74--75
+Underfull \hbox (badness 10000) in paragraph at lines 53--69
 
  []
 
 [1
 
 {C:/Users/tove/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 98--99
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 118--149
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 118--149
-
- []
-
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 151--172
-
- []
-
-[3] 
-AED: lastpage setting LastPage
-[4] (aflv7-TJKD.aux) ) 
+("aflv 8 TJKN.aux") ) 
 Here is how much of TeX's memory you used:
- 8673 strings out of 492973
- 125719 string characters out of 3135935
- 238868 words of memory out of 3000000
- 12322 multiletter control sequences out of 15000+200000
- 78241 words of font info for 79 fonts, out of 3000000 for 9000
+ 8667 strings out of 492973
+ 125670 string characters out of 3135935
+ 229848 words of memory out of 3000000
+ 12318 multiletter control sequences out of 15000+200000
+ 72268 words of font info for 77 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,16n,94p,799b,311s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc
-}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Program File
-s/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/font
-s/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm
--rm.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi7.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/
-type1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lm
-r7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb>
-Output written on aflv7-TJKD.pdf (4 pages, 181989 bytes).
+ 60i,12n,94p,802b,303s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Program Files
+/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts
+/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-
+rm.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/Progra
+m Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKTeX 2.
+9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
+lic/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi7.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program Files/
+MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lms
+y10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msam10
+.pfb>
+Output written on "aflv 8 TJKN.pdf" (1 page, 156743 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
+ 53 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
