@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -9,8 +7,8 @@ import java.util.*;
 /**
  * The test class CountryTest.
  *
- * @author  (your name)
- * @version (a version number or a date)
+ * @author  Jens Kristian Nielsen & Thomas Vinther
+ * @version Computerspil2
  */
 public class CountryTest
 {
@@ -85,78 +83,173 @@ public class CountryTest
         country2.addRoads(cityF, cityD, 3);
         country2.addRoads(cityF, cityG, 6);
     }
-    
+
     @Test
     public void constructor(){
         assertEquals("Country 1",country1.getName());
         assertEquals(network1,country1.getNetwork());
     }
+
     @Test
     public void setGame(){
         Game game2 = new Game(0);
         country1.setGame(game2);
         assertEquals(game2,country1.getGame());
     }
+
+    @Test
+    public void getGame(){
+        Game game2 = new Game(0);
+        country1.setGame(game2);
+        assertEquals(game2,country1.getGame());
+    }
+
+    @Test
+    public void getNetwork(){
+        assertEquals(network1,country1.getNetwork());
+        assertEquals(network2,country2.getNetwork());
+    }
+
     @Test
     public void position(){
         Position pos = new Position(cityA,cityA,0);
         assertEquals(pos.getFrom(),country1.position(cityA).getFrom());
         assertEquals(pos.getTo(),country1.position(cityA).getTo());
         assertEquals(pos.getDistance(),country1.position(cityA).getDistance());
-    }
+    } 
+
     @Test
     public void readyToTravel(){
+        Position posSame = country1.readyToTravel(cityA,cityA); //Dublicate city
+        assertEquals(posSame.getFrom(),cityA);
+        assertEquals(posSame.getTo(),cityA);
+        assertEquals(posSame.getDistance(),0);
+        
         Position pos = country1.readyToTravel(cityA,cityB);     //Possible travel
         assertEquals(cityA,pos.getFrom());                      //there is a road from A to B
         assertEquals(cityB,pos.getTo());
         assertEquals(4,pos.getDistance());
-        
+
         pos = country1.readyToTravel(cityA,cityE);  //Impossible travel
         assertEquals(cityA,pos.getFrom());          //There is no road from A to E
         assertNotEquals(cityE,pos.getTo());
         assertEquals(cityA,pos.getTo());
-        
+
         country1.addRoads(cityA,cityE,3);           //Making impossible travel possible
-                                                    //Now there is a road from A to E
+        //Now there is a road from A to E
         pos = country2.readyToTravel(cityE,cityA);  //And not one from E to A
         assertEquals(cityE,pos.getFrom());          //Making travel directly from E to A
         assertNotEquals(cityA,pos.getTo());         //Impossible!
         assertNotEquals(3,pos.getDistance());
         assertEquals(cityE,pos.getTo());
-        
+
         pos = country1.readyToTravel(cityA,cityE);  //Now we prepare to travel from
         assertEquals(cityA,pos.getFrom());          //A to E
         assertEquals(cityE,pos.getTo());
         assertEquals(3,pos.getDistance());
-        
+
         pos = country2.readyToTravel(cityA,cityE);  //We try to initiate travel from
         assertEquals(cityA,pos.getFrom());          //A to E, within Country2
         assertEquals(cityA,pos.getTo());            //Which we cannot!
         assertEquals(0,pos.getDistance());
     }
+
     @Test
     public void reset(){
-        
+        country1.getCities().forEach(c -> c.changeValue(10));
+        assertNotEquals(80,country1.getCity("City A").getValue());
+        assertNotEquals(60,country1.getCity("City B").getValue());
+        assertNotEquals(40,country1.getCity("City C").getValue());
+        assertNotEquals(100,country1.getCity("City D").getValue());
+        country1.reset();
+        assertTrue(network1.size()>0);                              //test that reset doesnt
+        assertEquals("Country 1",country1.getName());               //reset stuff it isnt
+        assertEquals(game,country1.getGame());                      //supposed to
+        assertEquals(80,country1.getCity("City A").getValue());     
+        assertEquals(60,country1.getCity("City B").getValue());
+        assertEquals(40,country1.getCity("City C").getValue());
+        assertEquals(100,country1.getCity("City D").getValue());
+        cityA.arrive(); cityA.arrive(); cityA.arrive();
+        cityE.arrive(); cityE.arrive(); cityE.arrive();
+        int valueE = cityE.getValue();                          // Remember value of cityE
+        country1.reset();
+        assertEquals(cityA.getValue(), 80);                     // cityA is reset
+        assertEquals(cityE.getValue(), valueE);                 // cityE is unchanged
     }
+
     @Test
     public void getCity(){
-        
+        assertEquals(cityA,country1.getCity("City A"));
+        assertNotEquals(cityA,country2.getCity("City A"));
+        assertNotEquals(cityA,country1.getCity("cityA"));
     }
+
     @Test
     public void getCities(){
-        
+        List<City> cityList1 = new ArrayList<>();
+        cityList1.add(cityA);
+        cityList1.add(cityB);
+        cityList1.add(cityC);
+        assertNotEquals(cityList1,country1.getCities());
+        cityList1.add(cityD);
+        assertEquals(cityList1,country1.getCities());
+        cityList1.add(cityE);
+        assertNotEquals(cityList1,country1.getCities());
+        network1.put(cityE,roadsE);
+        assertEquals(cityList1,country1.getCities());
     }
+
     @Test
     public void bonus(){
-        
+        for(int seed = 0; seed < 1000; seed++) {            // Try 1000 different seeds
+            game.getRandom().setSeed(seed);
+            int sum = 0;
+            Set<Integer> values = new HashSet<>();
+            for(int i = 0; i < 10000; i++) {                // Call method 10000 times
+                int bonus = country1.bonus(80);
+                assertTrue(0<= bonus && bonus <=80);        // Correct interval
+                sum += bonus;
+                values.add(bonus); }
+            assertTrue(350000 < sum && sum < 450000);        // Average close to 40
+            assertEquals(values.size(),81);               // All values returned
+        }
+        for(int seed = 0; seed < 1000; seed++) {        // Try 1000 different seeds
+            game.getRandom().setSeed(seed);
+            int sum = 0;
+            Set<Integer> values = new HashSet<>();
+            int bonusTestCount = 10000;
+            for(int i = 0; i < bonusTestCount; i++) {   // Call method 10000 times
+                int bonus = country1.bonus(80);
+                assertTrue(0<= bonus && bonus <=80);    // Correct interval
+                sum += bonus;
+                values.add(bonus); 
+            }
+            int avg = sum/bonusTestCount;
+            assertTrue(35 < avg && avg < 45);         // Average close to 40
+            assertEquals(81,values.size());        // All values returned
+        }
     }
+
     @Test
     public void getRoads(){
+        assertEquals(roadsA,country1.getRoads(cityA));
+        assertEquals(roadsB,country1.getRoads(cityB));
+        ArrayList<Road> empty = new ArrayList<Road>();
+        assertEquals(empty,country1.getRoads(cityF)); //cityF lies in country 2 should return empty list. 
         
     }
+
     @Test
     public void addRoads(){
-        
+        int lengthA = roadsA.size();
+        int lengthE = roadsE.size();
+        country1.addRoads(cityA,cityE,6);
+        Road rAE = new Road(cityA,cityE,6);
+        assertEquals(0,roadsA.get(lengthA).compareTo(rAE));
+        assertEquals(lengthA+1,country1.getRoads(cityA).size());
+        assertNotEquals(lengthA,country1.getRoads(cityA).size());
+        assertNotEquals(lengthE+1,country2.getRoads(cityE).size());
+        assertEquals(lengthE,country2.getRoads(cityE).size());
     }
 
     /**

@@ -98,6 +98,10 @@ public class RoadTest
         assertEquals(0,road1.compareTo(road4));
         assertEquals(0,road4.compareTo(road1));
         assertTrue(road1.compareTo(road4) == road4.compareTo(road1));
+        /**Both symmetry tests fail since the length of road1 and road4
+         * are unequal. As a result we should compare lengths aswell,
+         * however in the current iteration of the program we do not
+         * need to compare lengths for the program to run as intended*/
     }
     
     

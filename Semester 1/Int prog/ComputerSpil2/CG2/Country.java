@@ -4,7 +4,7 @@ import java.util.Random;
  * A Contry is a collection of cities and roads between them, all part of a game.
  *
  * @author Jens Kristian Nielsen & Thomas Vinther
- * @version computerspil2
+ * @version Computerspil2
  */
 public class Country
 {
@@ -99,12 +99,10 @@ public class Country
      * @return      City with name name.
      */
     public City getCity(String name){
-        if (getCities().stream().filter( c -> c.getName().equals(name))
-                                .findFirst()
-                                .isPresent()){
-            return getCities().stream().filter( c -> c.getName().equals(name))
-                                       .findFirst()
-                                       .get();
+        Optional<City> res = getCities().stream().filter( c -> c.getName().equals(name))
+                                .findFirst();
+        if (res.isPresent()){
+            return res.get();
         }
         return null;
     }
