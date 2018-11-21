@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.Random;
 /**
- * A Contry is a collection of cities and roads between them, all part of a game.
+ * A Country is a collection of cities and roads between them, all part of a game.
  *
  * @author Jens Kristian Nielsen & Thomas Vinther
  * @version Computerspil2
@@ -68,6 +68,7 @@ public class Country
     /**
      * Returns the list of Roads starting in the given City, if and only if the City lies
      * within the borders of the Country.
+     * If the country does not contain c, we return an empty ArrayList<Road>.
      * 
      * @param c     The City whos list of Roads we wish to get.
      * @return      The list of roads starting in City c.
@@ -81,7 +82,7 @@ public class Country
     }
 
     /**
-     * Returns the list of cities within the country.
+     * Returns a sorted list of cities within the country.
      * 
      * @return      List of cities.
      */
@@ -115,11 +116,10 @@ public class Country
     }
 
     /**
-     * Calculates a random integer based upon the Random implemented in the Game Class.
+     * 
      * 
      * @param value the value used in calculations.
-     * @return      a random value based upon the value paramater and the implementation of
-     *              random in the Game class.
+     * @return      a random integer in the interval [1,value]
      */
     public int bonus(int value){
         if(value > 0){
@@ -185,6 +185,8 @@ public class Country
 
     /**
      * We say that two countries are equal if they have the same name.
+     * 
+     * @return      true if the other object
      */
     @Override
     public boolean equals(Object otherObject){
