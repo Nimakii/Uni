@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=MedianTests
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Test\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=void\ testWrong()
+comment2.params=
+comment2.target=void\ testCorrect()
+numComments=3

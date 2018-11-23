@@ -17,13 +17,14 @@ public class BorderCity extends City
         super(name, value, country);
     }
 
-    /** 
-     * This method overrides the arrive method in City, as the player will have to pay toll, if they come from a different country.
-     * The toll is a random percentage of the players total capital, based on the game settings, and is added to the city's value.
-     * If the player arrives to the borderCity from within the same country, they do not have to pay the toll.
+    /**
      * 
-     * @return a bonus from 0 to the value of the city, subtracted a percentage of the players wealth. 
-     * @param p the player arriving to the borderCity. 
+     * This method overrides the arrive method in City, as the player will have to pay toll, if they come from a different country. 
+     * The toll is a random percentage of the players total wealth, based on the games settings and is added to the city's value. 
+     * If the player arrives to the BorderCity from within the same country, they do not have to pay toll. 
+     * 
+     * @return      a bonus from 0 to the value of the city, subtracted a percentage of the players wealth
+     * @param p     the player arriving to the BorderCity 
      */
     @Override   
     public int arrive(Player p){

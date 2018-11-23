@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Country
-comment0.text=\r\n\ A\ Country\ is\ a\ collection\ of\ cities\ and\ roads\ between\ them,\ all\ part\ of\ a\ game.\r\n\r\n\ @author\ Jens\ Kristian\ &\ Thomas\ \ Vinther\r\n\ @version\ Computergame\ 3\r\n
+comment0.text=\r\n\ A\ Country\ is\ a\ collection\ of\ cities\ and\ roads\ between\ them,\ all\ part\ of\ a\ game.\r\n\r\n\ @author\ Jens\ Kristian\ &\ Thomas\ \ Vinther\r\n\ @version\ Computergame\ 2\r\n
 comment1.params=name\ network
 comment1.target=Country(java.lang.String,\ java.util.Map)
 comment1.text=\r\n\ Creates\ a\ new\ Country\ with\ the\ name\ of\ the\ Country\ and\ a\ network\ (a\ map)\ which\ links\ a\ city\ to\ the\ list\ of\ all\ roads\ starting\ in\ \r\n\ that\ particular\ city.\ \r\n\ @param\ name\ \ \ \ \ \ name\ of\ the\ Country\r\n\ @param\ network\ \ \ network\ of\ cities\ and\ roads\ within\ the\ country\r\n

@@ -75,11 +75,13 @@ public class MafiaCountryTest
         country2.addRoads(cityF, cityD, 3);
         country2.addRoads(cityF, cityG, 6);
     }
+
     /**
      * Test bonus method in a mafia country.
      */
     @Test
     public void bonus(){
+
         for(int seed = 0; seed < 1000; seed++){
             game.getRandom().setSeed(seed);
             int robs = 0;
@@ -93,12 +95,22 @@ public class MafiaCountryTest
                     loss -= bonus;
                     values.add(-bonus);
                 }
+
             }
-            assertTrue(10500 > robs && robs > 9500);                //You get robbed approx. 20% of the time
+            double risk = 1.0*country2.getGame().getSettings().getRisk()/100;
+            assertTrue(risk*1.05*50000 > robs && robs > 50000*risk*0.95);   //You get robbed approx. 20% of the time
             assertTrue(robs*35 > loss && robs*25 < loss);           //you usually lose 30 
-            assertEquals(41,values.size());                         //The loss can be all values in the interval [10;50], i.e. values has size 41
+            assertEquals(41,values.size());                         //The loss can be all values in the interval [10;50], i.e. values has size 41  
         } 
+        Set<Integer> riskValues = new HashSet<>();              //used as an additional check, to see that you get robbed 20% of the time
+
+        for(int i = 0; i<50000; i++){
+
+            riskValues.add(country2.getGame().getRandom().nextInt(100)+1); 
+        }
+        assertEquals(100,riskValues.size());                    //Probability check wrt. rob percentage. 
     }
+
     /**
      * Test bonus method in a normal country. 
      */
@@ -113,7 +125,7 @@ public class MafiaCountryTest
                 int bonus = country1.bonus(80);
                 if(bonus < 0) {
                     robs++;
-                    assertTrue(bonus >= -51 && bonus <= -10);       //Bonus lies in the interval [-50;-10]
+                    assertTrue(bonus >= -50 && bonus <= -10);       //Bonus lies in the interval [-50;-10]
                     loss -= bonus;
                     values.add(-bonus);
                 }
@@ -123,7 +135,6 @@ public class MafiaCountryTest
             assertEquals(0,values.size());                        
         } 
     }
-    
 
     /**
      * Tears down the test fixture.
