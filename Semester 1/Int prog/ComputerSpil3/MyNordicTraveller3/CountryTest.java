@@ -88,6 +88,9 @@ public class CountryTest
     public void constructor(){
         assertEquals("Country 1",country1.getName());
         assertEquals(network1,country1.getNetwork());
+        
+        assertEquals("Country 2",country2.getName());
+        assertEquals(network2,country2.getNetwork());
     }
 
     @Test
@@ -98,29 +101,16 @@ public class CountryTest
     }
 
     @Test
-    public void getGame(){
-        Game game2 = new Game(0);
-        country1.setGame(game2);
-        assertEquals(game2,country1.getGame());
-    }
-
-    @Test
-    public void getNetwork(){
-        assertEquals(network1,country1.getNetwork());
-        assertEquals(network2,country2.getNetwork());
-    }
-
-    @Test
     public void position(){
         Position pos = new Position(cityA,cityA,0);
         assertEquals(pos.getFrom(),country1.position(cityA).getFrom());
         assertEquals(pos.getTo(),country1.position(cityA).getTo());
         assertEquals(pos.getDistance(),country1.position(cityA).getDistance());
-    } 
-
+    }
+    
     @Test
     public void readyToTravel(){
-        Position posSame = country1.readyToTravel(cityA,cityA); //Dublicate city
+        Position posSame = country1.readyToTravel(cityA,cityA); //When from and to is the same city.
         assertEquals(posSame.getFrom(),cityA);
         assertEquals(posSame.getTo(),cityA);
         assertEquals(posSame.getDistance(),0);
@@ -136,7 +126,7 @@ public class CountryTest
         assertEquals(cityA,pos.getTo());
 
         country1.addRoads(cityA,cityE,3);           //Making impossible travel possible
-        //Now there is a road from A to E
+                                                    //Now there is a road from A to E
         pos = country2.readyToTravel(cityE,cityA);  //And not one from E to A
         assertEquals(cityE,pos.getFrom());          //Making travel directly from E to A
         assertNotEquals(cityA,pos.getTo());         //Impossible!
@@ -152,8 +142,10 @@ public class CountryTest
         assertEquals(cityA,pos.getFrom());          //A to E, within Country2
         assertEquals(cityA,pos.getTo());            //Which we cannot!
         assertEquals(0,pos.getDistance());
+        
+        
     }
-
+    
     @Test
     public void reset(){
         country1.getCities().forEach(c -> c.changeValue(10));
@@ -161,11 +153,9 @@ public class CountryTest
         assertNotEquals(60,country1.getCity("City B").getValue());
         assertNotEquals(40,country1.getCity("City C").getValue());
         assertNotEquals(100,country1.getCity("City D").getValue());
-        country1.reset();
-        assertTrue(network1.size()>0);                              //test that reset doesnt
-        assertEquals("Country 1",country1.getName());               //reset stuff it isnt
-        assertEquals(game,country1.getGame());                      //supposed to
-        assertEquals(80,country1.getCity("City A").getValue());     
+        country1.reset();                                                
+        assertTrue(network1.size()>0);                                  //Test that the reset does not destory the network.
+        assertEquals(80,country1.getCity("City A").getValue());
         assertEquals(60,country1.getCity("City B").getValue());
         assertEquals(40,country1.getCity("City C").getValue());
         assertEquals(100,country1.getCity("City D").getValue());
@@ -201,32 +191,20 @@ public class CountryTest
 
     @Test
     public void bonus(){
-        for(int seed = 0; seed < 1000; seed++) {            // Try 1000 different seeds
-            game.getRandom().setSeed(seed);
-            int sum = 0;
-            Set<Integer> values = new HashSet<>();
-            for(int i = 0; i < 10000; i++) {                // Call method 10000 times
-                int bonus = country1.bonus(80);
-                assertTrue(0<= bonus && bonus <=80);        // Correct interval
-                sum += bonus;
-                values.add(bonus); }
-            assertTrue(350000 < sum && sum < 450000);        // Average close to 40
-            assertEquals(values.size(),81);               // All values returned
-        }
         for(int seed = 0; seed < 1000; seed++) {        // Try 1000 different seeds
             game.getRandom().setSeed(seed);
             int sum = 0;
             Set<Integer> values = new HashSet<>();
             int bonusTestCount = 10000;
-            for(int i = 0; i < bonusTestCount; i++) {   // Call method 10000 times
+            for(int i = 0; i < bonusTestCount; i++) {            // Call method 10000 times
                 int bonus = country1.bonus(80);
-                assertTrue(0<= bonus && bonus <=80);    // Correct interval
+                assertTrue(0<= bonus && bonus <=80); // Correct interval
                 sum += bonus;
                 values.add(bonus); 
             }
             int avg = sum/bonusTestCount;
             assertTrue(35 < avg && avg < 45);         // Average close to 40
-            assertEquals(81,values.size());           // All values returned
+            assertEquals(81,values.size());        // All values returned
         }
     }
 
@@ -235,68 +213,66 @@ public class CountryTest
         assertEquals(roadsA,country1.getRoads(cityA));
         assertEquals(roadsB,country1.getRoads(cityB));
         ArrayList<Road> empty = new ArrayList<Road>();
-        assertEquals(empty,country1.getRoads(cityF)); //cityF lies in country 2 should return empty list. 
-        
+        assertEquals(empty,country1.getRoads(cityF)); //cityF lies in country 2
+
     }
 
     @Test
     public void addRoads(){
-        int lengthA = roadsA.size();
-        int lengthE = roadsE.size();
+        int length = roadsA.size();
         country1.addRoads(cityA,cityE,6);
-        Road rAE = new Road(cityA,cityE,6);
-        assertEquals(0,roadsA.get(lengthA).compareTo(rAE));
-        assertEquals(lengthA+1,country1.getRoads(cityA).size());
-        assertNotEquals(lengthA,country1.getRoads(cityA).size());
-        assertNotEquals(lengthE+1,country2.getRoads(cityE).size());
-        assertEquals(lengthE,country2.getRoads(cityE).size());
+        Road r = new Road(cityA,cityE,6);
+        assertEquals(roadsA.get(length).compareTo(r),0);
+
     }
     
     @Test
-    public void equalsTest(){
-        Country country1A = new Country("Country 1", network1);
-        Country country1B = new Country("Country 1", network2);
-        Country country1C = new Country("Country 1", network1);
-        Country country1Null = null;
+    public void equals(){
+        Country country3 = new Country("Country 1", network1);
+        Country country4 = new Country("Country 2", network1);
+        Country country5 = new Country("Country 2", network2);
+        Country countryNull = null;
         
-        /** Reflexivity */
-        assertEquals(country1A,country1A);
-        assertEquals(country1B,country1B);
-        assertTrue(country1A.equals(country1A));
-        assertEquals(country1Null,country1Null);
-        //assertTrue(country1Null.equals(country1Null));
+        /**Test Reflextivity*/
+        assertTrue(country1.equals(country1));      
+        assertTrue(country2.equals(country2));
         
-        /** Symmetry */
-        assertEquals(country1,country1B);
-        assertEquals(country1B,country1);
-        assertEquals(country1,country1A);
+        /**Test symmetry */        
+        assertTrue(country1.equals(country3) && country3.equals(country1));
+        assertTrue(country1.equals(country3) && country3.equals(country1));
         
-        /** Transitivity */
-        assertEquals(country1,country1A);
-        assertEquals(country1A,country1B);
-        assertEquals(country1,country1B);
+        assertTrue(countryNull.equals(countryNull));                        //Fejler burde den det...
         
+        /**Transitivity */
+        assertTrue(country2.equals(country4));
+        assertTrue(country4.equals(country5));
+        assertTrue(country2.equals(country5));
+        
+        /** Test not null*/
+        assertFalse(country1.equals(null));
+                
         /** Negative tests */
-        assertNotEquals(country1,country2);
-        assertNotEquals(country1A,null);
-        assertNotEquals(country1B,null);
-        assertEquals(country1Null,null);
-        assertNotEquals(game,country1);
-        Road rAE = new Road(cityA,cityE,8);
-        assertNotEquals(rAE,country1);
-        Position pos = new Position(cityA,cityB,8);
-        assertNotEquals(pos,country1);
-        assertNotEquals(Math.PI,country1);
-        assertNotEquals("Country 1",country1);
+        assertFalse(country1.equals("Country 1"));
+        
     }
     
     @Test
     public void hashCodeTest(){
+        Country country3 = new Country("Country 1", network1);
+        Country country4 = new Country("Country 2", network1);
+        Country country5 = new Country("Country 2", network2);
+        
         Country country1A = new Country("Country 1",network1);
         Country country2A = new Country("Country1",network2);
         Country country2B = new Country("CounTry 1",network2);
         
-        /** Consistency */
+        
+        /**Consistent with equals method */
+        assertTrue(country1.equals(country3) && country1.hashCode()==country3.hashCode());
+        assertTrue(country3.equals(country1) && country3.hashCode()==country1.hashCode());
+        assertFalse(country1.hashCode() != country2.hashCode());            //Negated
+        assertFalse(country1.equals(country2));
+        
         assertTrue(country1.equals(country1A));
         assertTrue(country1.hashCode() == country1A.hashCode());
         assertTrue(country1.equals(country1A) && country1.hashCode() == country1A.hashCode());
@@ -312,15 +288,8 @@ public class CountryTest
         assertFalse(country1.hashCode() == "Country 1".hashCode());
         assertFalse(country2A.hashCode() == "Country1".hashCode());
         assertFalse(country2B.hashCode() == "CounTry 1".hashCode());
-    }
-
-    /**
-     * Tears down the test fixture.
-     *
-     * Called after every test case method.
-     */
-    @After
-    public void tearDown()
-    {
+        
+        
+        
     }
 }

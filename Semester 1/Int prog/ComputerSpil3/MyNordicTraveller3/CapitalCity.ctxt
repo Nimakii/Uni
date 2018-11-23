@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=CapitalCity
+comment0.text=\r\n\ A\ Capitalcity,\ that\ is\ a\ BorderCity\ and\ a\ City.\ Not\ only\ does\ a\ capitalcity\ charge\ toll,\ the\ player\ also\ spends\ money\ in\ the\ capitalcity,\r\n\ the\ spending\ in\ the\ city\ is\ transferred\ from\ the\ player\ to\ the\ city.\ It\ also\ contains\ a\ name,\ a\ value\ and\ a\ country\ in\ which\ it\ resides.\ \r\n\r\n\ @author\ Jens\ Kristian\ &\ Thomas\ Vinther\r\n\ @version\ Computergame\ 3\r\n
+comment1.params=name\ value\ country
+comment1.target=CapitalCity(java.lang.String,\ int,\ Country)
+comment1.text=\r\n\ Creates\ a\ new\ CapitalCity,\ with\ the\ given\ name,\ starting\ value\ of\ the\ city\ and\ the\ country\ in\ which\ it\ resides.\ \r\n\ @param\ name\ \ \ \ \ \ the\ name\ of\ the\ city.\ \r\n\ @param\ value\ \ \ \ \ the\ starting\ value\ of\ the\ city.\r\n\ @param\ country\ \ \ the\ Country\ in\ which\ the\ city\ resides.\ \r\n
+comment2.params=p
+comment2.target=int\ arrive(Player)
+comment2.text=\r\n\ This\ method\ calculates\ a\ bonus\ for\ visitng\ the\ city\ based\ on\ the\ country,\ a\ toll\ to\ be\ paid\ and\ how\ much\ money\ the\ players\ spends\ in\ the\ city.\r\n\ How\ much\ money\ the\ player\ spends\ in\ the\ city,\ depends\ on\ the\ value\ of\ the\ city,\ how\ much\ toll\ to\ be\ paid\ and\ the\ bonus\ for\ visiting\ the\ city.\r\n\ The\ spending\ has\ the\ range\ 1\ to\ players\ wealth\ entering\ the\ city\ +(bonus\ for\ visiting\ the\ city+toll\ to\ be\ paid)\r\n\ \r\n\ @return\ integer\ in\ the\ range\ of\ the\ (bonus\ +\ toll)-spending\ note\ that\ the\ toll\ is\ not\ positive.\ \r\n\ @param\ p\ player\ that\ visits\ the\ CapitalCity\r\n
+numComments=3
