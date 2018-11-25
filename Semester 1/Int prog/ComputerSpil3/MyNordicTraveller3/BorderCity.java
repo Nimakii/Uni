@@ -18,7 +18,6 @@ public class BorderCity extends City
     }
 
     /**
-     * 
      * This method overrides the arrive method in City, as the player will have to pay toll, if they come from a different country. 
      * The toll is a random percentage of the players total wealth, based on the games settings and is added to the city's value. 
      * If the player arrives to the BorderCity from within the same country, they do not have to pay toll. 

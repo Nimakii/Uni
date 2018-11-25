@@ -82,8 +82,9 @@ public class City implements Comparable<City> {
     }
     
     /**
-     * Returns an integer bonus between 0 and the value of the city based on the country in which the city resides, 
-     * @return      an integer bonus between 0 and the value of the city
+     * Returns an integer based on the country in which the city resides.
+     * If the bonus is negative it is returned, but the bonus is not subtracted from the value.
+     * @return      a random integer bonus dependant on the country
      */
     public int arrive(){
         int bonus = country.bonus(value);
@@ -95,9 +96,12 @@ public class City implements Comparable<City> {
     }
     
     /**
-     * Returns an integer bonus between 0 and the value of the city based on the country in which the city resides.
-     * @return      an integer bonus between 0 and the value of the city 
-     * @param p     a player that is arriving to the city
+     * A player arrives in the city.
+     * The city sub classes interact with the player visiting them in more intricate ways,
+     * and as such need to take the player as a parameter.
+     * 
+     * @return      the arrive method 
+     * @param p     the player that is arriving to the city
      */
     public int arrive(Player p){
         return arrive();

@@ -82,131 +82,104 @@ public class CapitalCityTest
         country2.addRoads(cityF, cityG, 6);
     }
     
+    private void arriveTest(City from, City to,int money){
+        for(int i=0; i<1000; i++) {
+            Player player = new Player(new Position(from,to, 0), money);
+            game.getRandom().setSeed(i);             // Set seed
+            int toInitialValue = to.getValue();
+            int bonus = to.getCountry().bonus(toInitialValue);         // Remember bonus
+            int toll = 0;
+            if(!from.getCountry().equals(to.getCountry())
+               && (to.getClass()==BorderCity.class
+                   || to.getClass()==CapitalCity.class)){ //check if toll is applicable
+                toll = to.getCountry().getGame().getSettings().getTollToBePaid()
+                       *player.getMoney()/100;     // Calculate toll
+            }
+            int bonusAndToll = bonus-toll;
+            int spending = 0;
+            if(to.getClass()==CapitalCity.class){ //check if the destination is a capital
+                spending = to.getCountry().getGame().getRandom().nextInt(player.getMoney()
+                           +1+bonusAndToll); //Calculate how much money the player spends in the capital.
+            }
+            game.getRandom().setSeed(i);             // Reset seed
+            int arrive = to.arrive(player);          
+            assertEquals(bonusAndToll-spending,arrive);
+            assertEquals(toInitialValue-(bonusAndToll-spending),to.getValue());
+            to.reset(); 
+        }
+    }
+    
     @Test
     public void arriveDifferent(){
-        for(int i=0; i<1000; i++) { /** regular to capital, different countries */
-            Player player = new Player(new Position(cityF, cityD, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country1.bonus(100);         // Remember bonus
-            int toll = country1.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            int bonusAndToll = bonus-toll;
-            int spending = country1.getGame().getRandom().nextInt(player.getMoney()+1+bonusAndToll); //Calculate how much money the player spends in the capital.
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityD.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(100-(bonusAndToll-spending),cityD.getValue());
-            cityD.reset(); 
+        for(int j=-50;j<100;j++){ /** testing with different values */
+            cityF = new City("City E", j, country1);
+            Random random = new Random();
+            double multiplier = random.nextGaussian()*random.nextInt(5); /** double in [0,4]*/
+            if(random.nextInt(2)>0){ /** 50/50 chance of negative */
+                multiplier = -1*multiplier;
+            }
+            cityD = new CapitalCity("City C", ((int) (j*multiplier)), country2); /** city with value in [0,4j] */
+            
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            cityE = new CapitalCity("City G", ((int) (j*multiplier)), country2);
+            
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            City cityH = new BorderCity("City H", ((int) (j*multiplier)), country1);
+            
+            for(int m=-50;m<100;m++){
+                arriveTest(cityF,cityD,250); /** regular to capital, different countries */
+                arriveTest(cityE,cityD,250); /** capital to capital, different countries */
+                arriveTest(cityE,cityA,250); /** capital to regular, different countries */
+                arriveTest(cityE,cityH,250); /** capital to border, different countries */
+                arriveTest(cityH,cityE,250); /** border to capital, different countries */
+            }
         }
-        for(int i=0; i<1000; i++) { /** capital to capital, different countries */
-            Player player = new Player(new Position(cityE, cityD, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country1.bonus(100);         // Remember bonus
-            int toll = country1.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            int bonusAndToll = bonus-toll;
-            int spending = country1.getGame().getRandom().nextInt(player.getMoney()+1+bonusAndToll); //Calculate how much money the player spends in the capital.
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityD.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(100-(bonusAndToll-spending),cityD.getValue());
-            cityD.reset(); 
-        }
-        for(int i=0; i<1000; i++) { /** capital to regular, different countries */
-            Player player = new Player(new Position(cityE, cityA, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country1.bonus(80);         // Remember bonus
-            int toll = 0; /** destination not border */
-            int bonusAndToll = bonus-toll;
-            int spending = 0; /** destination is not a capital */
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityA.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(80-(bonusAndToll-spending),cityA.getValue());
-            cityA.reset(); 
-        }
-        City cityH = new BorderCity("City H", 120, country1);
-        for(int i=0; i<1000; i++) { /** capital to border, different countries */
-            Player player = new Player(new Position(cityE, cityH, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country1.bonus(120);         // Remember bonus
-            int toll = country1.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            int bonusAndToll = bonus-toll;
-            int spending = 0; /** destination is not a capital */
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityH.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(120-(bonusAndToll-spending),cityH.getValue());
-            cityH.reset(); 
-        }
-        for(int i=0; i<1000; i++) { /** border to capital, different countries */
-            Player player = new Player(new Position(cityH, cityE, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country2.bonus(50);         // Remember bonus
-            int toll = country2.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            int bonusAndToll = bonus-toll;
-            int spending = country1.getGame().getRandom().nextInt(player.getMoney()+1+bonusAndToll); //Calculate how much money the player spends in the capital.
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityE.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(50-(bonusAndToll-spending),cityE.getValue());
-            cityE.reset(); 
-        } 
     }
     
     @Test
     public void arriveSame(){
-        for(int i=0; i<1000; i++) { /** regular to capital, same country1 */
-            Player player = new Player(new Position(cityA, cityD, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country1.bonus(100);         // Remember bonus
-            int toll = 0; /** same country1 */
-            int bonusAndToll = bonus-toll;
-            int spending = country1.getGame().getRandom().nextInt(player.getMoney()+1+bonusAndToll); //Calculate how much money the player spends in the capital.
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityD.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(100-(bonusAndToll-spending),cityD.getValue());
-            cityD.reset(); 
-        } 
-        for(int i=0; i<1000; i++) { /** capital to regular, same country1 */
-            Player player = new Player(new Position(cityD, cityA, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country1.bonus(80);         // Remember bonus
-            int toll = 0; /** same country1 */
-            int bonusAndToll = bonus-toll;
-            int spending = 0; /** destination is not a capital */
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityA.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(80-(bonusAndToll-spending),cityA.getValue());
-            cityA.reset(); 
-        } 
-        City cityH = new BorderCity("City H", 120, country2);
-        for(int i=0; i<1000; i++) { /** capital to border, same country2 */
-            Player player = new Player(new Position(cityE, cityH, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country2.bonus(120);         // Remember bonus
-            int toll = 0; /** same country2 */
-            int bonusAndToll = bonus-toll;
-            int spending = 0; /** destination is not a capital */
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityH.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(120-(bonusAndToll-spending),cityH.getValue());
-            cityH.reset(); 
-        } 
-        for(int i=0; i<1000; i++) { /** border to capital, same country2 */
-            Player player = new Player(new Position(cityH, cityE, 0), 250);
-            game.getRandom().setSeed(i);             // Set seed
-            int bonus = country2.bonus(50);         // Remember bonus
-            int toll = 0; /** same country2 */
-            int bonusAndToll = bonus-toll;
-            int spending = country1.getGame().getRandom().nextInt(player.getMoney()+1+bonusAndToll); //Calculate how much money the player spends in the capital.
-            game.getRandom().setSeed(i);             // Reset seed
-            int arrive = cityE.arrive(player);       // Same bonus
-            assertEquals(bonusAndToll-spending,arrive);
-            assertEquals(50-(bonusAndToll-spending),cityE.getValue());
-            cityE.reset(); 
-        } 
+        
+        for(int j=-50;j<100;j++){ /** testing with different values */
+            cityA = new City("City E", j, country1);
+            Random random = new Random();
+            double multiplier = random.nextGaussian()*random.nextInt(5); /** double in [0,4]*/
+            if(random.nextInt(2)>0){ /** 50/50 chance of negative */
+                multiplier = -1*multiplier;
+            }
+            cityD = new CapitalCity("City C", ((int) (j*multiplier)), country2); /** city with value in [0,4j] */
+            
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            cityE = new CapitalCity("City G", ((int) (j*multiplier)), country2);
+            
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            City cityH = new BorderCity("City H", ((int) (j*multiplier)), country1);
+            
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            City cityI = new CapitalCity("City I", ((int) (j*multiplier)), country1);
+            
+            for(int m=-50;m<100;m++){
+                arriveTest(cityA,cityD,250); /** regular to capital, same country1 */
+                arriveTest(cityD,cityA,250); /** capital to regular, same country1 */
+                arriveTest(cityI,cityD,250); /** capital to capital, same country1 */
+                arriveTest(cityE,cityH,250); /** capital to border, same country2 */
+                arriveTest(cityH,cityE,250); /** border to capital, same country2 */
+            }
+        }
     }
 
     /**

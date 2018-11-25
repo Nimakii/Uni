@@ -226,34 +226,44 @@ public class CountryTest
 
     }
     
+    private void equalsTest(Object a, Object b, Object c, Object notA){
+        /**Test of reflexivity x = x*/
+        assertTrue(a.equals(a));  
+        /**Test of transitivity of < a<b & b<c => a<c*/
+        assertTrue(a.equals(b));
+        assertTrue(b.equals(c));
+        assertTrue(a.equals(c));
+        /**Test of transitivity of > */
+        assertTrue(c.equals(b));
+        assertTrue(b.equals(a));
+        assertTrue(c.equals(a));
+        /**Test of symmetry a=b <=> b=a*/
+        assertTrue(a.equals(b));
+        assertTrue(b.equals(a));
+        assertTrue(a.equals(b) == b.equals(a));
+        /**Negative tests*/
+        assertFalse(a.equals(notA));
+        assertFalse(notA.equals(a));
+        assertFalse(a.equals(null));
+        assertFalse(a.equals(3));
+        assertFalse(a.equals(Math.PI));
+        assertFalse(a.equals(a.getClass()));
+        assertFalse(a.equals(""));
+    }
     @Test
     public void equals(){
-        Country country3 = new Country("Country 1", network1);
+        Country country11 = new Country("Country 1", network1);
         Country country4 = new Country("Country 2", network1);
         Country country5 = new Country("Country 2", network2);
-        Country countryNull = null;
-        
-        /**Test Reflextivity*/
-        assertTrue(country1.equals(country1));      
-        assertTrue(country2.equals(country2));
-        
-        /**Test symmetry */        
-        assertTrue(country1.equals(country3) && country3.equals(country1));
-        assertTrue(country1.equals(country3) && country3.equals(country1));
-        
-        assertTrue(countryNull.equals(countryNull));                        //Fejler burde den det...
-        
-        /**Transitivity */
-        assertTrue(country2.equals(country4));
-        assertTrue(country4.equals(country5));
-        assertTrue(country2.equals(country5));
-        
-        /** Test not null*/
-        assertFalse(country1.equals(null));
-                
+        Country country12 = new Country("Country 1", network2);
+        equalsTest(country1,country11,country12,country2);
         /** Negative tests */
         assertFalse(country1.equals("Country 1"));
-        
+        assertFalse(country1.equals(cityF));        
+        assertFalse(country1.equals(cityA));
+        assertFalse(country1.equals(Object.class));
+        assertFalse(country1.equals(new Position(cityB,cityC,3)));
+        assertFalse(country1.equals(game));
     }
     
     @Test
@@ -270,7 +280,7 @@ public class CountryTest
         /**Consistent with equals method */
         assertTrue(country1.equals(country3) && country1.hashCode()==country3.hashCode());
         assertTrue(country3.equals(country1) && country3.hashCode()==country1.hashCode());
-        assertFalse(country1.hashCode() != country2.hashCode());            //Negated
+        assertTrue(country1.hashCode() != country2.hashCode());            //Negated
         assertFalse(country1.equals(country2));
         
         assertTrue(country1.equals(country1A));
@@ -284,7 +294,12 @@ public class CountryTest
         
         assertFalse(country1.hashCode() == cityA.hashCode());
         
-        assertTrue(country1.hashCode() == 97*"Country 1".hashCode());
+        assertTrue(country1.hashCode() == 97*country1.getName().hashCode());
+        for(int i=1;i<100;i++){
+            assertFalse(country1.hashCode() == 97*country1.getName().hashCode()+i);
+            assertFalse(country1.hashCode() == 97*country1.getName().hashCode()-i);
+        }
+        assertFalse(country1.hashCode() == "Country 1".hashCode());
         assertFalse(country1.hashCode() == "Country 1".hashCode());
         assertFalse(country2A.hashCode() == "Country1".hashCode());
         assertFalse(country2B.hashCode() == "CounTry 1".hashCode());

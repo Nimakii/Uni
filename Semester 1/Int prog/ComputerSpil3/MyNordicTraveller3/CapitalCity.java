@@ -32,7 +32,7 @@ public class CapitalCity extends BorderCity
     public int arrive(Player p){
         int bonusAndToll = super.arrive(p);             //calculate the toll and bonus for the player arriving
         int spending = getCountry().getGame().getRandom().nextInt(p.getMoney()+1+bonusAndToll); //Calculate how much money the player spends in the capital.
-        changeValue(spending);                          //Add the spended money to the city. 
+        changeValue(spending);                          //Add the spent money to the city. 
         return bonusAndToll-spending;                                           
     }
 

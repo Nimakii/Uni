@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -81,7 +80,6 @@ public class MafiaCountryTest
      */
     @Test
     public void bonus(){
-
         for(int seed = 0; seed < 1000; seed++){
             game.getRandom().setSeed(seed);
             int robs = 0;

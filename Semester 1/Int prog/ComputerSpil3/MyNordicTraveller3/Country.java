@@ -194,7 +194,7 @@ public class Country
         if(otherObject==null){
             return false;
         }
-        if( getClass()!=otherObject.getClass()){
+        if(getClass()!=otherObject.getClass()){
             return false;
         }
         Country other = (Country) otherObject;

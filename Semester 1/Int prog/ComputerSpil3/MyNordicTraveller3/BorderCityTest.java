@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -84,76 +83,74 @@ public class BorderCityTest
         country2.addRoads(cityF, cityG, 6);
     }
 
+    private void arriveTest(City from, City to, int money){
+        for(int i=0; i<1000; i++) {
+            Player player = new Player(new Position(from,to, 0), money);
+            game.getRandom().setSeed(i);             // Set seed
+            int toInitialValue = to.getValue();
+            int bonus = to.getCountry().bonus(toInitialValue);         // Remember bonus
+            int toll = 0;
+            if(!from.getCountry().equals(to.getCountry()) 
+            && to.getClass()==BorderCity.class){ //check if toll is applicable
+                toll = to.getCountry().getGame().getSettings().getTollToBePaid()
+                *player.getMoney()/100;     // Calculate toll
+            }
+            int bonusAndToll = bonus-toll;
+            game.getRandom().setSeed(i);             // Reset seed
+            int arrive = to.arrive(player);          
+            assertEquals(bonusAndToll,arrive);
+            assertEquals(toInitialValue-bonusAndToll,to.getValue());
+            to.reset(); 
+        }
+    }
+
     @Test
     public void arrive(){
-        for(int i=0; i<10000; i++) { /** regular to border, same country1 */
-            Player player = new Player(new Position(cityA, cityC, 0), 250);
-            game.getRandom().setSeed(i);    // Set seed
-            int bonus = country1.bonus(40); // Remember bonus
-            game.getRandom().setSeed(i);    // Reset seed
-            int arrive = cityC.arrive(player);    // Same bonus
-            assertEquals(bonus, arrive);
-            assertEquals(40-bonus,cityC.getValue());
-            cityC.reset(); 
-        }
-        for(int i=0; i<10000; i++) { /** border to regular, same country1 */
-            Player player = new Player(new Position(cityC, cityA, 0), 2500000);
-            game.getRandom().setSeed(i);    // Set seed
-            int bonus = country1.bonus(80); // Remember bonus
-            game.getRandom().setSeed(i);    // Reset seed
-            int arrive = cityA.arrive(player);    // Same bonus
-            assertEquals(bonus, arrive);
-            assertEquals(80-bonus,cityA.getValue());
-            cityA.reset(); 
-        }
-        for(int i=0; i<10000; i++) { /** regular to border, same country2 */
-            Player player = new Player(new Position(cityG, cityF, 0), 250);
-            game.getRandom().setSeed(i);    // Set seed
-            int bonus = country2.bonus(90); // Remember bonus
-            game.getRandom().setSeed(i);    // Reset seed
-            int arrive = cityF.arrive(player);    // Same bonus
-            assertEquals(bonus, arrive);
-            assertEquals(90-bonus,cityF.getValue());
-            cityF.reset(); 
+        for(int j=-50;j<100;j++){ /** testing with different values */
+            cityA = new City("City A", j, country1);
+            Random random = new Random();
+            double multiplier = random.nextGaussian()*random.nextInt(5); /** double in [0,4]*/
+            if(random.nextInt(2)>0){ /** 50/50 chance of negative */
+                multiplier = -1*multiplier;
+            }
+            cityB = new City("City B", ((int) (j*multiplier)), country1); /** city with value in [0,4j] */
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            cityC = new BorderCity("City C", ((int) (j*multiplier)), country1);
+            for(int m=-50;m<100;m++){
+                arriveTest(cityA,cityC,m); /** regular to border, same country1 */
+                arriveTest(cityC,cityA,m); /** border to regular, same country1 */
+                arriveTest(cityG,cityF,m); /** regular to border, same country2 */
+            }
         }
     }
 
     @Test
     public void arriveFromOtherCountry() {
-        for(int i=0; i<1000; i++) { /** two border cities in different countries */
-            Player player = new Player(new Position(cityE, cityC, 0), 250);
-            game.getRandom().setSeed(i);            // Set seed
-            int bonus = country1.bonus(40);         // Remember bonus
-            int toll = country1.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            game.getRandom().setSeed(i);            // Reset seed
-            int arrive = cityC.arrive(player);      // Same bonus
-            assertEquals(bonus-toll,arrive);
-            assertEquals(40-(bonus-toll),cityC.getValue());
-            cityC.reset(); 
-        } 
-        for(int i=0; i<1000; i++) { /** regular to border, crossing border */
-            Player player = new Player(new Position(cityG, cityC, 0), 250);
-            game.getRandom().setSeed(i);            // Set seed
-            int bonus = country1.bonus(40);         // Remember bonus
-            int toll = country1.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            game.getRandom().setSeed(i);            // Reset seed
-            int arrive = cityC.arrive(player);      // Same bonus
-            assertEquals(bonus-toll,arrive);
-            assertEquals(40-(bonus-toll),cityC.getValue());
-            cityC.reset(); 
+        for(int j=-50;j<100;j++){ /** testing with different values */
+            cityE = new BorderCity("City E", j, country1);
+            Random random = new Random();
+            double multiplier = random.nextGaussian()*random.nextInt(5); /** double in [0,4]*/
+            if(random.nextInt(2)>0){ /** 50/50 chance of negative */
+                multiplier = -1*multiplier;
+            }
+            cityC = new BorderCity("City C", ((int) (j*multiplier)), country2); /** city with value in [0,4j] */
+            
+            multiplier = random.nextGaussian()*random.nextInt(5);
+            if(random.nextInt(2)>0){
+                multiplier = -1*multiplier;
+            }
+            cityG = new City("City G", ((int) (j*multiplier)), country2);
+            
+            for(int m=-50;m<100;m++){
+                arriveTest(cityE,cityC,m); /** border to border, crossing border */
+                arriveTest(cityG,cityC,m); /** regular to border, crossing border */
+                arriveTest(cityC,cityG,m); /** border to regular, crossing border */
+            }
         }
-        for(int i=0; i<1000; i++) { /** border to regular, crossing border */
-            Player player = new Player(new Position(cityC, cityG, 0), 250);
-            game.getRandom().setSeed(i);            // Set seed
-            int bonus = country1.bonus(70);         // Remember bonus
-            //int toll = country1.getGame().getSettings().getTollToBePaid()*player.getMoney()/100;     // Calculate toll
-            game.getRandom().setSeed(i);            // Reset seed
-            int arrive = cityG.arrive(player);      // Same bonus
-            assertEquals(bonus,arrive);
-            assertEquals(70-(bonus),cityG.getValue());
-            cityG.reset(); 
-        } 
-        }
+    }
 
     /**
      * Tears down the test fixture.

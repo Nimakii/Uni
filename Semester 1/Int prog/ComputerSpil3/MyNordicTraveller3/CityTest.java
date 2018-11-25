@@ -13,8 +13,8 @@ import java.util.*;
 public class CityTest
 {
     private Game game;
-    private Country country1, country2;
-    private City cityA, cityB, cityC, cityD, cityE, cityF, cityG;
+    private Country country1, country2, mCountry;
+    private City cityA, cityB, cityC, cityD, cityE, cityF, cityG, mCity1, mCity2;
 
     /**
      * Default constructor for test class CityTest
@@ -39,8 +39,10 @@ public class CityTest
         // Create countries
         country1 = new Country("Country 1", network1);
         country2 = new Country("Country 2", network2);
+        mCountry = new MafiaCountry("Mafia country", network1);
         country1.setGame(game);
         country2.setGame(game);
+        mCountry.setGame(game);
 
         // Create Cities
         cityA = new City("City A", 80, country1);
@@ -50,6 +52,8 @@ public class CityTest
         cityE = new City("City E", 50, country2);
         cityF = new City("City F", 90, country2);
         cityG = new City("City G", 70, country2);
+        mCity1 = new City("mafia city 1",200, mCountry);
+        mCity2 = new City("mafia city 2",30, mCountry);
 
         // Create road lists
         List<Road> roadsA = new ArrayList<Road>(),
@@ -110,30 +114,90 @@ public class CityTest
         cityA.changeValue(2*Integer.MAX_VALUE);
         assertEquals(Integer.MAX_VALUE,cityA.getValue());
     }
-
+    
+    private void arriveTest(City to){
+        for(int i=0; i<10000; i++) { // Try different seeds
+            game.getRandom().setSeed(i);    // Set seed
+            int toInitialValue = to.getValue();
+            int bonus = to.getCountry().bonus(to.getValue()); // Remember bonus
+            game.getRandom().setSeed(i);    // Reset seed
+            int arrive = to.arrive();    // Same bonus
+            assertEquals(bonus, arrive);
+            if(bonus<0){
+                assertEquals(toInitialValue,to.getValue());
+            }
+            else{
+                assertEquals(toInitialValue-bonus,to.getValue());
+            }
+            to.reset(); 
+        }
+    }
+    private void arriveTestParamater(City to, Player player){
+        for(int i=0; i<10000; i++) { // Try different seeds
+            game.getRandom().setSeed(i);    // Set seed
+            int toInitialValue = to.getValue();
+            int bonus = to.getCountry().bonus(to.getValue()); // Remember bonus
+            game.getRandom().setSeed(i);    // Reset seed
+            int arrive = to.arrive(player);    // Same bonus
+            assertEquals(bonus, arrive);
+            if(bonus<0){
+                assertEquals(toInitialValue,to.getValue());
+            }
+            else{
+                assertEquals(toInitialValue-bonus,to.getValue());
+            }
+            to.reset(); 
+        }
+    }
+    
     @Test
     public void arrive(){
-        for(int i=0; i<10000; i++) { // Try different seeds
-            game.getRandom().setSeed(i);    // Set seed
-            int bonus = country1.bonus(80); // Remember bonus
-            game.getRandom().setSeed(i);    // Reset seed
-            int arrive = cityA.arrive();    // Same bonus
-            assertEquals(bonus, arrive);
-            assertEquals(80-bonus,cityA.getValue());
-            cityA.reset(); 
+        arriveTest(cityA);
+        arriveTest(cityB);
+        arriveTest(cityC);
+        arriveTest(cityD);
+        arriveTest(cityE);
+        arriveTest(cityF);
+        arriveTest(cityG);
+        arriveTest(mCity1);
+        arriveTest(mCity2);
+        for(int i=0; i<200; i++){
+            City mCity = new City("Test",i,mCountry);
+            arriveTest(mCity);
         }
-        for(int i=0; i<10000; i++) { // Try different seeds
-            game.getRandom().setSeed(i);    // Set seed
-            int bonus = country2.bonus(50); // Remember bonus
-            game.getRandom().setSeed(i);    // Reset seed
-            int arrive = cityE.arrive();    // Same bonus
-            assertEquals(bonus, arrive);
-            assertEquals(50-bonus,cityE.getValue());
-            cityE.reset(); 
+        for(int i=0; i<200; i++){
+            City city = new City("Test",i,country1);
+            arriveTest(city);
         }
-
     }
-
+    @Test
+    public void arriveParamater(){
+        Player player = new Player(new Position(cityA,cityB,0),250);
+        arriveTestParamater(cityA,player);
+        arriveTestParamater(cityB,player);
+        arriveTestParamater(cityC,player);
+        arriveTestParamater(cityD,player);
+        arriveTestParamater(cityE,player);
+        arriveTestParamater(cityF,player);
+        arriveTestParamater(cityG,player);
+        arriveTestParamater(mCity1,player);
+        arriveTestParamater(mCity2,player);
+        for(int i=0; i<200; i++){
+            City mCity = new City("Test",i,mCountry);
+            Player player2 = new Player(new Position(cityA,cityB,0),200-i);
+            arriveTestParamater(mCity,player2);
+            arriveTestParamater(mCity,player);
+        }
+        for(int i=0; i<200; i++){
+            City city = new City("Test",i,country1);
+            Player player2 = new Player(new Position(cityA,cityB,0),200-i);
+            arriveTestParamater(city,player2);
+            arriveTestParamater(city,player);
+        }
+        Player poor = new Player(new Position(cityA,mCity1,2),-50);
+        arriveTestParamater(cityA,poor);
+    }
+    
     @Test
     public void constructor(){
         assertEquals("City A",cityA.getName());
@@ -149,68 +213,78 @@ public class CityTest
         cityA.reset();
         assertEquals(80,cityA.getValue());
     }
-
+    
+    private void compareToTest(Comparable a, Comparable aEqual, Comparable b, Comparable c){
+        /**Test of reflexivity x = x*/
+        assertEquals(0,a.compareTo(a));  
+        /**Test of transitivity of < a<b & b<c => a<c*/
+        assertTrue(a.compareTo(b) < 0);
+        assertTrue(b.compareTo(c) < 0);
+        assertTrue(a.compareTo(c) < 0);
+        /**Test of transitivity of > */
+        assertTrue(c.compareTo(b) > 0);
+        assertTrue(b.compareTo(a) > 0);
+        assertTrue(c.compareTo(a) > 0);
+        /**Test of antisymmetry a<=b & b<=a => a=b*/
+        assertTrue(a.compareTo(aEqual) >= 0);
+        assertTrue(aEqual.compareTo(a) <= 0);
+        assertEquals(0,a.compareTo(aEqual));
+        /**Test of symmetry a=b <=> b=a*/
+        assertEquals(0,a.compareTo(aEqual));
+        assertEquals(0,aEqual.compareTo(a));
+        assertTrue(a.compareTo(aEqual) == aEqual.compareTo(a));
+    }
     @Test
     public void compareTo(){
-   
-        /**Test of reflexivity x = x*/
-        assertEquals(0,cityA.compareTo(cityA));  
-        
-        /**Test of transitivity of < a<b & b<c => a<c*/
-        assertTrue(cityA.compareTo(cityB) < 0);
-        assertTrue(cityB.compareTo(cityC) < 0);
-        assertTrue(cityA.compareTo(cityC) < 0);
-        
-        /**Test of transitivity of > */
-        assertTrue(cityC.compareTo(cityB) > 0);
-        assertTrue(cityB.compareTo(cityA) > 0);
-        assertTrue(cityC.compareTo(cityA) > 0);
-        
-        /**Test of antisymmetry a<=b & b<=a => a=b*/
-        City cityK = new City("City A", 50, country1);
-        assertTrue(cityA.compareTo(cityK) >= 0);
-        assertTrue(cityA.compareTo(cityK) <= 0);
-        assertEquals(0,cityA.compareTo(cityK));
-        
-        /**Test of symmetry a=b <=> b=a*/
-        assertEquals(0,cityA.compareTo(cityK));
-        assertEquals(0,cityK.compareTo(cityA));
-        assertTrue(cityA.compareTo(cityK) == cityK.compareTo(cityA));
+        City cityK = new City("City A",100,country1);
+        compareToTest(cityA,cityK,cityB,cityC);
     }
     
-        @Test
+    private void equalsTest(Object a, Object b, Object c, Object notA){
+        /**Test of reflexivity x = x*/
+        assertTrue(a.equals(a));  
+        /**Test of transitivity of < a<b & b<c => a<c*/
+        assertTrue(a.equals(b));
+        assertTrue(b.equals(c));
+        assertTrue(a.equals(c));
+        /**Test of transitivity of > */
+        assertTrue(c.equals(b));
+        assertTrue(b.equals(a));
+        assertTrue(c.equals(a));
+        /**Test of symmetry a=b <=> b=a*/
+        assertTrue(a.equals(b));
+        assertTrue(b.equals(a));
+        assertTrue(a.equals(b) == b.equals(a));
+        /**Negative tests*/
+        assertFalse(a.equals(notA));
+        assertFalse(notA.equals(a));
+        assertFalse(a.equals(null));
+        assertFalse(a.equals(3));
+        assertFalse(a.equals(Math.PI));
+        assertFalse(a.equals(a.getClass()));
+        assertFalse(a.equals(""));
+    }
+    @Test
     public void equals(){
         City cityA2 = new City("City A", 90, country1);
         City cityA3 = new City("City A", 70, country1);
-        
-        /**Test of reflexivity x = x*/
-        assertTrue(cityA.equals(cityA));  
-        assertTrue(cityB.equals(cityB));
-        
-        /**Test of transitivity*/
-        assertTrue(cityA.equals(cityA2));
-        assertTrue(cityA2.equals(cityA3));
-        assertTrue(cityA.equals(cityA3));
-              
-        /**Test of symmetry*/
-        assertTrue(cityA.equals(cityA2) && cityA2.equals(cityA));
-        assertTrue(cityA3.equals(cityA) && cityA.equals(cityA3));
-        
-        /**Test not null */
-        assertFalse(cityA.equals(null));
-        assertFalse(cityB.equals(null));
-        
-        /**Negative tests */
+        City cityAc2 = new City("City A", 95, country2);
+        City cityAalmost = new City("CityA", 92, country1);
+        equalsTest(cityA,cityA2,cityA3,cityAc2);
+        equalsTest(cityA,cityA2,cityA3,cityAalmost);
+        /**More negative tests */
         assertFalse(cityA.equals(cityF));       //Different countries. 
         assertFalse(cityF.equals(cityA));
-        
+        assertFalse(cityA.equals(country1));
+        assertFalse(cityA.equals(country2));
+        assertFalse(cityA.equals(new Position(cityB,cityC,3)));
+        assertFalse(cityA.equals(game));
     }
     
     @Test
     public void hashCodeTest(){
         City cityA2 = new City("City A", 90, country1);
         City cityA3 = new City("City A", 70, country1);
-        City cityNull = null;
         
         /** Test consistent */
         assertTrue(cityA.equals(cityA2) && cityA.hashCode()==cityA2.hashCode());
@@ -219,14 +293,11 @@ public class CityTest
         assertFalse(cityA.hashCode() == cityB.hashCode());              //Negated
         assertFalse(cityA.equals(cityB));
         
-        
         /**Negative tests */
         assertFalse(cityA.hashCode()=="City A".hashCode()+country1.hashCode());
         assertFalse(cityA.hashCode()=="City A".hashCode());
         assertFalse(cityA.hashCode()==country1.hashCode());
         assertFalse(cityB.hashCode() == cityA.hashCode());       
-        
-        /** test null??? */
         
         /** Test Fixture*/
         assertNotEquals(cityA.hashCode(),cityB.hashCode());
