@@ -82,6 +82,14 @@ public class CapitalCityTest
         country2.addRoads(cityF, cityG, 6);
     }
     
+    /**
+     * Tests that the arrive method in the destination City works as intended.
+     * Works with CapitalCity, BorderCity and City.
+     * 
+     * @param from  the City or BorderCity or CapitalCity we left
+     * @param to    the City or BorderCity or CapitalCity we arrive in
+     * @param money how much money the player has
+     */
     private void arriveTest(City from, City to,int money){
         for(int i=0; i<1000; i++) {
             Player player = new Player(new Position(from,to, 0), money);
@@ -118,19 +126,19 @@ public class CapitalCityTest
             if(random.nextInt(2)>0){ /** 50/50 chance of negative */
                 multiplier = -1*multiplier;
             }
-            cityD = new CapitalCity("City C", ((int) (j*multiplier)), country2); /** city with value in [0,4j] */
+            cityD = new CapitalCity("City C", ((int) (j*multiplier)), country2); /** city with integer value in [0,4j] */
             
             multiplier = random.nextGaussian()*random.nextInt(5);
             if(random.nextInt(2)>0){
                 multiplier = -1*multiplier;
             }
-            cityE = new CapitalCity("City G", ((int) (j*multiplier)), country2);
+            cityE = new CapitalCity("City G", ((int) (j*multiplier)), country2); /** city with integer value in [0,4j] */
             
             multiplier = random.nextGaussian()*random.nextInt(5);
             if(random.nextInt(2)>0){
                 multiplier = -1*multiplier;
             }
-            City cityH = new BorderCity("City H", ((int) (j*multiplier)), country1);
+            City cityH = new BorderCity("City H", ((int) (j*multiplier)), country1); /** city with integer value in [0,4j] */
             
             for(int m=-50;m<100;m++){
                 arriveTest(cityF,cityD,250); /** regular to capital, different countries */
@@ -144,7 +152,6 @@ public class CapitalCityTest
     
     @Test
     public void arriveSame(){
-        
         for(int j=-50;j<100;j++){ /** testing with different values */
             cityA = new City("City E", j, country1);
             Random random = new Random();
@@ -158,19 +165,19 @@ public class CapitalCityTest
             if(random.nextInt(2)>0){
                 multiplier = -1*multiplier;
             }
-            cityE = new CapitalCity("City G", ((int) (j*multiplier)), country2);
+            cityE = new CapitalCity("City G", ((int) (j*multiplier)), country2); /** city with value in [0,4j] */
             
             multiplier = random.nextGaussian()*random.nextInt(5);
             if(random.nextInt(2)>0){
                 multiplier = -1*multiplier;
             }
-            City cityH = new BorderCity("City H", ((int) (j*multiplier)), country1);
+            City cityH = new BorderCity("City H", ((int) (j*multiplier)), country1); /** city with value in [0,4j] */
             
             multiplier = random.nextGaussian()*random.nextInt(5);
             if(random.nextInt(2)>0){
                 multiplier = -1*multiplier;
             }
-            City cityI = new CapitalCity("City I", ((int) (j*multiplier)), country1);
+            City cityI = new CapitalCity("City I", ((int) (j*multiplier)), country1); /** city with value in [0,4j] */
             
             for(int m=-50;m<100;m++){
                 arriveTest(cityA,cityD,250); /** regular to capital, same country1 */

@@ -226,6 +226,16 @@ public class CountryTest
 
     }
     
+    /**
+     * Performs reflexivity, transitivity and symmetry tests on the 4 paramaters, wrt the equals method,
+     * such that a=b=c and a!=notA.
+     * Negative comparisons: 3, Math.PI, "", a.getClass(), int[0].
+     * 
+     * @param a      some object
+     * @param b      some object that should test equal to a
+     * @param c      some object that should test equal to a and b
+     * @param notA   some object that should test different to a b and c
+     */
     private void equalsTest(Object a, Object b, Object c, Object notA){
         /**Test of reflexivity x = x*/
         assertTrue(a.equals(a));  
@@ -244,11 +254,19 @@ public class CountryTest
         /**Negative tests*/
         assertFalse(a.equals(notA));
         assertFalse(notA.equals(a));
+        assertFalse(b.equals(notA));
+        assertFalse(notA.equals(b));
+        assertFalse(c.equals(notA));
+        assertFalse(notA.equals(c));
         assertFalse(a.equals(null));
+        assertFalse(b.equals(null));
+        assertFalse(c.equals(null));
+        assertFalse(notA.equals(null));
         assertFalse(a.equals(3));
         assertFalse(a.equals(Math.PI));
         assertFalse(a.equals(a.getClass()));
         assertFalse(a.equals(""));
+        assertFalse(a.equals(new int[0]));
     }
     @Test
     public void equals(){

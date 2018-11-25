@@ -115,6 +115,13 @@ public class CityTest
         assertEquals(Integer.MAX_VALUE,cityA.getValue());
     }
     
+    /**
+     * Tests that the arrive method in the destination City works as intended.
+     * 
+     * @param from  the City we left
+     * @param to    the City we arrive in
+     * @param money how much money the player has
+     */
     private void arriveTest(City to){
         for(int i=0; i<10000; i++) { // Try different seeds
             game.getRandom().setSeed(i);    // Set seed
@@ -214,9 +221,21 @@ public class CityTest
         assertEquals(80,cityA.getValue());
     }
     
+    /**
+     * Performs reflexivity, transitivity and (anti)symmetry tests on the 4 paramaters, all implementing the Comparable interface,
+     * such that a=aEqual and a<b<c.
+     * 
+     * @param a      some object
+     * @param aEqual some object that should test equal to a
+     * @param b      some object strictly greater than a
+     * @param c      some object strictly greater than both a and b
+     */
     private void compareToTest(Comparable a, Comparable aEqual, Comparable b, Comparable c){
         /**Test of reflexivity x = x*/
-        assertEquals(0,a.compareTo(a));  
+        assertEquals(0,a.compareTo(a));
+        assertEquals(0,aEqual.compareTo(aEqual));
+        assertEquals(0,b.compareTo(b));
+        assertEquals(0,c.compareTo(c));
         /**Test of transitivity of < a<b & b<c => a<c*/
         assertTrue(a.compareTo(b) < 0);
         assertTrue(b.compareTo(c) < 0);

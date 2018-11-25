@@ -83,6 +83,14 @@ public class BorderCityTest
         country2.addRoads(cityF, cityG, 6);
     }
 
+    /**
+     * Tests that the arrive method in the destination City works as intended.
+     * Works with BorderCity and City.
+     * 
+     * @param from  the City or BorderCity we left
+     * @param to    the City or BorderCity we arrive in
+     * @param money how much money the player has
+     */
     private void arriveTest(City from, City to, int money){
         for(int i=0; i<1000; i++) {
             Player player = new Player(new Position(from,to, 0), money);
