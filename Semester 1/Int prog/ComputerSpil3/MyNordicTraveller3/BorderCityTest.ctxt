@@ -9,6 +9,7 @@ comment2.target=void\ setUp()
 comment2.text=\r\n\ Sets\ up\ the\ test\ fixture.\r\n\r\n\ Called\ before\ every\ test\ case\ method.\r\n
 comment3.params=from\ to\ money
 comment3.target=void\ arriveTest(City,\ City,\ int)
+comment3.text=\r\n\ Tests\ that\ the\ arrive\ method\ in\ the\ destination\ City\ works\ as\ intended.\r\n\ Works\ with\ BorderCity\ and\ City.\r\n\ \r\n\ @param\ from\ \ the\ City\ or\ BorderCity\ we\ left\r\n\ @param\ to\ \ \ \ the\ City\ or\ BorderCity\ we\ arrive\ in\r\n\ @param\ money\ how\ much\ money\ the\ player\ has\r\n
 comment4.params=
 comment4.target=void\ arrive()
 comment5.params=
