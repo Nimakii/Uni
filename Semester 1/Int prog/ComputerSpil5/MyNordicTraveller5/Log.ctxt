@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Log
+comment0.text=\r\n\ This\ class\ represents\ a\ saved\ replay\ of\ a\ game.\r\n\r\n\ @author\ Thomas\ D\ Vinther\ &\ Jens\ Kristian\ R\ Nielsen\r\n\ @version\ CG5\r\n
+comment1.params=seed\ settings
+comment1.target=Log(int,\ Settings)
+comment1.text=\r\n\ Creates\ an\ empty\ Log\ with\ the\ settings\ used\ in\ the\ game,\ and\ the\ seed\ that\ the\ random\ used.\r\n\ \r\n\ @param\ seed\ \ \ \ \ \ \ the\ seed\ the\ game\ used\r\n\ @param\ settings\ \ \ the\ settings\ the\ game\ used\r\n
+comment2.params=
+comment2.target=int\ getSeed()
+comment2.text=\r\n\ This\ method\ returns\ the\ initial\ seed-value\ that\ was\ used\ in\ the\ game.\r\n\ \r\n\ @return\ the\ integer\ seed\ value.\r\n
+comment3.params=
+comment3.target=Settings\ getSettings()
+comment3.text=\r\n\ This\ method\ returns\ the\ settings\ that\ was\ used\ in\ the\ game.\r\n\ \r\n\ @return\ the\ settings.\r\n
+comment4.params=t
+comment4.target=java.lang.String\ getChoice(int)
+comment4.text=\r\n\ This\ method\ returns\ the\ name\ of\ the\ latest\ city\ chosen\ at\ time\ t,\ or\ null\ if\ no\ choice\ was\ made.\r\n\ \r\n\ @param\ t\ \ \ \ \ integer\ representing\ time\ t.\r\n\ @return\ \ \ \ \ \ the\ name\ of\ the\ latest\ chosen\ city\ at\ time\ t\ as\ a\ String,\ or\ null.\r\n
+comment5.params=t\ c
+comment5.target=void\ add(int,\ City)
+comment5.text=\r\n\ This\ method\ naively\ saves\ the\ name\ of\ a\ City\ at\ time\ t.\r\n\ \r\n\ @param\ t\ the\ time\ we\ wish\ to\ save\ to.\r\n\ @param\ c\ the\ City\ whos\ name\ we\ wish\ to\ save.\r\n
+numComments=6

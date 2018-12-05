@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=MafiaCountry
+comment0.text=\r\n\ A\ mafiacountry\ represents\ a\ country,but\ each\ time\ you\ visit\ a\ city\ inside\ the\ country\ you\ risk\ getting\ robbed\!\ The\ mafiacountry\ has\ a\ name\ and\ is\ a\r\n\ collection\ of\ cities\ and\ roads\ between\ them,\ all\ part\ of\ a\ game.\ \r\n\r\n\ \ @author\ Jens\ Kristian\ &\ Thomas\ \ Vinther\r\n\ @version\ Computergame\ 3\r\n
+comment1.params=name\ network
+comment1.target=MafiaCountry(java.lang.String,\ java.util.Map)
+comment1.text=\r\n\ Creates\ a\ new\ MafiaCountry\ with\ the\ name\ of\ the\ MafiaCountry\ and\ a\ network\ (a\ map)\ which\ links\ a\ city\ to\ the\ list\ of\ all\ roads\ starting\ in\ \r\n\ that\ particular\ city.\ \r\n\ @param\ name\ \ \ \ \ \ name\ of\ the\ MafiaCountry\r\n\ @param\ network\ \ \ network\ of\ cities\ and\ roads\ within\ the\ MafiaCountry\r\n
+comment2.params=value
+comment2.target=int\ bonus(int)
+comment2.text=\r\n\ When\ visiting\ a\ MafiaCountry\ you\ risk\ getting\ robbed,\ the\ risk\ and\ loss\ are\ decided\ by\ game\ settings,\ where\ the\ loss\ is\ a\ random\ integer\r\n\ in\ an\ interval,\ but\ not\ more\ than\ the\ players\ wealth.\ If\ you\ do\ not\ get\ robbed,\ you\ get\ an\ integer\ bonus\ based\ on\ country's\ bonus\ \r\n\ method.\r\n\ \r\n\ @param\ value\ the\ value\ used\ in\ calculations\r\n\ @return\ \ \ \ \ \ a\ random\ integer\ [0;value]\ or\ a\ negative\ integer\ from\ game\ decided\ by\ Game\ parameters\ \ \r\n
+numComments=3

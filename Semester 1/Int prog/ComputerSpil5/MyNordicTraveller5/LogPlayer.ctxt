@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=LogPlayer
+comment0.text=\r\n\ An\ AI\ player\ which\ chooses\ its\ path\ based\ on\ a\ log.\ Simulates\ a\ GUI\ player.\r\n\ @author\ Nikolaj\ Ignatieff\ Schwartzbach\r\n\ @version\ 1.0.0\r\n
+comment1.params=log\ pos
+comment1.target=LogPlayer(Log,\ Position)
+comment1.text=\r\n\ Instantiates\ a\ new\ LogPlayer\ from\ a\ given\ log\ at\ a\ given\ position.\r\n\ @param\ log\ The\ log\ to\ use.\r\n\ @param\ pos\ The\ position\ of\ this\ LogPlayer.\r\n
+comment2.params=
+comment2.target=void\ step()
+comment3.params=
+comment3.target=java.lang.String\ getName()
+comment4.params=
+comment4.target=java.awt.Color\ getColor()
+numComments=5

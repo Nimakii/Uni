@@ -1,0 +1,37 @@
+#BlueJ class context
+comment0.target=CountryTest
+comment0.text=\r\n\ The\ test\ class\ CountryTest.\r\n\r\n\ @author\ \ Jens\ Kristian\ Nielsen\ &\ Thomas\ Vinther\r\n\ @version\ Computerspil2\r\n
+comment1.params=
+comment1.target=CountryTest()
+comment1.text=\r\n\ Default\ constructor\ for\ test\ class\ CountryTest\r\n
+comment10.params=
+comment10.target=void\ bonus()
+comment11.params=
+comment11.target=void\ getRoads()
+comment12.params=
+comment12.target=void\ addRoads()
+comment13.params=a\ b\ c\ notA
+comment13.target=void\ equalsTest(java.lang.Object,\ java.lang.Object,\ java.lang.Object,\ java.lang.Object)
+comment13.text=\r\n\ Performs\ reflexivity,\ transitivity\ and\ symmetry\ tests\ on\ the\ 4\ paramaters,\ wrt\ the\ equals\ method,\r\n\ such\ that\ a\=b\=c\ and\ a\!\=notA.\r\n\ Negative\ comparisons\:\ 3,\ Math.PI,\ "",\ a.getClass(),\ int[0].\r\n\ \r\n\ @param\ a\ \ \ \ \ \ some\ object\r\n\ @param\ b\ \ \ \ \ \ some\ object\ that\ should\ test\ equal\ to\ a\r\n\ @param\ c\ \ \ \ \ \ some\ object\ that\ should\ test\ equal\ to\ a\ and\ b\r\n\ @param\ notA\ \ \ some\ object\ that\ should\ test\ different\ to\ a\ b\ and\ c\r\n
+comment14.params=
+comment14.target=void\ equals()
+comment15.params=
+comment15.target=void\ hashCodeTest()
+comment2.params=
+comment2.target=void\ setUp()
+comment2.text=\r\n\ Sets\ up\ the\ test\ fixture.\r\n\r\n\ Called\ before\ every\ test\ case\ method.\r\n
+comment3.params=
+comment3.target=void\ constructor()
+comment4.params=
+comment4.target=void\ setGame()
+comment5.params=
+comment5.target=void\ position()
+comment6.params=
+comment6.target=void\ readyToTravel()
+comment7.params=
+comment7.target=void\ reset()
+comment8.params=
+comment8.target=void\ getCity()
+comment9.params=
+comment9.target=void\ getCities()
+numComments=16

@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=SmartPlayer
+comment0.text=\r\n\ A\ smart\ AI\ player\ which\ uses\ a\ depth-first\ search\ to\ determine\ the\ optimal\ path.\r\n\ @author\ Nikolaj\ Ignatieff\ Schwartzbach\r\n\ @version\ 1.0.0\r\n\r\n
+comment1.params=pos
+comment1.target=SmartPlayer(Position)
+comment1.text=\r\n\ Instantiates\ a\ new\ SmartPlayer\ with\ the\ specified\ position.\r\n\ @param\ pos\ The\ position\ of\ this\ player.\r\n
+comment2.params=
+comment2.target=void\ step()
+comment3.params=c\ n
+comment3.target=City\ maximizeValue(City,\ int)
+comment4.params=visits\ c\ i
+comment4.target=Path\ maximizeValue(java.util.HashMap,\ City,\ int)
+comment5.params=
+comment5.target=java.lang.String\ getName()
+comment6.params=
+comment6.target=java.awt.Color\ getColor()
+numComments=7

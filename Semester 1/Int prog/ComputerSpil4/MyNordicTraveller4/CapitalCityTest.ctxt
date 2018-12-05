@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=CapitalCityTest
+comment0.text=\r\n\ The\ test\ class\ CapitalCityTest.\r\n\r\n\ @author\ \ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=CapitalCityTest()
+comment1.text=\r\n\ Default\ constructor\ for\ test\ class\ CapitalCityTest\r\n
+comment2.params=
+comment2.target=void\ setUp()
+comment2.text=\r\n\ Sets\ up\ the\ test\ fixture.\r\n\r\n\ Called\ before\ every\ test\ case\ method.\r\n
+comment3.params=from\ to\ money
+comment3.target=void\ arriveTest(City,\ City,\ int)
+comment3.text=\r\n\ Tests\ that\ the\ arrive\ method\ in\ the\ destination\ City\ works\ as\ intended.\r\n\ Works\ with\ CapitalCity,\ BorderCity\ and\ City.\r\n\ \r\n\ @param\ from\ \ the\ City\ or\ BorderCity\ or\ CapitalCity\ we\ left\r\n\ @param\ to\ \ \ \ the\ City\ or\ BorderCity\ or\ CapitalCity\ we\ arrive\ in\r\n\ @param\ money\ how\ much\ money\ the\ player\ has\r\n
+comment4.params=
+comment4.target=void\ arriveDifferent()
+comment5.params=
+comment5.target=void\ arriveSame()
+comment6.params=
+comment6.target=void\ tearDown()
+comment6.text=\r\n\ Tears\ down\ the\ test\ fixture.\r\n\r\n\ Called\ after\ every\ test\ case\ method.\r\n
+numComments=7

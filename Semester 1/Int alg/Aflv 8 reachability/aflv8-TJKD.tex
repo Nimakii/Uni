@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{MnSymbol}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Thomas Vinther \& Jens Kristian Refsgaard Nielsen}
+	\title{Handin 8}
+	\date{19-11-18}
+	\maketitle
+	\section{Reachability}
+	
+	Let $G=(V,E)$ be a directed graph in which each vertex $u \in V$ is labeled with a unique integer $L(u)$ from the set $\{1,2,\dots,|V| \}$. For each vertex $u \in V$, let $R(u)=\{v \in V : u \leadsto v \}$ be the set of vertices that are reacheable from $u$. Define $\min(u)$ to be the vertex in $R(U)$ whose label is minimum. Give an $O(V+E)$-time algorithm that computes $\min(u)$ for all vertices $v \in V$.\\
+
+	
+\subsection{Solution}	
+Consider the following algorithm.\\
+\newline\noindent \begin{tabular}{l | c | l}
+	Time 			& Line nr & Pseudocode \\ \hline
+	$\Theta(V)$ 	& 1 & for $v\in V$\\
+	\indent 1 		& 2 & \indent $\min(v)=\mathcal{L}(v) = \infty$\\
+	O($V+E$) 		& 3 & SCC($G$)\\
+	O($V+E$) 		& 4 & Topological-Sort($G^{SCC}$)\\
+	O($V^{SCC}$) 	& 5 & for $v\in V^{SCC}$ in reverse Topological order\\
+	\indent O($V^{SCC}$) & 6 & \indent $m = \min\{\mathcal{L}(z) \mid z\in G^{SCC}.Adj(v) \}$, \\ 
+					& & \indent \indent  //under convention $\min(\emptyset) = \infty$\\
+	\indent 1 		& 7 &\indent if $\mid v\mid>1$ or $(v,v)\in E$\\
+	\indent\indent O($V$) & 8 &\indent\indent $\mathcal{L}(v) = \min\big\{ m, \min\{L(u)\mid u\in v \cap V\} \big\} $\\
+	\indent 1 		& 9 &\indent  else $\mathcal{L}(v) = m$ \\
+	\indent O($V$) 	& 10 & \indent for $u\in v\cap V$\\
+	\indent\indent 1 & 11 &\indent\indent $\min(u)=\mathcal{L}(v)$
+\end{tabular}\\
+\newline\newline\noindent \textbf{Correctness:} Note that this problem has optimal substructure, when we calculate the $\mathcal{L}$ function we need only consider nodes that are greater in the topological sort of the DAG $G^{SCC}$, because these are the only nodes we can communicate with. So if we begin with the maximal element of the top sort and maintain the $\mathcal{L}(v)$ function as an extention of the $L$ function and as the minimal value of all the nodes $v$ communicates with.\\
+We define $\min(v)=\infty$ if $v$ does not communicate with any nodes, as this case is not clear from the assignment. \\
+We call Strongly-Connected-Components(G)so we can apply Topological-Sort($G^{SCC}$) because $G^{SCC}$ is a Directed-Acyclic-Graph.\\
+We make the greedy choice by computing in reverse topological order and saving the smallest $L(v)$ to calculate the communicating vertices' own $L(v)$\\
+In line 6 we calculate m, the smallest value $\mathcal{L}(z)$ of nodes that v are adjacent to. Note that the $\mathcal{L}$ values might not yet be defined, in which case we simply use the convention $\min(\emptyset)=\infty$.\\
+In line 7-9 we check for loops inside of $v$ in $V$. In the affirmative case we calculate $\mathcal{L}(v)$ to be the minimum value of all nodes that nodes in v communicates to, including themselves because v contains a loop. In the other case we do not include the node in v in the calculation of the minimum, because $v \nleadsto v$ so $v \notin R(v)$.\\
+Finally we update the  nodes  in v's min value.\\
+\\
+\textbf{Runtime:}\\ From the estimates we gave alongside the pseudocode we could think it is a $O\big((V^{SCC})^2\big)$ algorithm. However these estimates are very rough.
+Note that we look at each vertex in $E^{SCC}$ exactly once throughout the iterations of the for loop in line 5, and recall that $\sum_{v\in V}|\text{Adj}(v)|=|E|$. In the case that $|E|<|V|$ we get an estimate of $O(V)$ so in total lines 5 and 6 are bounded by $O(V^{SCC}+E^{SCC})$\\
+In line 7-11 we note that $\sum_{v\in V^{SCC}}|v|=|V|$, so line 5 and 7 are bounded by $O(V)$, note that $|V^{SCC}|\leq|V|$.\\
+In total lines 5 through 11 are bounded by $O(V+V^{SCC}+E^{SCC}) = O(V+E^{SCC})$, and in the grand total the algorithm runs in time
+\begin{equation}
+	O(V+E)+O(V^{SCC}+E^{SCC})+O(E^{SCC})=O(V+E)
+\end{equation}
+
+     
+	
+\end{document}
