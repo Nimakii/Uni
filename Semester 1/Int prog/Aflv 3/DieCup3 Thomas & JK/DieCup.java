@@ -1,5 +1,3 @@
-
-
 /**
  * This class models a DieCup (raflebæger)
  * 

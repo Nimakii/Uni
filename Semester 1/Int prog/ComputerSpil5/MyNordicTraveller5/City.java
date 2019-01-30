@@ -54,14 +54,14 @@ public class City implements Comparable<City> {
     public void changeValue(int amount){
         value += amount;
     }
-    
+
     /**
      * Reset the current value of the city to the initial starting value.
      */
     public void reset(){
         value = initialValue;
     }
-    
+
     /**
      * Order two Cities according to their names. Calculates an integer, that is negativ if this City is less than the City we are comparing to,
      * zero if they are equal and positive if this city is greater than the parameter. 
@@ -80,7 +80,7 @@ public class City implements Comparable<City> {
     public Country getCountry(){
         return country;
     }
-    
+
     /**
      * Returns an integer based on the country in which the city resides.
      * If the bonus is negative it is returned, but the bonus is not subtracted from the value.
@@ -94,7 +94,7 @@ public class City implements Comparable<City> {
         value -= bonus;
         return bonus;
     }
-    
+
     /**
      * A player arrives in the city.
      * The city sub classes interact with the player visiting them in more intricate ways,
@@ -106,7 +106,7 @@ public class City implements Comparable<City> {
     public int arrive(Player p){
         return arrive();
     }
-    
+
     /**
      * This method overrides Object's equals method and compares two cities, using their names and country.
      * @return      whether or not the two objects are equal
@@ -125,6 +125,7 @@ public class City implements Comparable<City> {
         City other = (City) otherObject;
         return (this.name.equals(other.name) && this.country.equals(other.country) );
     }
+
     /**
      * This method overrides Object's hashCode method and gives the city a new one (an integer)
      * using the name of the city and the country in which it resides. 

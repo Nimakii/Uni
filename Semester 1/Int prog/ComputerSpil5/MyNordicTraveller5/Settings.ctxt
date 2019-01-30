@@ -3,7 +3,7 @@ comment0.target=Settings
 comment0.text=\r\n\ Settings\ represents\ the\ current\ settings\ at\ a\ given\ time.\r\n\ @author\ Nikolaj\ Ignatieff\ Schwartzbach\r\n\ @version\ 1.0.0\r\n
 comment1.params=activePlayers\ tollSize\ robRisk\ minLoss\ maxLoss\ gameSpeed
 comment1.target=Settings(boolean[],\ int,\ int,\ int,\ int,\ int)
-comment1.text=\r\n\ Instantiates\ a\ new\ Settings\ object\ based\ on\ its\ values.\r\n\ @param\ activePlayers\ Which\ players\ are\ active.\ Must\ be\ an\ array\ of\ length\ 3,\ where\ each\ index\ corresponds\ to\ a\ given\ player\ (0\ \=\ random,\ 1\ \=\ greedy,\ 2\ \=\ smart).\r\n\ @param\ tollSize\ The\ toll\ size\ (in\ %).\r\n\ @param\ robRisk\ The\ risk\ of\ robbery\ (in\ %).\r\n\ @param\ minLoss\ The\ minimum\ loss\ when\ robbed\ (in\ \u00E2\u201A\u00AC).\r\n\ @param\ maxLoss\ The\ maximum\ loss\ when\ robbed\ (in\ \u00E2\u201A\u00AC).\r\n\ @param\ gameSpeed\ The\ game\ speed.\ Must\ be\ in\ the\ interval\ [0,4],\ where\ 0\ \=\ stop,\ and\ 4\ \=\ sonic.\r\n
+comment1.text=\r\n\ Instantiates\ a\ new\ Settings\ object\ based\ on\ its\ values.\r\n\ @param\ activePlayers\ Which\ players\ are\ active.\ Must\ be\ an\ array\ of\ length\ 3,\ where\ each\ index\ corresponds\ to\ a\ given\ player\ (0\ \=\ random,\ 1\ \=\ greedy,\ 2\ \=\ smart).\r\n\ @param\ tollSize\ The\ toll\ size\ (in\ %).\r\n\ @param\ robRisk\ The\ risk\ of\ robbery\ (in\ %).\r\n\ @param\ minLoss\ The\ minimum\ loss\ when\ robbed\ (in\ \u20AC).\r\n\ @param\ maxLoss\ The\ maximum\ loss\ when\ robbed\ (in\ \u20AC).\r\n\ @param\ gameSpeed\ The\ game\ speed.\ Must\ be\ in\ the\ interval\ [0,4],\ where\ 0\ \=\ stop,\ and\ 4\ \=\ sonic.\r\n
 comment10.params=player\ active
 comment10.target=void\ setActive(int,\ boolean)
 comment10.text=\r\n\ Sets\ whether\ or\ not\ a\ given\ AI\ Player\ is\ active.\r\n\ @param\ player\ The\ AI\ Player\ to\ change\ activity\ of\ (0\ \=\ random,\ 1\ \=\ greedy,\ 2\ \=\ smart).\ \r\n\ @param\ active\ Whether\ or\ not\ this\ player\ should\ be\ active.\r\n
@@ -21,13 +21,13 @@ comment14.target=void\ setRisk(int)
 comment14.text=\r\n\ Sets\ the\ current\ risk\ of\ being\ robbed\ (in\ %).\r\n\ @param\ robRisk\r\n
 comment15.params=
 comment15.target=int\ getMinRobbery()
-comment15.text=\r\n\ Gets\ the\ minimum\ robbery\ amount\ (can't\ be\ robbed\ for\ anything\ less\ than\ this).\r\n\ @return\ The\ minimum\ robbery\ amount\ in\ \u00E2\u201A\u00AC.\r\n
+comment15.text=\r\n\ Gets\ the\ minimum\ robbery\ amount\ (can't\ be\ robbed\ for\ anything\ less\ than\ this).\r\n\ @return\ The\ minimum\ robbery\ amount\ in\ \u20AC.\r\n
 comment16.params=min\ max
 comment16.target=void\ setMinMaxRobbery(int,\ int)
-comment16.text=\r\n\ Changes\ the\ bounds\ for\ robbery.\r\n\ @param\ min\ The\ new\ minimum\ robbery\ amount\ (in\ \u00E2\u201A\u00AC).\r\n\ @param\ max\ The\ new\ maximum\ robbery\ amount\ (in\ \u00E2\u201A\u00AC).\r\n
+comment16.text=\r\n\ Changes\ the\ bounds\ for\ robbery.\r\n\ @param\ min\ The\ new\ minimum\ robbery\ amount\ (in\ \u20AC).\r\n\ @param\ max\ The\ new\ maximum\ robbery\ amount\ (in\ \u20AC).\r\n
 comment17.params=
 comment17.target=int\ getMaxRobbery()
-comment17.text=\r\n\ Gets\ the\ maximum\ robbery\ amount\ (can't\ be\ robbed\ for\ anything\ more\ than\ this).\r\n\ @return\ The\ maximum\ robbery\ amount\ in\ \u00E2\u201A\u00AC.\r\n
+comment17.text=\r\n\ Gets\ the\ maximum\ robbery\ amount\ (can't\ be\ robbed\ for\ anything\ more\ than\ this).\r\n\ @return\ The\ maximum\ robbery\ amount\ in\ \u20AC.\r\n
 comment18.params=
 comment18.target=int\ getGameSpeed()
 comment18.text=\r\n\ Gets\ the\ current\ game\ speed\:\r\n\ \ 0\:\ STOP\r\n\ \ 1\:\ SLOW\r\n\ \ 2\:\ MED\r\n\ \ 3\:\ FAST\r\n\ \ 4\:\ SONIC\r\n\ @return\ An\ integer\ in\ the\ interval\ [0,4]\ representing\ the\ current\ game\ speed.\r\n

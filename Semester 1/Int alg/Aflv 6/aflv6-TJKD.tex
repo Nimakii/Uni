@@ -1,4 +1,6 @@
 \documentclass{article}
+\usepackage{lettrine}
+\usepackage{yfonts}
 \usepackage[a4paper]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 					% 
@@ -47,14 +49,14 @@
 	\date{25-10-18}
 	\maketitle
 	\section{Skyline}
-	We wish to make an algorithm that produces the silhouette of a city. Each building in the city is represented by a tripple (l,h,r) where l (r) is the coordinate on the horizontal line where the building begins (ends) and h is the height of the building.
-	\\The sihouette of the city is a vector $(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)$ where $x_j<x_{j+1}$ and $h_j$ represents the height between point $x_{j-1}$ and $x_j$.
+	\yinipar{W}e wish to make an algorithm that produces the silhouette of a city. Each building in the city is represented by a tripple (l,h,r) where l (r) is the coordinate on the horizontal line where the building begins (ends) and h is the height of the building.\\
+	\yinipar{T}he sihouette of the city is a vector $(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)$ where $x_j<x_{j+1}$ and $h_j$ represents the height between point $x_{j-1}$ and $x_j$.\\
 	\subsection{a)}
 	A silhouette: %$X=(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)$ 
 	\begin{align}
 	X&=(x_0,h_1,x_1,\dots,x_{i-1}.h_i,x_i,\dots,h_n,x_n)
 	\end{align}
-	Assume, we are given a silhouette and a building ($l,h,r$) How does one update the silhouette to include the building.
+	\yinipar{A}ssume, we are given a silhouette and a building ($l,h,r$) How does one update the silhouette to include the building.
 	We use the following algorithm from hell\\
 	
 	\noindent \begin{tabular}{l | c | l}

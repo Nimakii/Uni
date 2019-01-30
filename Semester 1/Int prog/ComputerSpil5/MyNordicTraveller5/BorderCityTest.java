@@ -235,6 +235,13 @@ public class BorderCityTest
             cityG.reset(); 
         }  
     }
+    
+    public void eksamensleg(){
+        City bc = new BorderCity("hej",30,country1);
+        Position pos = new Position(cityA,cityB,3);
+        Player p = new Player(pos,30);
+        bc.arrive(p);
+    }
 
     /**
      * Tears down the test fixture.
