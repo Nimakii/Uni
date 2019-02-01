@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Edge
+comment1.params=f\ t\ w
+comment1.target=Edge(int,\ int,\ int)
+comment2.params=
+comment2.target=int\ getWeight()
+comment3.params=change
+comment3.target=void\ changeWeight(int)
+comment4.params=e
+comment4.target=int\ compareTo(Edge)
+numComments=5
