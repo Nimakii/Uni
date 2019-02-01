@@ -12,7 +12,7 @@ object Week1 {
     println("The ASTs are equal: " + (a1 == a2))
     println(Unparser.unparse(a2))
     println(Unparser.unparse(Parser.parse("-1+2*3-4%5/6")))
-    println(Unparser.unparse(Parser.parse(Unparser.unparse(Parser.parse("--(-1+2)*3-4%5/6max7")))))
+    println(Unparser.unparse(Parser.parse(Unparser.unparse(Parser.parse("--(-1+2)*3-4%(5-2)/(6-9)max(7*10)")))))
   }
 
 }

@@ -14,16 +14,16 @@ object Unparser {
       val rightString = unparse(rightexp)
       op match {
         case PlusBinOp() => leftString+"+"+rightString
-        case MinusBinOp() => leftString+"-"+rightString
-        case MultBinOp() => leftString+"*"+rightString
-        case DivBinOp() => leftString+"/"+rightString
-        case ModuloBinOp() => leftString+"%"+rightString
-        case MaxBinOp() => leftString+"max"+rightString
+        case MinusBinOp() => "("+leftString+")-("+rightString+")"
+        case MultBinOp() => "("+leftString+")*("+rightString+")"
+        case DivBinOp() => "("+leftString+")/("+rightString+")"
+        case ModuloBinOp() => "("+leftString+")%("+rightString+")"
+        case MaxBinOp() => "("+leftString+")max("+rightString+")"
       }
     case UnOpExp(op,exp) =>
       val expString = unparse(exp)
       op match{
-        case NegUnOp() => "-"+expString
+        case NegUnOp() => "-("+expString+")"
       }
   }
 }
