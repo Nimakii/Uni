@@ -14,16 +14,36 @@ object Unparser {
       val rightString = unparse(rightexp)
       op match {
         case PlusBinOp() => leftString+"+"+rightString
-        case MinusBinOp() => "("+leftString+")-("+rightString+")"
-        case MultBinOp() => "("+leftString+")*("+rightString+")"
-        case DivBinOp() => "("+leftString+")/("+rightString+")"
-        case ModuloBinOp() => "("+leftString+")%("+rightString+")"
-        case MaxBinOp() => "("+leftString+")max("+rightString+")"
+        case MinusBinOp() => leftString+parenthesize("","-",rightString,1)
+        case MultBinOp() => parenthesize(leftString,"*",rightString,2)
+        case DivBinOp() => parenthesize(leftString,"/",rightString,2)
+        case ModuloBinOp() => parenthesize(leftString,"%",rightString,2)
+        case MaxBinOp() => parenthesize(leftString,"max",rightString,2)
       }
     case UnOpExp(op,exp) =>
       val expString = unparse(exp)
       op match{
-        case NegUnOp() => "-("+expString+")"
+        case NegUnOp() => parenthesize("","-",expString,1)
       }
+  }
+  private def parenthesize(leftString: String, op: String, rightString: String, option: Int): String = {
+    var parLeftString = ""
+    var parRightString = rightString
+    if(option == 2) {
+      try {
+        leftString.toInt
+        parLeftString = leftString
+      }
+      catch {
+        case e: Exception => parLeftString = "(" + leftString + ")"
+      }
+    }
+    try {
+      rightString.toInt
+    }
+    catch{
+      case e: Exception => parRightString = "("+rightString+")"
+    }
+    parLeftString + op + parRightString
   }
 }

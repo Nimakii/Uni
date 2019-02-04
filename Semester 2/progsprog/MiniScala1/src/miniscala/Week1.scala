@@ -11,8 +11,15 @@ object Week1 {
     println("Invoking toString on the AST gives: "+a2)
     println("The ASTs are equal: " + (a1 == a2))
     println(Unparser.unparse(a2))
-    println(Unparser.unparse(Parser.parse("-1+2*3-4%5/6")))
-    println(Unparser.unparse(Parser.parse(Unparser.unparse(Parser.parse("--(-1+2)*3-4%(5-2)/(6-9)max(7*10)")))))
+    pupuTest("(2-3)*(4%5)")
+    pupuTest("--(((5-12)))max(8*9)-(15-3)")
+    pupuTest("--((((5-12)))max(8*9))-15")
   }
-
+  def pupuTest(input: String): Unit ={
+    val pupu = Unparser.unparse(Parser.parse(Unparser.unparse(Parser.parse(input))))
+    println("The input was: "+input)
+    println("The output is: "+pupu)
+    val value = Interpreter.eval(Parser.parse(input))-Interpreter.eval(Parser.parse(pupu))
+    println("Their difference should be zero: "+value)
+  }
 }

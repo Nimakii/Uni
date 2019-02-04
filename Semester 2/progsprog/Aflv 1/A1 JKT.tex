@@ -1,0 +1,137 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+
+%%% Margins
+\usepackage[a4paper,left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+%%% Title
+\title{Aflevering 1}
+\author{Thomas Vinther, 201303874 \and Jens Kristian Nielsen, 201303862}
+\date{4 februar 2019}
+
+%%% Code environment
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+\lstset{
+  basicstyle=\ttfamily\small,                   % the size of the fonts that are used for the code
+  breakatwhitespace=false,                      % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                              % sets automatic line breaking
+  frame=tb,                                     % adds a frame around the code
+  commentstyle=\color{commentsColor}\textit,    % comment style
+  keywordstyle=\color{keywordsColor}\bfseries,  % keyword style
+  stringstyle=\color{stringColor},              % string literal style
+  numbers=left,                                 % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                                % how far the line-numbers are from the code
+  numberstyle=\tiny\color{commentsColor},       % the style that is used for the line-numbers
+  showstringspaces=false,                       % underline spaces within strings only
+  tabsize=2,                                    % sets default tabsize to 2 spaces
+  language=Scala
+}
+
+%% Document
+
+\begin{document}
+\maketitle
+\section*{Opgave 9}
+\subsection*{Kode}
+\begin{lstlisting}
+def eval(e: Exp): Int = e match {
+	case IntLit(c) => trace("Integer "+c+" found"); c
+	case BinOpExp(leftexp, op, rightexp) => trace("Binary operation found, evaluating left and right")
+		val leftval = eval(leftexp)
+		val rightval = eval(rightexp)
+		op match {
+			case PlusBinOp() => val res = leftval+rightval; trace("Addition yields "+res); res
+			case MinusBinOp() => val res = leftval - rightval; trace("Subtraction yields "+res); res
+			case MultBinOp() => val res = leftval*rightval; trace("Multiplication yields "+res); res
+			case DivBinOp() =>
+				if (rightval == 0)
+					throw new InterpreterError(s"Division by zero", op)
+					val res = leftval / rightval; trace("Dividing yields "+res); res
+			case ModuloBinOp() => val res = leftval%rightval; trace("Modulating yields "+res); res
+			case MaxBinOp() =>
+				if (leftval>rightval) {
+					trace("Calculating maximum and found: " + leftval)
+					leftval
+				} else { trace("Calculating maximum and found: "+rightval)
+					rightval }
+		}
+	case UnOpExp(op, exp) =>
+		trace("Unary expression found")
+		val expval = eval(exp)
+		op match {
+			case NegUnOp() => trace("Negation of expression"); -expval
+	}
+}
+def trace(msg: String): Unit =
+	if (Options.trace)
+		println(msg)
+\end{lstlisting}
+\subsection*{Beskrivelse}
+Trace-mekanismen fungerer ved at printe en relativt passende tekst om udførselen. Dette opnåes ved at indsætte printsætninger via trace funktionen der tjekker om Options.trace er true og i bekræftende fald printes der. Dette undgår kode duplikering fordi vi slipper for en masse if statements.\\
+\\
+Når fortolkeren køres med argumenterne \texttt{-run -trace examples/calc1.s} fås: \\
+\texttt{Binary operation found, evaluating left and right\\
+Binary operation found, evaluating left and right\\
+Integer 1 found\\
+Integer 2 found\\
+Addition yields 3\\
+Integer 3 found\\
+Multiplication yields 9\\
+Output: 9}
+\section*{Opgave 10}
+\subsection*{Kode}
+\begin{lstlisting}
+def unparse(n: AstNode): String = n match {
+	case IntLit(c) => c.toString()
+	case BinOpExp(leftexp, op, rightexp) =>
+		val leftString = unparse(leftexp)
+		val rightString = unparse(rightexp)
+	op match {
+		case PlusBinOp() => leftString+"+"+rightString
+		case MinusBinOp() => leftString+parenthesize("","-",rightString,1)
+		case MultBinOp() => parenthesize(leftString,"*",rightString,2)
+		case DivBinOp() => parenthesize(leftString,"/",rightString,2)
+		case ModuloBinOp() => parenthesize(leftString,"%",rightString,2)
+		case MaxBinOp() => parenthesize(leftString,"max",rightString,2)
+	}
+	case UnOpExp(op,exp) =>
+		val expString = unparse(exp)
+		op match{
+			case NegUnOp() => parenthesize("","-",expString,1)
+	}
+}
+private def parenthesize(leftString: String, op: String, rightString: String, option: Int): String = {
+	var parLeftString = ""
+	var parRightString = rightString
+	if(option == 2) {
+		try {
+			leftString.toInt
+			parLeftString = leftString
+		}
+		catch {
+			case e: Exception => parLeftString = "(" + leftString + ")"
+		}
+	}
+	try {
+		rightString.toInt
+	}
+	catch{
+		case e: Exception => parRightString = "("+rightString+")"
+	}
+	parLeftString + op + parRightString
+}
+\end{lstlisting}
+\subsection*{Beskrivelse}
+Unparse-mekanismen fungerer ved at den tager et expression som input og løber det igennem på tilsvarende vis som Parser.parse() har pakket det ind og pakker det ud igen, hvormed Unparse.unparse() bliver den inverse funktion til Parser.parse(). For at få pæne paranteser har vi lavet en hjælpe funktion parenthesize der tjekker om længden på venstre hhv højre streng er længere end 1
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
