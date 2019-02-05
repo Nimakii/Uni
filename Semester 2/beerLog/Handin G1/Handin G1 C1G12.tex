@@ -1,0 +1,69 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Thomas Vinther \& Morten Fausing \& Jens Kristian Refsgaard Nielsen}
+	\title{Handin G1}
+	\date{05-02-19}
+	\maketitle
+\section{page 3}
+Kleene star case:\\ The following will become useful, consider for $i>0$
+\begin{align*}
+	\triangledown: \text{Pre}(\mathcal{L}(E)^i) &= \text{Pre}(\mathcal{L}(E)^{i-1}\mathcal{L}(E))\\
+	&\stackrel{1)}{=} \text{Pre}(\mathcal{L}(E)^{i-1})\cup\mathcal{L}(E)^{i-1}\cdot\text{Pre}(\mathcal{L}(E))\\
+	&=\bigg(\text{Pre}(\mathcal{L}(E)^{i-2})\cup\mathcal{L}(E)^{i-2}\cdot\text{Pre}(\mathcal{L}(E))\bigg)\cup\mathcal{L}(E)^{i-1}\cdot\text{Pre}(\mathcal{L}(E))\\
+	&\text{ }\text{ }\vdots\\
+	&= \bigcup_{0\leq j < i} \mathcal{L}(E)^j \cdot \text{Pre}(\mathcal{L}(E))\\
+	&= \left(\bigcup_{0\leq j < i} \mathcal{L}(E)^j\right) \cdot \text{Pre}(\mathcal{L}(E)) 
+\end{align*}
+By applying part 1 of the assignment a finite number of times or a short induction omitted here, we see that taking powers of prefix languages it is sufficient to concatenate on the right by the prefix language of the base expression.\\
+Let $E_1 = E^*$ in the name of readability, and consider\\
+\begin{align*}
+	\text{Pre}\mathcal{L}(E_1)&= \text{Pre}\mathcal{L}(E^*) = \text{Pre}\left( \bigcup_{i\geq 0} \mathcal{L}(E)^i \right)\\
+	&= \bigcup_{i\geq 0} \text{Pre}(\mathcal{L}(E)^i) \stackrel{\triangledown}{=} \bigcup_{i\geq 0} \mathcal{L}(E)^i \text{Pre}(\mathcal{L}(E))\\
+	&= \mathcal{L}(E^*)\text{Pre}(\mathcal{L}(E)) = \mathcal{L}(E^*)\mathcal{L}(E')\\
+	&=\mathcal{L}(E^*E')
+\end{align*}
+By applying the induction hypthesis on the base expression $E$ we obtain a regular expression $E'$ such that Pre$(\mathcal{L}(E))=\mathcal{L}(E')$, which we use in the last line of the proof.
+\end{document}
