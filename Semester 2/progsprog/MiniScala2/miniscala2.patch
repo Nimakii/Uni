@@ -1,0 +1,212 @@
+diff --git a/src/miniscala/Ast.scala b/src/miniscala/Ast.scala
+index 2443f68..f2c9838 100644
+--- a/src/miniscala/Ast.scala
++++ b/src/miniscala/Ast.scala
+@@ -12,17 +12,26 @@ object Ast {
+     */
+   sealed abstract class AstNode extends Positional
+ 
++  /**
++    * Identifiers are just strings.
++    */
++  type Var = String
++
+   /**
+     * Expressions.
+     */
+   sealed abstract class Exp extends AstNode
+ 
++  case class VarExp(x: Var) extends Exp
++
+   case class BinOpExp(leftexp: Exp, op: BinOp, rightexp: Exp) extends Exp
+ 
+   case class UnOpExp(op: UnOp, exp: Exp) extends Exp
+ 
+   case class IntLit(c: Int) extends Exp
+ 
++  case class BlockExp(vals: List[ValDecl], exp: Exp) extends Exp
++
+   /**
+     * Binary operators.
+     */
+@@ -47,6 +56,13 @@ object Ast {
+ 
+   case class NegUnOp() extends UnOp
+ 
++  /**
++    * Declarations.
++    */
++  sealed abstract class Decl extends AstNode
++
++  case class ValDecl(x: Var, exp: Exp) extends Decl
++
+   /**
+     * Exception with a message and (optionally) a source code position.
+     */
+diff --git a/src/miniscala/Interpreter.scala b/src/miniscala/Interpreter.scala
+index c13905b..aa175e0 100644
+--- a/src/miniscala/Interpreter.scala
++++ b/src/miniscala/Interpreter.scala
+@@ -2,16 +2,21 @@ package miniscala
+ 
+ import miniscala.Ast._
+ 
++import scala.io.StdIn
++
+ /**
+   * Interpreter for MiniScala.
+   */
+ object Interpreter {
+ 
+-  def eval(e: Exp): Int = e match {
++  type VarEnv = Map[Var, Int]
++
++  def eval(e: Exp, venv: VarEnv): Int = e match {
+     case IntLit(c) => c
++    case VarExp(x) => venv(x)
+     case BinOpExp(leftexp, op, rightexp) =>
+-      val leftval = eval(leftexp)
+-      val rightval = eval(rightexp)
++      val leftval = eval(leftexp, venv)
++      val rightval = eval(rightexp, venv)
+       op match {
+         case PlusBinOp() => leftval + rightval
+         case MinusBinOp() => ???
+@@ -25,10 +30,27 @@ object Interpreter {
+           if (???) ??? else ???
+       }
+     case UnOpExp(op, exp) =>
+-      val expval = eval(exp)
++      val expval = eval(exp, venv)
+       op match {
+         case NegUnOp() => -expval
+       }
++    case BlockExp(vals, exp) =>
++      var venv1 = venv
++      for (d <- vals)
++        venv1 = venv1 + (d.x -> eval(d.exp, venv1))
++      eval(exp, venv1)
++  }
++
++  /**
++    * Builds an initial environment, with a value for each free variable in the program.
++    */
++  def makeInitialVarEnv(program: Exp): VarEnv = {
++    var venv = Map[Var, Int]()
++    for (x <- Vars.freeVars(program)) {
++      print(s"Please provide an integer value for the variable $x: ")
++      venv = venv + (x -> StdIn.readInt())
++    }
++    venv
+   }
+ 
+   /**
+diff --git a/src/miniscala/Main.scala b/src/miniscala/Main.scala
+index 1768298..de580c4 100644
+--- a/src/miniscala/Main.scala
++++ b/src/miniscala/Main.scala
+@@ -22,7 +22,8 @@ object Main {
+ 
+       // execute the program, if enabled
+       if (Options.run) {
+-        val result = Interpreter.eval(program)
++        val initialVarEnv = Interpreter.makeInitialVarEnv(program)
++        val result = Interpreter.eval(program, initialVarEnv)
+         println(s"Output: $result")
+       }
+ 
+diff --git a/src/miniscala/Vars.scala b/src/miniscala/Vars.scala
+new file mode 100644
+index 0000000..233db3f
+--- /dev/null
++++ b/src/miniscala/Vars.scala
+@@ -0,0 +1,29 @@
++package miniscala
++
++import miniscala.Ast._
++
++/**
++  * Computation of free variables.
++  */
++object Vars {
++
++  def freeVars(e: Exp): Set[Var] = e match {
++    case IntLit(_) => Set()
++    case VarExp(x) => Set(x)
++    case BinOpExp(leftexp, _, rightexp) => freeVars(leftexp) ++ freeVars(rightexp)
++    case UnOpExp(_, exp) => freeVars(exp)
++    case BlockExp(vals, exp) =>
++      var fv = freeVars(exp)
++      for (d <- vals.reverse)
++        fv = fv -- declaredVars(d) ++ freeVars(d)
++      fv
++  }
++
++  def freeVars(decl: Decl): Set[Var] = decl match {
++    case ValDecl(_, exp) => freeVars(exp)
++  }
++
++  def declaredVars(decl: Decl): Set[Var] = decl match {
++    case ValDecl(x, _) => Set(x)
++  }
++}
+diff --git a/src/miniscala/parser/Parser.scala b/src/miniscala/parser/Parser.scala
+index a029ad4..eea8c67 100644
+--- a/src/miniscala/parser/Parser.scala
++++ b/src/miniscala/parser/Parser.scala
+@@ -30,12 +30,46 @@ object Parser extends PackratParsers {
+           expr(-2)
+       case -2 =>
+         literal |
++          identifier ^^ { id => VarExp(id.str).setPos(id.pos) } |
++          block |
+           parens
+     }
+ 
+   private lazy val parens: PackratParser[Exp] =
+     (LEFT_PAREN() ~ expr() ~ RIGHT_PAREN()) ^^ { case _ ~ exp ~ _ => exp }
+ 
++  private lazy val blockel: PackratParser[AstNode] = valdecl
++
++  private lazy val blockelmseq: PackratParser[List[AstNode]] = rep { blockel ~ SEMICOLON() } ^^ (_.map(_._1))
++
++  type BlockTupleType = List[ValDecl]
++
++  private def validBlock[T](l: List[T]): Option[BlockTupleType] = {
++    // Matchers for each part of the block
++    val matchers = List[Function[T, Boolean]](
++      { case _: ValDecl => true
++      case _ => false
++      })
++    // Extractor of the various parts of the block
++    val (remaining, splits) = matchers.foldLeft((l, List[List[T]]())) { case ((list: List[T], outcome: List[List[T]]), matcher) =>
++      val sublist = list.takeWhile(elm => matcher(elm))
++      (list.drop(sublist.size), sublist :: outcome)
++    }
++    val items = splits.reverse
++    if (remaining.isEmpty) Some(
++      items(0).map(_.asInstanceOf[ValDecl])
++    )
++    else None
++  }
++
++  private lazy val block: PackratParser[BlockExp] = positioned {
++    ((LEFT_BRACE() ~ blockelmseq ~ expr() ~ RIGHT_BRACE()) ^^ {case _ ~ l ~ exp ~ _ => validBlock(l).map(t => BlockExp(t, exp)) } filter(_.isDefined)) ^^ {_.get}
++  }
++
++  private lazy val valdecl: PackratParser[Decl] = positioned {
++    (VVAL() ~ identifier ~ EQ() ~ expr()) ^^ { case _ ~ id ~ _ ~ exp => ValDecl(id.str, exp) }
++  }
++
+   private def binopexp(antiPrecedence: Int): PackratParser[Exp] =
+     expr(antiPrecedence - 1) * {
+       binop(antiPrecedence) ^^ { op => { (left: Exp, right: Exp) => BinOpExp(left, op, right).setPos(left.pos) } }
+@@ -66,6 +100,8 @@ object Parser extends PackratParsers {
+ 
+   private lazy val intliteral: PackratParser[INT] = accept("int literal", { case lit: INT => lit })
+ 
++  private lazy val identifier: PackratParser[IDENTIFIER] = accept("identifier", { case id@IDENTIFIER(name) => id })
++
+   private lazy val plus: PackratParser[BinOp] = OP("+") ^^ { _ => PlusBinOp() }
+ 
+   private lazy val minus: PackratParser[BinOp] = OP("-") ^^ { _ => MinusBinOp() }
