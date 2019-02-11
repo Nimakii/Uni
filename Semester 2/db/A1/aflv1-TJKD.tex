@@ -1,0 +1,192 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Thomas Vinther \& Jens Kristian Refsgaard Nielsen}
+	\title{Handin 1}
+	\date{\today}
+	\maketitle
+	\section{Modeling with the E-R and the Relational Model}
+	After going through the text, we decide to make Members, bottles and wines entity sets, as these are the only written in non-cursive bold writing.\\	
+	
+	\textbf{Members} because it quite obviously needs to be an entity set and is quite simple, it has three attributes: 1. Name, 2. Contact\_details which we just note as some String 3. a unique member\_number which we us as the primary key.\\
+	
+	\textbf{Wines} Because each wine is identified by its name, appellation and vintage (which we will use as part of a primary key to identify each wine) and also holds information about country of origin, grape and alcohol degree we will make wine an entity set as well. Because VINO needs to store information about wine they do not currently own, and might even never have owned a bottle of, we need to seperate bottle and wine as two entity sets. The relationship between bottles and wines therefore simply become a availability relationship. \\
+	
+	\textbf{Bottles} Because we want to describe the relaitonship between the members and the wine they drink and because a member will taste a specific bottle, and may even taste the same bottle at different dates and rank them differently, even though they are the "same" wine, we make bottles our third entity set. The relaitonship between members and bottles we note as the tasting sessions. In this relationship we also note the evaluation each member will make of each wine they taste. In this way, each entry in this relationship will be of a member, who have tasted a specific bottle of wine, the date they did it and the evaluation they gave the wine. An important attribute is whether or not the bottle has been consumed or not, which we agian simply note in the attribute Consumed\\
+	
+	\textbf{Reasoning} As mentioned above, we do not know how many wines VINO will actually have at any given time. They might like to record all the wine in world, (perhaps not) which would then only be stored in the entity set Wines and in the Availability relathinship, this in turn would mean that bottles would only store any bottles they have owned or do own. But this become a necessity when a member can rank the same wine, but from different bottles, differently. This leads to some duplication in the database, but it also simplifies a potential usage of the database, as a lookup in Tastings sessions could potentially give you all the information you would need, without having to refer to another part of the database.\\
+	
+	\textbf{Constraints} In the ER schema we have also noted the participation constraints. For Members to the Tasting sessions relationship, the relationship is only partial, as a new member could potentially not have been to a tasting yet and a member might never come to a tasting. The "same" goes for Bottles and Tasting sessions, as a bottle could poissbly be stored forever and never be drunk, even though that would be a shame. In the relationship between Bottles and Availability, each bottle that exsists must be available and therefor also be associated with at wine. The same goes for wines, it must be either avilable or not and associated with a bottle if it is.   
+	
+	This gives us the following E-R Diagram. Where attributes underlined notes the primary keys of each entity set. 
+
+	\begin{figure}
+		\includegraphics[width=\linewidth]{ERschema4.jpg}
+		\caption{VINO Er schema}
+		\label{fig:schema}
+	\end{figure}
+
+\newpage
+
+	
+	  
+	  The SQL DDL statements to create the above schema: \\
+	 \textbf{ Entity sets:}\\
+	   
+	  
+	 \textbf{ Members:} \\
+	  CREATE  TABLE `Members` (\\
+	  `Name` VARCHAR(45),\\
+	  `Member\_number` INT ,\\
+	  `Contact\_details` VARCHAR(45),\\
+	  PRIMARY KEY (`Member\_number`) )\\
+	  
+	  \textbf{Bottles: }\\
+	  
+	  CREATE  TABLE `Bottles` (\\
+	  `Name` VARCHAR(45)  ,\\
+	  `Appellation` VARCHAR(45)  ,\\
+	  `Vintage` INT  ,\\
+	  `Consumed` VARCHAR(45)  ,\\
+	  `Number` INT ,\\
+	  PRIMARY KEY (`Name`, `Appellation`, `Vintage`, `Number`) )\\
+	  
+	 \textbf{ Wines:}\\
+	  CREATE  TABLE `Wines` (\\
+	  `Name` VARCHAR(45) ,\\
+	  `Appellation` VARCHAR(45)  ,\\
+	  `Vintage` INT  ,\\
+	  `Alcohol\_degree` INT  ,\\
+	  `Country\_of\_origin` VARCHAR(45)  ,\\
+	  `Grape\_variety` VARCHAR(45) ,\\
+	  PRIMARY KEY (`Name`, `Appellation`, `Vintage`) )\\
+	  
+	  
+	  \textbf{Relationships:}\\
+	  \textbf{Tasting Sessions:} \\
+	  CREATE  TABLE `Tasting Sessions` (\\
+	  `Bottle\_name` VARCHAR(45)  ,\\
+	  `Bottle\_appellation` VARCHAR(45)  ,\\
+	  `Bottle\_vintage` INT  ,\\
+	  `Bottle\_number` INT  ,\\
+	  `Member\_number` VARCHAR(45)  ,\\
+	  `Evaluation` VARCHAR(45) ,\\
+	  `Date` DATE  ,\\
+	  PRIMARY KEY (`Bottle\_name`, `Bottle\_appellation`, `Bottle\_vintage`, `Bottle\_number`, `Member\_number`) ,\\
+	  FOREIGN KEY (Member\_number) REFERENCES members(Member\_number)\\
+	  FOREIGN KEY (Bottle\_name) REFERENCES bottles(Name)\\	  
+	  FOREIGN KEY (Bottle\_appellation) REFERENCES bottles(Appellation)\\
+	  FOREIGN KEY (Bottle\_number) REFERENCES bottles(Number)\\
+	  FOREIGN KEY (Bottle\_vintage) REFERENCES bottles(Vintage)\\
+	  )\\
+	  
+	  \textbf{Availability:}\\
+	  CREATE TABLE 'Availability'(\\
+	  'Wines\_Name' VARCHAR(45),\\
+	  'Wines\_Appellation' VARCHAR(45),\\
+	  'Wines\_Vintage' VARCHAR(45),\\
+	  'Available' VARCHAR(45),\\
+	  'Bottle\_number' INT,\\
+	  PRIMARY KEY('Wines\_Name','Wines\_Appellation','Wines\_Vintage',Bottle\_Number) \\
+	  FOREIGN KEY (Wines\_Name) REFERENCES wines(Name)\\
+	  FOREIGN KEY (Wines\_Appellation) REFERENCES wines(Appellation)\\
+	  FOREIGN KEY (Wines\_Vintage) REFERENCES wines(Vintage)\\
+	  FOREIGN KEY (Bottle\_number) References bottles(Number)\\
+	  )\\
+	  
+	  
+
+	  \subsection{Relational Schema diagram}
+	  As requested in the announcement, a Schema Diagram: 
+	  
+	 
+\textbf{Members:}\\	
+	   
+
+	\begin{tabular}{|l|l|l|}
+		\hline
+	\underline{ Member\_number} &	Name & Contact\_Details \\ \hline
+	\end{tabular}\\
+
+\textbf{Tasting session}\\
+
+
+	\begin{tabular}{|l|l|l|l|l|l|l|}
+		\hline
+		\underline{ Member\_number} & \underline{Bottle\_name} & \underline{Bottle\_vintage} & \underline{ Bottle\_appellation} & \underline{Bottle\_number} & Evaluation & Date \\ \hline
+	\end{tabular}\\
+
+\textbf{Bottles}\\
+
+\begin{tabular}{|l|l|l|l|l|l|l|}
+	\hline
+	\underline{ Name} & \underline{Vintage} & \underline{ Appellation} & \underline{Number} & Consumed \\ \hline
+\end{tabular}\\
+
+
+
+\textbf{Availability}\\
+
+\begin{tabular}{|l|l|l|l|l|l|l|}
+	\hline
+	\underline{Bottle\_Number} & \underline{Wine\_Name} & \underline{ Wine\_Appellation} & \underline{Wine\_Vintage} & Available \\ \hline
+\end{tabular}\\
+
+\textbf{Wines}\\
+
+\begin{tabular}{|l|l|l|l|l|l|l|}
+	\hline
+	\underline{Name} & \underline{Appellation} & \underline{Vintage} & Alcohol\_degree & Country\_of\_origin & Grape \\ \hline
+\end{tabular}\\
+
+
+
+
+
+	  
+	  
+	  
+	
+	
+\end{document}

@@ -32,7 +32,7 @@ object Ta26 {
   }
   def encode(i:Int): Nat = {
     def encod(i:Int,m:Nat): Nat = {
-      if(i<0){throw new Exception("Fuck you")}
+      if(i<0){throw new RuntimeException("Fuck you")}
       else if (i==0){m}
       else {encod((i-1),Succ(m))}
     }

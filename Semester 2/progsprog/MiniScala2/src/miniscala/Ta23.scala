@@ -22,7 +22,6 @@ object Ta23 {
       case Cons(y,ys) => s"$x, $xs"
     }
   }
-
   def square(xs:IntList): IntList = xs match {
     case Nil => Nil
     case Cons(y,ys) => Cons(y*y,square(ys))

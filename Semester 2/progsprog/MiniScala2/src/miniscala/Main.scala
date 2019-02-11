@@ -1,6 +1,7 @@
 package miniscala
 
-import miniscala.Ast.MiniScalaError
+import miniscala.Ast.{Exp, IntLit, MiniScalaError}
+import miniscala.Ast._
 import miniscala.parser.Parser
 
 object Main {
@@ -35,4 +36,5 @@ object Main {
         println(e.getMessage)
     }
   }
+
 }
