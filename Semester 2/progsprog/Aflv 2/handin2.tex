@@ -1,4 +1,4 @@
-\documentclass[a4paper, 10pt]{article}
+\documentclass[a1paper, 10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 					% 
 \usepackage{lmodern} 						% Skrifttype
@@ -14,7 +14,7 @@
 \fancypagestyle{plain}{
 	\fancyhf{}								% Clear header/footer
 	\renewcommand{\headrulewidth}{0pt}
-	\fancyfoot[C]{Side \thepage \hspace{1pt} af \pageref{LastPage}}
+	\fancyfoot[C]{Page \thepage \hspace{1pt} af \pageref{LastPage}}
 }
 \pagestyle{plain}
 \usepackage{graphicx}
@@ -37,14 +37,15 @@
 \newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
 \usepackage[utf8]{inputenc}
 \usepackage[danish]{babel}
+\usepackage{qtree}
 
 %%% Margins
 \usepackage[a4paper,left=1in,right=1in,top=1in,bottom=1in]{geometry}
 
 %%% Title
 \title{Aflevering 2}
-\author{Studerende 1, 2017xxxxx \and Studerende 2, 2017xxxxx}
-\date{X. YYYY 20ZZ}
+\author{Thomas Vinther, 201303874 \and Jens Kristian Nielsen, 201303862}
+\date{12. februar 2019}
 
 %%% Code environment
 \usepackage{listings}
@@ -91,7 +92,7 @@
   def eval(e: Exp, venv: VarEnv): Int = e match {
     // ...
     case VarExp(x) => 
-    	trace("Variable found, lookup of variable value in environment")
+    	trace(s"Variable $x found, lookup of variable value in environment gave "+venv(x))
     	venv(x)
     case BlockExp(vals, exp) =>
       var venv1 = venv
@@ -114,26 +115,34 @@ Hvorefter vi sætter venv1 = venv1', mærket var for sammenlignelighed med slide
 \begin{align*}
 	\frac{\text{venv}\vdash \text{vals}\Rightarrow\text{venv1}\text{ }\text{ }\text{ }\text{ }\text{ }\text{venv1}\vdash \text{exp} \Rightarrow v}{\text{venv}\vdash\{\text{vals } ; \text{ exp} \}\Rightarrow v}
 \end{align*}
-Når fortolkeren køres med argumenterne \texttt{-unparse -run -trace examples/ex21.s} fås
-\\((x+\{ val z = (y/x) ; (z*2) \})+12)
-\\Please provide an integer value for the variable x: 2
-\\Please provide an integer value for the variable y: 3
-\\BinOpExp found, evaluating left and right expressions
-\\BinOpExp found, evaluating left and right expressions
-\\Variable found, lookup of variable value in environment
-\\BinOpExp found, evaluating left and right expressions
-\\Variable found, lookup of variable value in environment
-\\Variable found, lookup of variable value in environment
-\\Dividing expressions
-\\Calculating variable values and adding to variable environment
-\\BinOpExp found, evaluating left and right expressions
-\\Variable found, lookup of variable value in environment
-\\Integer 2 found
-\\Multiplying expressions
-\\Adding expressions
-\\Integer 12 found
-\\Adding expressions
-\\Output: 16
+Når fortolkeren køres med argumenterne \texttt{-unparse -run -trace examples/ex21.s} fås outputtet: \\
+((x+{ val z = (y/x) ; (z*2) })+12)\\
+Please provide an integer value for the variable x: 2\\
+Please provide an integer value for the variable y: 3\\
+BinOpExp found, evaluating left and right expressions\\
+BinOpExp found, evaluating left and right expressions\\
+Variable x found, lookup of variable value in environment: 2\\
+BinOpExp found, evaluating left and right expressions\\
+Variable y found, lookup of variable value in environment: 3\\
+Variable x found, lookup of variable value in environment: 2\\
+Dividing expressions\\
+Calculating variable values and adding to variable environment\\
+BinOpExp found, evaluating left and right expressions\\
+Variable z found, lookup of variable value in environment: 1\\
+Integer 2 found\\
+Multiplying expressions\\
+Adding expressions\\
+Integer 12 found\\
+Adding expressions\\
+Output: 16\\
+\\
+Fra vores main, parses programmet først, dernæst unparses det og printes i konsollen, øverst i outputtet, da vi har slået unparse til i vores kørsel. Da vi også har slået vores trace funktion til får vi også printet hvilket slags udtryk der evalueres i den givne rækkefølge fra fortolkeren.\\ 
+Først skabes det initial variabel enviroment hvor der indtastes værdier til de frie variable, i metoden makeInitialVarEnv fra fortolkeren, der benytter metoden freeVars fra vars, der finder de frie variable.\\
+Dernæst evalueres udtrykket. Først findes et BinOpExp, der består af exp:(x+{ val z = (y/x) ; (z*2) }), operatoren + og exp:12. Derefter evalueres det venstre exp, hvor der igen findes et BinOpExp, exp: x, operatoren + og exp: { val z = (y/x) ; (z*2) }. Herefter evalueres venstre siden først, dette var x som er en variabel der bliver slået op i det tilhørende enviroment. \\ 
+Det højre udtryk af BinOpExp, mere bestemt: { val z = (y/x) ; (z*2) } bliver dernæst evalueret, her evalueres venstresiden: val z = (y/x), hvor variabel x og y bliver slået op i deres tilhørende enviroment, dernæst udregnes de og værdien af z bliver lagt ind i z's enviroment. Dernæst bliver (z*2) evalueret som et BinOpExp, z bliver slået op i enviroment, og 2 bliver fundet som et heltal. Udregningen udføres "opad" dvs. z*2 som bliver lagt sammen med x, som var blevet slået op til 2. Vi er nu næsten tilbage til det første BinOpExp hvor højresiden evalueres, her finder vi heltallet 12 og operatoren plus og udregningen udføres. Til sidst bliver det samlede resultat printet fra Main.
+%%\\Ovenstående beskriver følgende Ast træ\\ 
+%%\Tree [.BinOpExp !\qsetw{1cm} [.BinOpExp !\qsetw{0.001cm} Var(x) PlusBinOp [.BlockExp !\qsetw{0.001cm} Var(z) [.BinOpExp !\qsetw{0.001cm} Var(y) PlusBinOp Var(x) ] Var(z) PlusBinOp IntLit(2) ] ] PlusBinOp IntLit(12) ]
+%%\qsetw{1cm}
 \section*{Opgave 28}
 \section*{Kode}
 \begin{lstlisting}
@@ -155,58 +164,58 @@ Når fortolkeren køres med argumenterne \texttt{-unparse -run -trace examples/e
   	exp match{
   		case IntLit(c)=> IntLit(c)
   		case VarExp(x)=> VarExp(x)
-		case UnOpExp(op,e)=> UnOpExp(op,simplify(e))
-		case BlockExp(vals,e)=>
-			var vals1 = new ListBuffer[ValDecl]()
-  			for (v <- vals){
-  				vals1 += simplifyDecl(v)
-  			}
-  			val vals2 = vals1.toList
-  			BlockExp(vals2,simplify(e))
-  		case BinOpExp(IntLit(m),ModuloBinOp(),IntLit(n)) =>
-  			if((0<=m)&&(m<n)) IntLit(m)
-  			else BinOpExp(IntLit(m),ModuloBinOp(),IntLit(n))
-  		case BinOpExp(IntLit(m),MaxBinOp(),IntLit(n)) =>
-  			if(m == n) IntLit(m)
-  			else BinOpExp(IntLit(m),MaxBinOp(),IntLit(n))
-  		case BinOpExp(IntLit(m),MultBinOp(),IntLit(n)) =>
-  			if ((m < 0) && (n < 0)) BinOpExp(IntLit(-m), MultBinOp(), IntLit(-n))
-  			else if (m < 0) UnOpExp(NegUnOp(), BinOpExp(IntLit(-m), MultBinOp(), IntLit(n)))
-  			else if (n < 0) UnOpExp(NegUnOp(), BinOpExp(IntLit(m), MultBinOp(), IntLit(-n)))
-  			else if (n == 1) IntLit(m)
-  			else if (m == 1) IntLit(n)
-  			else if ((n == 0) || (m == 0)) IntLit(0)
-  			else BinOpExp(IntLit(m), MultBinOp(), IntLit(n))
-  		case BinOpExp(le, op, re) => op match {
-  			case PlusBinOp() =>
-  				if(le == IntLit(0)) simplify(re)
-	  			else if(re == IntLit(0)) simplify(le)
-  				else BinOpExp(simplify(le),op,simplify(re))
-  			case MinusBinOp() =>
-  				if(le == re) IntLit(0)
-	  			else if (le == IntLit(0)) UnOpExp(NegUnOp(),simplify(re))
-  				else re match {
-  					case IntLit(m) =>{
-  						if (m<0) BinOpExp(simplify(le),PlusBinOp(),IntLit(-m))
-  						else BinOpExp(simplify(le),op,simplify(re))
-	  				}
-  				BinOpExp(simplify(le),op,simplify(re))
+			case UnOpExp(op,e)=> UnOpExp(op,simplify(e))
+			case BlockExp(vals,e)=>
+				var vals1 = new ListBuffer[ValDecl]()
+  				for (v <- vals){
+  					vals1 += simplifyDecl(v)
   				}
-	  		case MultBinOp() =>
-  				if(le == IntLit(1)) simplify(re)
+  				val vals2 = vals1.toList
+  				BlockExp(vals2,simplify(e))
+	  	case BinOpExp(IntLit(m),ModuloBinOp(),IntLit(n)) =>
+	  		if((0<=m)&&(m<n)) IntLit(m)
+	  		else BinOpExp(IntLit(m),ModuloBinOp(),IntLit(n))
+	  	case BinOpExp(IntLit(m),MaxBinOp(),IntLit(n)) =>
+	  		if(m == n) IntLit(m)
+	  		else BinOpExp(IntLit(m),MaxBinOp(),IntLit(n))
+	  	case BinOpExp(IntLit(m),MultBinOp(),IntLit(n)) =>
+	  		if ((m < 0) && (n < 0)) BinOpExp(IntLit(-m), MultBinOp(), IntLit(-n))
+	  		else if (m < 0) UnOpExp(NegUnOp(), BinOpExp(IntLit(-m), MultBinOp(), IntLit(n)))
+	  		else if (n < 0) UnOpExp(NegUnOp(), BinOpExp(IntLit(m), MultBinOp(), IntLit(-n)))
+	  		else if (n == 1) IntLit(m)
+	  		else if (m == 1) IntLit(n)
+	  		else if ((n == 0) || (m == 0)) IntLit(0)
+	  		else BinOpExp(IntLit(m), MultBinOp(), IntLit(n))
+	  	case BinOpExp(le, op, re) => op match {
+	  		case PlusBinOp() =>
+	  			if(le == IntLit(0)) simplify(re)
+				else if(re == IntLit(0)) simplify(le)
+	  			else BinOpExp(simplify(le),op,simplify(re))
+	  		case MinusBinOp() =>
+	  			if(le == re) IntLit(0)
+				else if (le == IntLit(0)) UnOpExp(NegUnOp(),simplify(re))
+  				else re match {
+	  				case IntLit(m) =>{
+	  					if (m<0) BinOpExp(simplify(le),PlusBinOp(),IntLit(-m))
+	  					else BinOpExp(simplify(le),op,simplify(re))
+					}
+	  			BinOpExp(simplify(le),op,simplify(re))
+	  			}
+			case MultBinOp() =>
+	  			if(le == IntLit(1)) simplify(re)
   				else if(re == IntLit(1)) simplify(le)
   				else if((le == IntLit(0))||(re == IntLit(0))) IntLit(0)
-	  			else BinOpExp(simplify(le),op,simplify(re))
-  			case DivBinOp() =>
+				else BinOpExp(simplify(le),op,simplify(re))
+	  		case DivBinOp() =>
   				if(le == IntLit(0)) IntLit(0)
   				else if(re == IntLit(0)) throw new IllegalArgumentException("Division by zero")
-	  			else if(le == re) IntLit(1)
-  				else BinOpExp(simplify(le),op,simplify(re))
+				else if(le == re) IntLit(1)
+	  			else BinOpExp(simplify(le),op,simplify(re))
   			case ModuloBinOp() =>
   				if(re == IntLit(0)) throw new IllegalArgumentException("Modulation by zero")
   				else BinOpExp(simplify(le),op,simplify(re))
-	  		case MaxBinOp() => BinOpExp(simplify(le),op,simplify(re))
-  }
+			case MaxBinOp() => BinOpExp(simplify(le),op,simplify(re))
+  	}	
 \end{lstlisting}
 \begin{lstlisting}
   def main(args: Array[String]): Unit = {
@@ -224,6 +233,14 @@ Når fortolkeren køres med argumenterne \texttt{-unparse -run -trace examples/e
     assert(Interpreter.simplify(Parser.parse("(5*(a/(--a)))*(5*(1-1))"))==Parser.parse("0"))
     assert(Interpreter.simplify(Parser.parse("{val x=3*1;x*0}"))==Parser.parse("{ val x = 3 ; 0 }"))
     assert(Interpreter.simplify(Parser.parse("{val x={val z = 7/7 ; z*1};z*x*0}"))==Parser.parse("{ val x = { val z = 1 ; z } ; 0 }"))
+    assert(Interpreter.simplify(Parser.parse("55+0"))==Parser.parse("55"))
+    assert(Interpreter.simplify(Parser.parse("5*1"))==Parser.parse("5"))
+    assert(Interpreter.simplify(Parser.parse("0/4"))==Parser.parse("0"))
+    assert(Interpreter.simplify(Parser.parse("5max5"))==Parser.parse("5"))
+    assert(Interpreter.simplify(Parser.parse("a/a"))==Parser.parse("1"))
+    assert(Interpreter.simplify(Parser.parse("12-12"))==Parser.parse("0"))
+    assert(Interpreter.simplify(Parser.parse("(5*1)*(5*(1-1))"))==Parser.parse("0"))
+    assert(Interpreter.simplify(Parser.parse("(5*1)*(5*0)"))==Parser.parse("0"))
   }
 \end{lstlisting}
 

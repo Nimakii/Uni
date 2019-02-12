@@ -16,7 +16,7 @@ object Interpreter {
       trace("Integer "+c+ " found")
       c
     case VarExp(x) =>
-      trace("Variable found, lookup of variable value in environment")
+      trace(s"Variable $x found, lookup of variable value in environment gave "+venv(x))
       venv(x)
     case BinOpExp(leftexp, op, rightexp) =>
       trace("BinOpExp found, evaluating left and right expressions")

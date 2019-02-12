@@ -17,5 +17,6 @@ object Test {
     assert(Interpreter.simplify(Parser.parse("(5*(a/(--a)))*(5*(1-1))"))==Parser.parse("0"))
     assert(Interpreter.simplify(Parser.parse("{val x=3*1;x*0}"))==Parser.parse("{ val x = 3 ; 0 }"))
     assert(Interpreter.simplify(Parser.parse("{val x={val z = 7/7 ; z*1};z*x*0}"))==Parser.parse("{ val x = { val z = 1 ; z } ; 0 }"))
+    println(Parser.parse("((x+{val z = y/x;z*2})+12)"))
   }
 }
