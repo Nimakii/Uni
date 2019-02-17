@@ -1,0 +1,628 @@
+diff --git a/src/miniscala/Ast.scala b/src/miniscala/Ast.scala
+index f2c9838..8c459a1 100644
+--- a/src/miniscala/Ast.scala
++++ b/src/miniscala/Ast.scala
+@@ -18,7 +18,7 @@ object Ast {
+   type Var = String
+ 
+   /**
+-    * Expressions.
++    * Expressions (excluding literals).
+     */
+   sealed abstract class Exp extends AstNode
+ 
+@@ -28,10 +28,27 @@ object Ast {
+ 
+   case class UnOpExp(op: UnOp, exp: Exp) extends Exp
+ 
+-  case class IntLit(c: Int) extends Exp
++  case class IfThenElseExp(condexp: Exp, thenexp: Exp, elseexp: Exp) extends Exp
+ 
+   case class BlockExp(vals: List[ValDecl], exp: Exp) extends Exp
+ 
++  case class TupleExp(exps: List[Exp]) extends Exp
++
++  case class MatchExp(exp: Exp, cases: List[MatchCase]) extends Exp
++
++  /**
++    * Literals.
++    */
++  sealed abstract class Literal extends Exp
++
++  case class IntLit(c: Int) extends Literal
++
++  case class BoolLit(c: Boolean) extends Literal
++
++  case class FloatLit(c: Float) extends Literal
++
++  case class StringLit(c: String) extends Literal
++
+   /**
+     * Binary operators.
+     */
+@@ -45,10 +62,20 @@ object Ast {
+ 
+   case class DivBinOp() extends BinOp
+ 
++  case class EqualBinOp() extends BinOp
++
++  case class LessThanBinOp() extends BinOp
++
++  case class LessThanOrEqualBinOp() extends BinOp
++
+   case class ModuloBinOp() extends BinOp
+ 
+   case class MaxBinOp() extends BinOp
+ 
++  case class AndBinOp() extends BinOp
++
++  case class OrBinOp() extends BinOp
++
+   /**
+     * Unary operators.
+     */
+@@ -56,12 +83,34 @@ object Ast {
+ 
+   case class NegUnOp() extends UnOp
+ 
++  case class NotUnOp() extends UnOp
++
+   /**
+     * Declarations.
+     */
+   sealed abstract class Decl extends AstNode
+ 
+-  case class ValDecl(x: Var, exp: Exp) extends Decl
++  case class ValDecl(x: Var, opttype: Option[Type], exp: Exp) extends Decl
++
++  /**
++    * Match cases.
++    */
++  case class MatchCase(pattern: List[Var], exp: Exp) extends AstNode
++
++  /**
++    * Types.
++    */
++  sealed abstract class Type extends AstNode
++
++  case class IntType() extends Type
++
++  case class BoolType() extends Type
++
++  case class FloatType() extends Type
++
++  case class StringType() extends Type
++
++  case class TupleType(types: List[Type]) extends Type
+ 
+   /**
+     * Exception with a message and (optionally) a source code position.
+diff --git a/src/miniscala/Interpreter.scala b/src/miniscala/Interpreter.scala
+index aa175e0..e68bebf 100644
+--- a/src/miniscala/Interpreter.scala
++++ b/src/miniscala/Interpreter.scala
+@@ -1,6 +1,7 @@
+ package miniscala
+ 
+ import miniscala.Ast._
++import miniscala.Unparser.unparse
+ 
+ import scala.io.StdIn
+ 
+@@ -9,46 +10,136 @@ import scala.io.StdIn
+   */
+ object Interpreter {
+ 
+-  type VarEnv = Map[Var, Int]
++  sealed abstract class Val
++  case class IntVal(v: Int) extends Val
++  case class BoolVal(v: Boolean) extends Val
++  case class FloatVal(v: Float) extends Val
++  case class StringVal(v: String) extends Val
++  case class TupleVal(vs: List[Val]) extends Val
+ 
+-  def eval(e: Exp, venv: VarEnv): Int = e match {
+-    case IntLit(c) => c
+-    case VarExp(x) => venv(x)
++  type VarEnv = Map[Var, Val]
++
++  def eval(e: Exp, venv: VarEnv): Val = e match {
++    case IntLit(c) => IntVal(c)
++    case BoolLit(c) => ???
++    case FloatLit(c) => ???
++    case StringLit(c) => ???
++    case VarExp(x) =>
++      venv.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e))
+     case BinOpExp(leftexp, op, rightexp) =>
+       val leftval = eval(leftexp, venv)
+       val rightval = eval(rightexp, venv)
+       op match {
+-        case PlusBinOp() => leftval + rightval
++        case PlusBinOp() =>
++          (leftval, rightval) match {
++            case (IntVal(v1), IntVal(v2)) => IntVal(v1 + v2)
++            case (FloatVal(v1), FloatVal(v2)) => FloatVal(v1 + v2)
++            case (IntVal(v1), FloatVal(v2)) => FloatVal(v1 + v2)
++            case (FloatVal(v1), IntVal(v2)) => FloatVal(v1 + v2)
++            case (StringVal(v1), StringVal(v2)) => StringVal(v1 + v2)
++            case (StringVal(v1), IntVal(v2)) => StringVal(v1 + v2)
++            case (StringVal(v1), FloatVal(v2)) => StringVal(v1 + v2)
++            case (IntVal(v1), StringVal(v2)) => StringVal(v1 + v2)
++            case (FloatVal(v1), StringVal(v2)) => StringVal(v1 + v2)
++            case _ => throw new InterpreterError(s"Type mismatch at '+', unexpected values ${valueToString(leftval)} and ${valueToString(rightval)}", op)
++          }
+         case MinusBinOp() => ???
+         case MultBinOp() => ???
+         case DivBinOp() =>
+-          if (rightval == 0)
++          if (rightval == IntVal(0) || rightval == FloatVal(0.0f))
+             throw new InterpreterError(s"Division by zero", op)
+-          leftval / rightval
++          (leftval, rightval) match {
++            case (IntVal(v1), IntVal(v2)) => IntVal(v1 / v2)
++            case (FloatVal(v1), FloatVal(v2)) => FloatVal(v1 / v2)
++            case (IntVal(v1), FloatVal(v2)) => FloatVal(v1 / v2)
++            case (FloatVal(v1), IntVal(v2)) => FloatVal(v1 / v2)
++            case _ => throw new InterpreterError(s"Type mismatch at '/', unexpected values ${valueToString(leftval)} and ${valueToString(rightval)}", op)
++          }
+         case ModuloBinOp() => ???
+-        case MaxBinOp() =>
+-          if (???) ??? else ???
++        case EqualBinOp() => ???
++        case LessThanBinOp() => ???
++        case LessThanOrEqualBinOp() => ???
++        case MaxBinOp() => ???
++        case AndBinOp() => ???
++        case OrBinOp() => ???
+       }
+     case UnOpExp(op, exp) =>
+       val expval = eval(exp, venv)
+       op match {
+-        case NegUnOp() => -expval
++        case NegUnOp() =>
++          expval match {
++            case IntVal(v) => IntVal(-v)
++            case FloatVal(v) => FloatVal(-v)
++            case _ => throw new InterpreterError(s"Type mismatch at '-', unexpected value ${valueToString(expval)}", op)
++          }
++        case NotUnOp() => ???
+       }
++    case IfThenElseExp(condexp, thenexp, elseexp) => ???
+     case BlockExp(vals, exp) =>
+       var venv1 = venv
+-      for (d <- vals)
+-        venv1 = venv1 + (d.x -> eval(d.exp, venv1))
++      for (d <- vals) {
++        val v = eval(d.exp, venv1)
++        venv1 = venv1 + (d.x -> v)
++      }
+       eval(exp, venv1)
++    case TupleExp(exps) =>
++      var vals = List[Val]()
++      for (exp <- exps)
++        vals = eval(exp, venv) :: vals
++      TupleVal(vals.reverse)
++    case MatchExp(exp, cases) =>
++      val expval = eval(exp, venv)
++      expval match {
++        case TupleVal(vs) =>
++          for (c <- cases) {
++            if (vs.length == c.pattern.length) {
++              ???
++            }
++          }
++          throw new InterpreterError(s"No case matches value ${valueToString(expval)}", e)
++        case _ => throw new InterpreterError(s"Tuple expected at match, found ${valueToString(expval)}", e)
++      }
++  }
++
++  /**
++    * Checks whether value `v` has type `ot` (if present), generates runtime type error otherwise.
++    */
++  def checkValueType(v: Val, ot: Option[Type], n: AstNode): Unit = ot match {
++    case Some(t) =>
++      (v, t) match {
++        case (IntVal(_), IntType()) |
++             (BoolVal(_), BoolType()) |
++             (FloatVal(_), FloatType()) |
++             (IntVal(_), FloatType()) |
++             (StringVal(_), StringType()) => // do nothing
++        case (TupleVal(vs), TupleType(ts)) if vs.length == ts.length =>
++          for ((vi, ti) <- vs.zip(ts))
++            checkValueType(vi, Some(ti), n)
++        case _ =>
++          throw new InterpreterError(s"Type mismatch: value ${valueToString(v)} does not match type ${unparse(t)}", n)
++      }
++    case None => // do nothing
++  }
++
++  /**
++    * Converts a value to its string representation (for error messages).
++    */
++  def valueToString(v: Val): String = v match {
++    case IntVal(c) => c.toString
++    case FloatVal(c) => c.toString
++    case BoolVal(c) => c.toString
++    case StringVal(c) => c
++    case TupleVal(vs) => vs.map(v => valueToString(v)).mkString("(", ",", ")")
+   }
+ 
+   /**
+     * Builds an initial environment, with a value for each free variable in the program.
+     */
+   def makeInitialVarEnv(program: Exp): VarEnv = {
+-    var venv = Map[Var, Int]()
++    var venv = Map[Var, Val]()
+     for (x <- Vars.freeVars(program)) {
+       print(s"Please provide an integer value for the variable $x: ")
+-      venv = venv + (x -> StdIn.readInt())
++      venv = venv + (x -> IntVal(StdIn.readInt()))
+     }
+     venv
+   }
+diff --git a/src/miniscala/Main.scala b/src/miniscala/Main.scala
+index de580c4..02f9083 100644
+--- a/src/miniscala/Main.scala
++++ b/src/miniscala/Main.scala
+@@ -20,11 +20,17 @@ object Main {
+       if (Options.unparse)
+         println(Unparser.unparse(program))
+ 
++      // type check the program, if enabled
++      if (Options.types) {
++        val initialVarTypeEnv = TypeChecker.makeInitialVarTypeEnv(program)
++        TypeChecker.typeCheck(program, initialVarTypeEnv)
++      }
++
+       // execute the program, if enabled
+       if (Options.run) {
+         val initialVarEnv = Interpreter.makeInitialVarEnv(program)
+         val result = Interpreter.eval(program, initialVarEnv)
+-        println(s"Output: $result")
++        println(s"Output: ${Interpreter.valueToString(result)}")
+       }
+ 
+     } catch { // report all errors to the console
+diff --git a/src/miniscala/Options.scala b/src/miniscala/Options.scala
+index 5450ced..9343ab6 100644
+--- a/src/miniscala/Options.scala
++++ b/src/miniscala/Options.scala
+@@ -14,6 +14,7 @@ object Options {
+       |  (none)    only parse the program
+       |  -unparse  parse and unparse the program
+       |  -run      parse and run the program
++      |  -types    parse and type-check the program
+       |  -trace    trace when running
+     """.stripMargin
+ 
+@@ -21,6 +22,8 @@ object Options {
+ 
+   var run = false
+ 
++  var types = false
++
+   var trace = false
+ 
+   var file: String = _
+@@ -34,6 +37,7 @@ object Options {
+         arg match {
+           case "-unparse" => unparse = true
+           case "-run" => run = true
++          case "-types" => types = true
+           case "-trace" => trace = true
+           case _ =>
+             throw new OptionsError(s"Error: option not recognized: $arg")
+diff --git a/src/miniscala/TypeChecker.scala b/src/miniscala/TypeChecker.scala
+new file mode 100644
+index 0000000..4bc81a5
+--- /dev/null
++++ b/src/miniscala/TypeChecker.scala
+@@ -0,0 +1,90 @@
++package miniscala
++
++import miniscala.Ast._
++import miniscala.Unparser.unparse
++
++/**
++  * Type checker for MiniScala.
++  */
++object TypeChecker {
++
++  type VarTypeEnv = Map[Var, Type]
++
++  def typeCheck(e: Exp, vtenv: VarTypeEnv): Type = e match {
++    case IntLit(_) => IntType()
++    case BoolLit(_) => ???
++    case FloatLit(_) => ???
++    case StringLit(_) => ???
++    case VarExp(x) => ???
++    case BinOpExp(leftexp, op, rightexp) =>
++      val lefttype = typeCheck(leftexp, vtenv)
++      val righttype = typeCheck(rightexp, vtenv)
++      op match {
++        case PlusBinOp() =>
++          (lefttype, righttype) match {
++            case (IntType(), IntType()) => IntType()
++            case (FloatType(), FloatType()) => FloatType()
++            case (IntType(), FloatType()) => FloatType()
++            case (FloatType(), IntType()) => FloatType()
++            case (StringType(), StringType()) => StringType()
++            case (StringType(), IntType()) => StringType()
++            case (StringType(), FloatType()) => StringType()
++            case (IntType(), StringType()) => StringType()
++            case (FloatType(), StringType()) => StringType()
++            case _ => throw new TypeError(s"Type mismatch at '+', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
++          }
++        case MinusBinOp() | MultBinOp() | DivBinOp() | ModuloBinOp() | MaxBinOp() => ???
++        case EqualBinOp() => ???
++        case LessThanBinOp() | LessThanOrEqualBinOp() => ???
++        case AndBinOp() | OrBinOp() => ???
++      }
++    case UnOpExp(op, exp) => ???
++    case IfThenElseExp(condexp, thenexp, elseexp) => ???
++    case BlockExp(vals, exp) =>
++      var vtenv1 = vtenv
++      for (d <- vals) {
++        val t = typeCheck(d.exp, vtenv1)
++        checkTypesEqual(t, d.opttype, d)
++        vtenv1 = vtenv1 + (d.x -> d.opttype.getOrElse(t))
++      }
++      ???
++    case TupleExp(exps) => TupleType(???)
++    case MatchExp(exp, cases) =>
++      val exptype = typeCheck(exp, vtenv)
++      exptype match {
++        case TupleType(ts) =>
++          for (c <- cases) {
++            if (ts.length == c.pattern.length) {
++              ???
++            }
++          }
++          throw new TypeError(s"No case matches type ${unparse(exptype)}", e)
++        case _ => throw new TypeError(s"Tuple expected at match, found ${unparse(exptype)}", e)
++      }
++  }
++
++  /**
++    * Checks that the types `t1` and `ot2` are equal (if present), throws type error exception otherwise.
++    */
++  def checkTypesEqual(t1: Type, ot2: Option[Type], n: AstNode): Unit = ot2 match {
++    case Some(t2) =>
++      if (t1 != t2)
++        throw new TypeError(s"Type mismatch: expected type ${unparse(t2)}, found type ${unparse(t1)}", n)
++    case None => // do nothing
++  }
++
++  /**
++    * Builds an initial type environment, with a type for each free variable in the program.
++    */
++  def makeInitialVarTypeEnv(program: Exp): VarTypeEnv = {
++    var vtenv: VarTypeEnv = Map()
++    for (x <- Vars.freeVars(program))
++      vtenv = vtenv + (x -> IntType())
++    vtenv
++  }
++
++  /**
++    * Exception thrown in case of MiniScala type errors.
++    */
++  class TypeError(msg: String, node: AstNode) extends MiniScalaError(s"Type error: $msg", node.pos)
++}
+diff --git a/src/miniscala/Vars.scala b/src/miniscala/Vars.scala
+index 233db3f..a349202 100644
+--- a/src/miniscala/Vars.scala
++++ b/src/miniscala/Vars.scala
+@@ -8,22 +8,33 @@ import miniscala.Ast._
+ object Vars {
+ 
+   def freeVars(e: Exp): Set[Var] = e match {
+-    case IntLit(_) => Set()
++    case _: Literal => Set()
+     case VarExp(x) => Set(x)
+     case BinOpExp(leftexp, _, rightexp) => freeVars(leftexp) ++ freeVars(rightexp)
+     case UnOpExp(_, exp) => freeVars(exp)
++    case IfThenElseExp(condexp, thenexp, elseexp) => freeVars(condexp) ++ freeVars(thenexp) ++ freeVars(elseexp)
+     case BlockExp(vals, exp) =>
+       var fv = freeVars(exp)
+       for (d <- vals.reverse)
+         fv = fv -- declaredVars(d) ++ freeVars(d)
+       fv
++    case TupleExp(exps) =>
++      var fv = Set[Var]()
++      for (exp <- exps)
++        fv = fv ++ freeVars(exp)
++      fv
++    case MatchExp(exp, cases) =>
++      var fv = freeVars(exp)
++      for (c <- cases)
++        fv = fv ++ (freeVars(c.exp) -- c.pattern)
++      fv
+   }
+ 
+   def freeVars(decl: Decl): Set[Var] = decl match {
+-    case ValDecl(_, exp) => freeVars(exp)
++    case ValDecl(_, _, exp) => freeVars(exp)
+   }
+ 
+   def declaredVars(decl: Decl): Set[Var] = decl match {
+-    case ValDecl(x, _) => Set(x)
++    case ValDecl(x, _, _) => Set(x)
+   }
+ }
+diff --git a/src/miniscala/parser/Parser.scala b/src/miniscala/parser/Parser.scala
+index eea8c67..f8ad80e 100644
+--- a/src/miniscala/parser/Parser.scala
++++ b/src/miniscala/parser/Parser.scala
+@@ -20,13 +20,18 @@ object Parser extends PackratParsers {
+ 
+   private lazy val prog: PackratParser[Exp] = phrase { expr() }
+ 
+-  private def expr(antiPrecedence: Int = 2): PackratParser[Exp] =
++  private def expr(antiPrecedence: Int = 7): PackratParser[Exp] =
+     antiPrecedence match {
++      case 7 =>
++        ifthenelse |
++          mmatch |
++          expr(6)
+       case x if x >= 0 =>
+         binopexp(antiPrecedence) |
+           expr(x - 1)
+       case -1 =>
+         unopexp |
++          tupleexp |
+           expr(-2)
+       case -2 =>
+         literal |
+@@ -38,6 +43,27 @@ object Parser extends PackratParsers {
+   private lazy val parens: PackratParser[Exp] =
+     (LEFT_PAREN() ~ expr() ~ RIGHT_PAREN()) ^^ { case _ ~ exp ~ _ => exp }
+ 
++  private lazy val mmatch: PackratParser[Exp] = positioned {
++    (expr(6) ~ MATCH() ~ LEFT_BRACE() ~ repsep(ccase, SEMICOLON()) ~ RIGHT_BRACE()) ^^ { case target ~ _ ~ _ ~ cases ~ _ => MatchExp(target, cases) }
++  }
++
++  private lazy val tupleexp: PackratParser[Exp] = positioned {
++    (LEFT_PAREN() ~ expr() ~ COMMA() ~ rep1sep(expr(), COMMA()) ~ RIGHT_PAREN()) ^^ { case _ ~ exp ~ _ ~ others ~ _ => TupleExp(exp :: others) }
++  }
++
++  private lazy val ccase: PackratParser[MatchCase] = positioned {
++    CASE() ~ tuplepattern ~ ARROW() ~ expr() ^^ { case _ ~ matcher ~ _ ~ body => MatchCase(matcher, body) }
++  }
++
++  private lazy val tuplepattern: PackratParser[List[String]] =
++    (LEFT_PAREN() ~ identifier ~ COMMA() ~ rep1sep(identifier, COMMA()) ~ RIGHT_PAREN()) ^^ { case _ ~ id ~ _ ~ ids ~ _ => (id :: ids).map(_.str) }
++
++  private lazy val ifthenelse: PackratParser[Exp] = positioned {
++    (IFF() ~ LEFT_PAREN() ~ expr() ~ RIGHT_PAREN() ~ expr() ~ EELSE() ~ expr()) ^^ {
++      case _ ~ _ ~ exp1 ~ _ ~ exp2 ~ _ ~ exp3 => IfThenElseExp(exp1, exp2, exp3)
++    }
++  }
++
+   private lazy val blockel: PackratParser[AstNode] = valdecl
+ 
+   private lazy val blockelmseq: PackratParser[List[AstNode]] = rep { blockel ~ SEMICOLON() } ^^ (_.map(_._1))
+@@ -67,22 +93,59 @@ object Parser extends PackratParsers {
+   }
+ 
+   private lazy val valdecl: PackratParser[Decl] = positioned {
+-    (VVAL() ~ identifier ~ EQ() ~ expr()) ^^ { case _ ~ id ~ _ ~ exp => ValDecl(id.str, exp) }
++    (VVAL() ~ identifier ~ opttypeannotation ~ EQ() ~ expr()) ^^ { case _ ~ id ~ t ~ _ ~ exp => ValDecl(id.str, t, exp) }
+   }
+ 
++  private lazy val opttypeannotation: PackratParser[Option[Type]] =
++    opt { (COLON() ~ typeannotation) ^^ { case _ ~ ta => ta }  }
++
+   private def binopexp(antiPrecedence: Int): PackratParser[Exp] =
+     expr(antiPrecedence - 1) * {
+       binop(antiPrecedence) ^^ { op => { (left: Exp, right: Exp) => BinOpExp(left, op, right).setPos(left.pos) } }
+     }
+ 
+-  private lazy val literal: PackratParser[IntLit] = positioned {
+-    intliteral ^^ { lit => IntLit(lit.i) }
++  private lazy val literal: PackratParser[Literal] = positioned {
++    strliteral ^^ { lit => StringLit(lit.str) } |
++      boolliteral ^^ { lit => BoolLit(lit.b) } |
++      intliteral ^^ { lit => IntLit(lit.i) } |
++      floatliteral ^^ { lit => FloatLit(lit.v) }
+   }
+ 
+   private lazy val unopexp: PackratParser[Exp] = positioned {
+     (unop ~ expr(-1)) ^^ { case op ~ exp => UnOpExp(op, exp) }
+   }
+ 
++  private lazy val typeannotation: PackratParser[Type] = positioned { complextype ^? {case Left(t) => t} }
++
++  /**
++    * Left represent a type, Right represent a tuple type in parentheses.
++    * Keeping track of parentheses is needed to distinguish the following two cases: ((T, T')) => T and (T, T') => T
++    * Note that additional parentheses are ignored when on the right-hand side of a function type,
++    * as in the case of the two following types: T => (T, T') and T => ((T, T'))
++    */
++  type TypeOrList = Either[Type, TupleType]
++
++  private lazy val complextype: PackratParser[TypeOrList] =
++    nonfuntype
++
++  private lazy val nonfuntype: PackratParser[TypeOrList] = {
++    simpletype ^^ { t => t.str match {
++      case "Int" => Left(IntType())
++      case "String" => Left(StringType())
++      case "Boolean" => Left(BoolType())
++      case "Float" => Left(FloatType())
++      case "Unit" => Left(TupleType(Nil))
++    }
++    } |
++      (LEFT_PAREN() ~ RIGHT_PAREN()) ^^ { case _ ~ _ => Left(TupleType(Nil)) } |
++      (LEFT_PAREN() ~ typeannotation ~ COMMA() ~ rep1sep(typeannotation, COMMA()) ~ RIGHT_PAREN()) ^^ { case _ ~ t0 ~ _ ~ ts ~ _ => Left(TupleType(t0 :: ts)) } |
++      (LEFT_PAREN() ~ complextype ~ RIGHT_PAREN()) ^^ { case _ ~ t ~ _ => t match { // detection possibly useless parenthesis
++        case Left(TupleType(it)) => Right(TupleType(it))  // if parenthesis was of the kind ((T, T')) we generate a Right
++        case Right(x) => Right(x)                         // we ignore any further nesting, i.e. (((T, T'))) == ((T, T'))
++        case Left(x) => Left(x)                           // parenthesization of a non-tuple type: ignoring nesting
++      } }
++  }
++
+   private def binop(antiPrecedence: Int): PackratParser[BinOp] = positioned {
+     antiPrecedence match {
+       case 0 =>
+@@ -90,16 +153,35 @@ object Parser extends PackratParsers {
+       case 1 =>
+         plus | minus
+       case 2 =>
++        equalequal
++      case 3 =>
++        lt | lteq
++      case 4 =>
++        and
++      case 5 =>
++        or
++      case 6 =>
+         max
+     }
+   }
+ 
+   private lazy val unop: PackratParser[UnOp] = positioned {
+-    neg
++    neg |
++      not
+   }
+ 
++  private lazy val simpletype: PackratParser[SIMPLE_TYPE] = accept("simple type", { case t@SIMPLE_TYPE(v) => t })
++
++  private lazy val strliteral: PackratParser[STRING] = accept("string literal", { case lit: STRING => lit })
++
+   private lazy val intliteral: PackratParser[INT] = accept("int literal", { case lit: INT => lit })
+ 
++  private lazy val boolliteral: PackratParser[BOOL] = accept("boolean literal", { case lit: BOOL => lit })
++
++  private lazy val floatliteral: PackratParser[FLOAT] = accept("float literal", { case lit: FLOAT => lit })
++
++  private lazy val nullliteral: PackratParser[NULL] = accept("null literal", { case lit: NULL => lit })
++
+   private lazy val identifier: PackratParser[IDENTIFIER] = accept("identifier", { case id@IDENTIFIER(name) => id })
+ 
+   private lazy val plus: PackratParser[BinOp] = OP("+") ^^ { _ => PlusBinOp() }
+@@ -110,12 +192,24 @@ object Parser extends PackratParsers {
+ 
+   private lazy val div: PackratParser[BinOp] = OP("/") ^^ { _ => DivBinOp() }
+ 
++  private lazy val equalequal: PackratParser[BinOp] = OP("==") ^^ { _ => EqualBinOp() }
++
++  private lazy val and: PackratParser[BinOp] = OP("&") ^^ { _ => AndBinOp() }
++
++  private lazy val or: PackratParser[BinOp] = OP("|") ^^ { _ => OrBinOp() }
++
+   private lazy val max: PackratParser[BinOp] = OP("max") ^^ { _ => MaxBinOp() }
+ 
++  private lazy val lt: PackratParser[BinOp] = OP("<") ^^ { _ => LessThanBinOp() }
++
+   private lazy val modulo: PackratParser[BinOp] = OP("%") ^^ { _ => ModuloBinOp() }
+ 
++  private lazy val lteq: PackratParser[BinOp] = OP("<=") ^^ { _ => LessThanOrEqualBinOp() }
++
+   private lazy val neg: PackratParser[UnOp] = OP("-") ^^ { _ => NegUnOp() }
+ 
++  private lazy val not: PackratParser[UnOp] = OP("!") ^^ { _ => NotUnOp() }
++
+   private def parseTokens(tokens: Seq[MiniScalaToken]): Exp =
+     prog(new MiniScalaTokenReader(tokens)) match {
+       case NoSuccess(_, next) =>

@@ -15,6 +15,7 @@
       <change beforePath="$PROJECT_DIR$/src/miniscala/Test.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/Test.scala" afterDir="false" />
     </list>
     <list id="0d76170a-e7b4-40e3-8119-326003a9bf0c" name="miniscala2" comment="" />
+    <list id="94c8d562-5c83-4814-a636-8139f50e610e" name="miniscala3" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,8 +33,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="255">
-                  <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+                <state relative-caret-position="595">
+                  <caret line="42" column="66" lean-forward="true" selection-start-line="42" selection-start-column="66" selection-end-line="42" selection-end-column="66" />
                   <folding>
                     <element signature="e#19#41#0" expanded="true" />
                   </folding>
@@ -80,8 +81,8 @@
         <option value="$PROJECT_DIR$/src/miniscala/Ta23.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Unparser.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Main.scala" />
-        <option value="$PROJECT_DIR$/src/miniscala/Ast.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Test.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/Ast.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Interpreter.scala" />
       </list>
     </option>
@@ -98,44 +99,16 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="MiniScala2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MiniScala2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MiniScala2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MiniScala2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MiniScala2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MiniScala2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="miniscala" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MiniScala2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MiniScala2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="miniscala" type="462c0819:PsiDirectoryNode" />
-              <item name="parser" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549978989601" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MiniScala3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/miniscala3.patch" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -246,6 +219,7 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="500aa418-cf26-42e5-b60d-3985c1842317" name="Default Changelist" comment="" />
       <changelist id="0d76170a-e7b4-40e3-8119-326003a9bf0c" name="miniscala2" comment="" />
+      <changelist id="94c8d562-5c83-4814-a636-8139f50e610e" name="miniscala3" comment="" />
       <created>1548958572827</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -258,12 +232,12 @@
       <workItem from="1549652593035" duration="639000" />
       <workItem from="1549870600290" duration="25343000" />
       <workItem from="1549977331066" duration="2227000" />
-      <workItem from="1550430615551" duration="72000" />
+      <workItem from="1550430690929" duration="367000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55859000" />
+    <option name="totallyTimeSpent" value="56154000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -418,8 +392,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="35" lean-forward="true" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+        <state relative-caret-position="595">
+          <caret line="42" column="66" lean-forward="true" selection-start-line="42" selection-start-column="66" selection-end-line="42" selection-end-column="66" />
           <folding>
             <element signature="e#19#41#0" expanded="true" />
           </folding>
