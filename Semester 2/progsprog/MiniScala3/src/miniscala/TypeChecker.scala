@@ -12,10 +12,10 @@ object TypeChecker {
 
   def typeCheck(e: Exp, vtenv: VarTypeEnv): Type = e match {
     case IntLit(_) => IntType()
-    case BoolLit(_) => ???
-    case FloatLit(_) => ???
-    case StringLit(_) => ???
-    case VarExp(x) => ???
+    case BoolLit(_) => BoolType()
+    case FloatLit(_) => FloatType()
+    case StringLit(_) => StringType()
+    case VarExp(x) => vtenv.getOrElse(x, throw new TypeError(s"Unknown identifier '$x'", e))
     case BinOpExp(leftexp, op, rightexp) =>
       val lefttype = typeCheck(leftexp, vtenv)
       val righttype = typeCheck(rightexp, vtenv)
@@ -33,13 +33,46 @@ object TypeChecker {
             case (FloatType(), StringType()) => StringType()
             case _ => throw new TypeError(s"Type mismatch at '+', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
           }
-        case MinusBinOp() | MultBinOp() | DivBinOp() | ModuloBinOp() | MaxBinOp() => ???
-        case EqualBinOp() => ???
-        case LessThanBinOp() | LessThanOrEqualBinOp() => ???
-        case AndBinOp() | OrBinOp() => ???
+        case MinusBinOp() | MultBinOp() | DivBinOp() | ModuloBinOp() | MaxBinOp() => (lefttype, righttype) match {
+          case (IntType(), IntType()) => IntType()
+          case (FloatType(), FloatType()) => FloatType()
+          case (IntType(), FloatType()) => FloatType()
+          case (FloatType(), IntType()) => FloatType()
+          case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
+        }
+        case EqualBinOp() => BoolType()
+        case LessThanBinOp() | LessThanOrEqualBinOp() =>
+          (lefttype, righttype) match{
+            case (IntType(),IntType()) => BoolType()
+            case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
+          }
+        case AndBinOp() | OrBinOp() =>
+          (lefttype, righttype) match{
+            case (BoolType(),BoolType()) => BoolType()
+            case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
+          }
       }
-    case UnOpExp(op, exp) => ???
-    case IfThenElseExp(condexp, thenexp, elseexp) => ???
+    case UnOpExp(op, exp) => op match{
+      case NegUnOp() => typeCheck(exp,vtenv) match{
+        case IntType() => IntType()
+        case FloatType() => FloatType()
+        case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected type ${unparse(typeCheck(exp,vtenv))}}", op)
+      }
+      case NotUnOp() => typeCheck(exp,vtenv) match{
+        case BoolType() => BoolType()
+        case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected type ${unparse(typeCheck(exp,vtenv))}}", op)
+      }
+    }
+    case IfThenElseExp(condexp, thenexp, elseexp) =>
+      val ce = typeCheck(condexp,vtenv)
+      val te = typeCheck(thenexp,vtenv)
+      val ee = typeCheck(elseexp,vtenv)
+      (ce,te,ee) match{
+        case (BoolType(),IntType(),IntType()) => IntType()
+        case (BoolType(),FloatType(),FloatType()) => FloatType()
+        case (BoolType(),StringType(),StringType()) => StringType()
+        case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp())
+      }
     case BlockExp(vals, exp) =>
       var vtenv1 = vtenv
       for (d <- vals) {

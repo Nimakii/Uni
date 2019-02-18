@@ -1,5 +1,5 @@
 package miniscala
-
+import miniscala.TypeChecker._
 import miniscala.Ast._
 import miniscala.Unparser.unparse
 
@@ -10,7 +10,7 @@ import scala.io.StdIn
   */
 object Interpreter {
 
-  type VarEnv = Map[Var, Int]
+  type VarEnv = Map[Var, Val]
   sealed abstract class Val
   case class IntVal(v: Int) extends Val
   case class BoolVal(v: Boolean) extends Val
@@ -18,70 +18,137 @@ object Interpreter {
   case class StringVal(v: String) extends Val
   case class TupleVal(vs: List[Val]) extends Val
 
-  def eval(e: Exp, venv: VarEnv): Int = e match {
+  def eval(e: Exp, env: VarEnv): Val = e match {
     case IntLit(c) =>
       trace("Integer "+c+ " found")
-      c
+      IntVal(c)
+    case BoolLit(c) =>
+      trace("Boolean "+c+ "found")
+      BoolVal(c)
+    case FloatLit(c) =>
+      trace("Float"+c+ "found")
+      FloatVal(c)
+    case StringLit(c) =>
+      trace("String \""+c+ "\" found")
+      StringVal(c)
     case VarExp(x) =>
       trace(s"Variable $x found, lookup of variable value in environment gave "+venv(x))
-      venv(x)
+      env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e))
     case BinOpExp(leftexp, op, rightexp) =>
       trace("BinOpExp found, evaluating left and right expressions")
-      val leftval = eval(leftexp, venv)
-      val rightval = eval(rightexp, venv)
+      val leftval = eval(leftexp, env)
+      val rightval = eval(rightexp, env)
       op match {
-        case PlusBinOp() =>
-          trace("Adding expressions")
-          leftval + rightval
+        case PlusBinOp() => trace("Adding expressions")
+          (leftval,rightval) match{
+            case (IntVal(a),IntVal(b)) => IntVal(a+b)
+            case (FloatVal(a),IntVal(b)) => FloatVal(a+b)
+            case (IntVal(a),FloatVal(b)) => FloatVal(a+b)
+            case (StringVal(a),StringVal(b)) => StringVal(a+b)
+            case (StringVal(a),IntVal(b)) => StringVal(a+b)
+            case (StringVal(a),FloatVal(b)) => StringVal(a+b)
+            case (IntVal(a),StringVal(b)) => StringVal(a+b)
+            case (FloatVal(a),StringVal(b)) => StringVal(a+b)
+            case _ => throw new InterpreterError("Illegal addition",e)
+        }
         case MinusBinOp() =>
           trace("Subtracting expressions")
-          leftval - rightval
+          (leftval,rightval) match{
+            case (IntVal(a),IntVal(b)) => IntVal(a-b)
+            case (FloatVal(a),IntVal(b)) => FloatVal(a-b)
+            case (IntVal(a),FloatVal(b)) => FloatVal(a-b)
+            case _ => throw new InterpreterError("Illegal subtraction",e)
+          }
         case MultBinOp() =>
           trace("Multiplying expressions")
-          leftval*rightval
+          (leftval,rightval) match{
+            case (IntVal(a),IntVal(b)) => IntVal(a*b)
+            case (FloatVal(a),IntVal(b)) => FloatVal(a*b)
+            case (IntVal(a),FloatVal(b)) => FloatVal(a*b)
+            case _ => throw new InterpreterError("Illegal multiplication",e)
+          }
         case DivBinOp() =>
           if (rightval == IntVal(0) || rightval == FloatVal(0.0f))
             throw new InterpreterError(s"Division by zero", op)
           trace("Dividing expressions")
-          leftval / rightval
-        case ModuloBinOp() => if(rightval == 0)
-          throw new InterpreterError("Modulo by zero",op)
+          (leftval,rightval) match{
+            case (IntVal(a),IntVal(b)) => IntVal(a/b)
+            case (FloatVal(a),IntVal(b)) => FloatVal(a/b)
+            case (IntVal(a),FloatVal(b)) => FloatVal(a/b)
+            case _ => throw new InterpreterError("Illegal division",e)
+          }
+        case ModuloBinOp() =>
+          if(rightval == IntVal(0) || rightval == FloatVal(0.0f)){throw new InterpreterError("Modulo by zero",op)}
           trace("Calculating modulo")
-          leftval % rightval
+          (leftval,rightval) match{
+            case (IntVal(a),IntVal(b)) => IntVal(a%b)
+            case (FloatVal(a),IntVal(b)) => FloatVal(a%b)
+            case (IntVal(a),FloatVal(b)) => FloatVal(a%b)
+            case _ => throw new InterpreterError("Illegal modulation",e)
+          }
         case MaxBinOp() =>
           trace("Finding max of expressions")
-          if (leftval>=rightval) leftval else rightval
-
+          (leftval,rightval) match{
+            case (IntVal(a),IntVal(b)) => if(a>b){IntVal(a)}else{IntVal(b)}
+            case (FloatVal(a),IntVal(b)) => if(a>b){FloatVal(a)}else{IntVal(b)}
+            case (IntVal(a),FloatVal(b)) => if(a>b){IntVal(a)}else{FloatVal(b)}
+            case _ => throw new InterpreterError("Illegal maksium",e)
+          }
       }
     case UnOpExp(op, exp) =>
       trace("Unary expression found")
-      val expval = eval(exp, venv)
+      val expval = eval(exp, env)
       op match {
         case NegUnOp() =>
-          trace("Negation of expression")
-          -expval
+          trace("Negation of number")
+          expval match{
+            case IntVal(a) => IntVal(-a)
+            case FloatVal(a) => FloatVal(-a)
+            case _ => throw new InterpreterError("Not a number",e)
+          }
+        case NotUnOp() =>
+          trace("Negation of Boolean")
+          expval match{
+            case BoolVal(a) => BoolVal(!a)
+            case _ => throw new InterpreterError("Not a Boolean",e)
+          }
       }
-    case IfThenElseExp(condexp, thenexp, elseexp) => ???
+    case IfThenElseExp(condexp, thenexp, elseexp) =>
+      eval(condexp,env) match {
+        case BoolVal(a) =>
+          trace("If statement found, evaluating condition")
+          if (a) {
+            trace("evaluating then clause")
+            eval(thenexp, env)
+          }
+          else trace("evaluationg else clause")
+          eval(elseexp, env)
+        case _ => throw new InterpreterError("Condition clause not a boolean", IfThenElseExp(condexp, thenexp, elseexp))
+      }
     case BlockExp(vals, exp) =>
-      var venv1 = venv
+      var env1 = env
+      trace("Calculating variable values and adding to variable environment")
       for (d <- vals) {
-        val v = eval(d.exp, venv1)
-        venv1 = venv1 + (d.x -> v)
+        val dexp = eval(d.exp,env1)
+        checkValueType(dexp, d.opttype, d)
+        env1 += (d.x -> dexp)
       }
-        trace("Calculating variable values and adding to variable environment")
-      eval(exp, venv1)
+      eval(exp, env1)
     case TupleExp(exps) =>
+      trace("Evaluation tuple of expressions")
       var vals = List[Val]()
-      for (exp <- exps)
-        vals = eval(exp, venv) :: vals
+      for (ex <- exps)
+        vals = eval(ex, env) :: vals
       TupleVal(vals.reverse)
     case MatchExp(exp, cases) =>
-      val expval = eval(exp, venv)
+      trace("Updating ")
+      val expval = eval(exp, env)
       expval match {
         case TupleVal(vs) =>
           for (c <- cases) {
             if (vs.length == c.pattern.length) {
-              ???
+              val venv_update = c.pattern.zip(vs)
+              return eval(c.exp,env++venv_update)
             }
           }
           throw new InterpreterError(s"No case matches value ${valueToString(expval)}", e)
@@ -141,7 +208,8 @@ object Interpreter {
 
   import scala.collection.mutable.ListBuffer
   def simplifyDecl(vd: ValDecl): ValDecl = vd match{
-    case ValDecl(x,exp) => ValDecl(x,simplify(exp))
+    case ValDecl(x,o,exp) =>
+      ValDecl(x,o,simplify(exp))
   }
   def simplify(exp: Exp): Exp = {
     var expNew = exp

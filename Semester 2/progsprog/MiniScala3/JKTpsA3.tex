@@ -1,0 +1,136 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+
+%%% Margins
+\usepackage[a4paper,left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+%%% Title
+\title{Aflevering 3}
+\author{Studerende 1, 2017xxxxx \and Studerende 2, 2017xxxxx}
+\date{X. YYYY 20ZZ}
+
+%%% Code environment
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{xcolor}
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+\lstset{
+  basicstyle=\ttfamily\small,                   % the size of the fonts that are used for the code
+  breakatwhitespace=false,                      % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                              % sets automatic line breaking
+  frame=tb,                                     % adds a frame around the code
+  commentstyle=\color{commentsColor}\textit,    % comment style
+  keywordstyle=\color{keywordsColor}\bfseries,  % keyword style
+  stringstyle=\color{stringColor},              % string literal style
+  numbers=left,                                 % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                                % how far the line-numbers are from the code
+  numberstyle=\tiny\color{commentsColor},       % the style that is used for the line-numbers
+  showstringspaces=false,                       % underline spaces within strings only
+  tabsize=2,                                    % sets default tabsize to 2 spaces
+  language=Scala
+}
+
+%% Document
+\begin{document}
+\maketitle
+\section*{Opgave 36}
+\begin{lstlisting}
+  def unparse(e: AstNode): String =
+    ???
+\end{lstlisting}
+\section*{Opgave 37}
+\begin{lstlisting}
+def eval(e: Exp, env: VarEnv): Val = e match {
+    case IntLit(c) => IntVal(c)
+    case BoolLit(c) => ???
+    case FloatLit(c) => ???
+    case StringLit(c) => ???
+    case VarExp(x) => env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e))
+    case BinOpExp(leftexp, op, rightexp) =>
+      val leftval = eval(leftexp, env)
+      val rightval = eval(rightexp, env)
+        // ...
+        case MinusBinOp() => ???
+        case MultBinOp() => ???
+        case DivBinOp() => ???
+        case ModuloBinOp() => ???
+        case EqualBinOp() => ???
+        case LessThanBinOp() => ???
+        case LessThanOrEqualBinOp() => ???
+        case MaxBinOp() => ???
+        case AndBinOp() => ???
+        case OrBinOp() => ???
+      }
+    case UnOpExp(op, exp) =>
+      val expval = eval(exp, env)
+      op match {
+        // ...
+        case NotUnOp() => ???
+      }
+    case IfThenElseExp(condexp, thenexp, elseexp) => ???
+    // ...
+    case MatchExp(mexp, cases) =>
+      val matchval = eval(mexp, env)
+      matchval match {
+        case TupleVal(vs) =>
+          for (c <- cases) {
+            if (vs.length == c.pattern.length) {
+              ???
+            }
+          }
+          throw new InterpreterError(s"No case matches value ${valueToString(matchval)}", e)
+        case _ => throw new InterpreterError(s"Tuple expected at match, found ${valueToString(matchval)}", e)
+      }
+  }
+\end{lstlisting}
+\section*{Opgave 38}
+\begin{lstlisting}
+  def typeCheck(e: Exp, tenv: TypeEnv): Type = e match {
+    case IntLit(_) => IntType
+    case BoolLit(_) => ???
+    case FloatLit(_) => ???
+    case StringLit(_) => ???
+    case VarExp(x) => ???
+    case BinOpExp(leftexp, op, rightexp) =>
+      val lefttype = typeCheck(leftexp, tenv)
+      val righttype = typeCheck(rightexp, tenv)
+      op match {
+        // ...
+        case MinusBinOp() => ???
+        case MultBinOp() => ???
+        case DivBinOp() => ???
+        case ModuloBinOp() => ???
+        case EqualBinOp() => ???
+        case LessThanBinOp() => ???
+        case LessThanOrEqualBinOp() => ???
+        case MaxBinOp() => ???
+        case AndBinOp() => ???
+        case OrBinOp() => ???
+      }
+    case UnOpExp(op, exp) => ???
+    case IfThenElseExp(condexp, thenexp, elseexp) => ???
+    case BlockExp(vals, exp) => ???
+    case TupleExp(exps) => TupleType(???)
+    case MatchExp(mexp, cases) =>
+      val mexptype = typeCheck(mexp, tenv)
+      mexptype match {
+        case TupleType(ts) =>
+          for (c <- cases) {
+            if (ts.length == c.pattern.length) {
+              ???
+            }
+          }
+          throw new TypeError(s"No case matches type ${Unparser.unparse(mexptype)}", e)
+        case _ => throw new TypeError(s"Tuple expected at match, found ${Unparser.unparse(mexptype)}", e)
+      }
+  }
+\end{lstlisting}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
