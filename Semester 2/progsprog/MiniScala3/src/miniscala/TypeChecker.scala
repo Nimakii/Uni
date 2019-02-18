@@ -71,6 +71,7 @@ object TypeChecker {
         case (BoolType(),IntType(),IntType()) => IntType()
         case (BoolType(),FloatType(),FloatType()) => FloatType()
         case (BoolType(),StringType(),StringType()) => StringType()
+        case (BoolType(),BoolType(),BoolType()) => BoolType()
         case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp())
       }
     case BlockExp(vals, exp) =>
@@ -80,15 +81,16 @@ object TypeChecker {
         checkTypesEqual(t, d.opttype, d)
         vtenv1 = vtenv1 + (d.x -> d.opttype.getOrElse(t))
       }
-      ???
-    case TupleExp(exps) => TupleType(???)
+      typeCheck(exp,vtenv1)
+    case TupleExp(exps) => TupleType(exps.map(x => typeCheck(x,vtenv)))
     case MatchExp(exp, cases) =>
       val exptype = typeCheck(exp, vtenv)
       exptype match {
         case TupleType(ts) =>
           for (c <- cases) {
             if (ts.length == c.pattern.length) {
-              ???
+              val venv_update = c.pattern.zip(ts)
+              return typeCheck(c.exp,vtenv++venv_update)
             }
           }
           throw new TypeError(s"No case matches type ${unparse(exptype)}", e)
