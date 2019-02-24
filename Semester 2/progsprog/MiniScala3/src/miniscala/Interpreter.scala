@@ -1,5 +1,4 @@
 package miniscala
-import miniscala.TypeChecker._
 import miniscala.Ast._
 import miniscala.Unparser.unparse
 
@@ -32,7 +31,7 @@ object Interpreter {
       trace("String \""+c+ "\" found")
       StringVal(c)
     case VarExp(x) =>
-      trace(s"Variable $x found, lookup of variable value in environment gave "+venv(x))
+      trace(s"Variable $x found, lookup of variable value in environment gave "+env(x))
       env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e))
     case BinOpExp(leftexp, op, rightexp) =>
       trace("BinOpExp found, evaluating left and right expressions")
@@ -57,6 +56,7 @@ object Interpreter {
             case (IntVal(a),IntVal(b)) => IntVal(a-b)
             case (FloatVal(a),IntVal(b)) => FloatVal(a-b)
             case (IntVal(a),FloatVal(b)) => FloatVal(a-b)
+            case (FloatVal(a),FloatVal(b)) => FloatVal(a-b)
             case _ => throw new InterpreterError("Illegal subtraction",e)
           }
         case MultBinOp() =>
@@ -65,6 +65,7 @@ object Interpreter {
             case (IntVal(a),IntVal(b)) => IntVal(a*b)
             case (FloatVal(a),IntVal(b)) => FloatVal(a*b)
             case (IntVal(a),FloatVal(b)) => FloatVal(a*b)
+            case (FloatVal(a),FloatVal(b)) => FloatVal(a*b)
             case _ => throw new InterpreterError("Illegal multiplication",e)
           }
         case DivBinOp() =>
@@ -75,6 +76,7 @@ object Interpreter {
             case (IntVal(a),IntVal(b)) => IntVal(a/b)
             case (FloatVal(a),IntVal(b)) => FloatVal(a/b)
             case (IntVal(a),FloatVal(b)) => FloatVal(a/b)
+            case (FloatVal(a),FloatVal(b)) => FloatVal(a/b)
             case _ => throw new InterpreterError("Illegal division",e)
           }
         case ModuloBinOp() =>
@@ -84,15 +86,59 @@ object Interpreter {
             case (IntVal(a),IntVal(b)) => IntVal(a%b)
             case (FloatVal(a),IntVal(b)) => FloatVal(a%b)
             case (IntVal(a),FloatVal(b)) => FloatVal(a%b)
+            case (FloatVal(a),FloatVal(b)) => FloatVal(a%b)
             case _ => throw new InterpreterError("Illegal modulation",e)
           }
         case MaxBinOp() =>
           trace("Finding max of expressions")
           (leftval,rightval) match{
             case (IntVal(a),IntVal(b)) => if(a>b){IntVal(a)}else{IntVal(b)}
-            case (FloatVal(a),IntVal(b)) => if(a>b){FloatVal(a)}else{IntVal(b)}
-            case (IntVal(a),FloatVal(b)) => if(a>b){IntVal(a)}else{FloatVal(b)}
+            case (FloatVal(a),IntVal(b)) => if(a>b){FloatVal(a)}else{FloatVal(b)}
+            case (IntVal(a),FloatVal(b)) => if(a>b){FloatVal(a)}else{FloatVal(b)}
+            case (FloatVal(a),FloatVal(b)) => if(a>b){FloatVal(a)}else{FloatVal(b)}
             case _ => throw new InterpreterError("Illegal maksium",e)
+          }
+        case EqualBinOp()=>
+          trace("Evaluating equal")
+          (leftval,rightval) match {
+            case(IntVal(a),IntVal(b)) => BoolVal(a==b)
+            case(FloatVal(a),IntVal(b))=> BoolVal(a==b)
+            case(IntVal(a),FloatVal(b))=> BoolVal(a==b)
+            case(FloatVal(a),FloatVal(b))=> BoolVal(a==b)
+            case(StringVal(a),StringVal(b))=> BoolVal(a==b)
+            case(BoolVal(a),BoolVal(b)) => BoolVal(a==b)
+            case(TupleVal(a),TupleVal(b)) => BoolVal(a==b)
+            case _=> BoolVal(false)
+          }
+        case LessThanBinOp()=>
+          trace("Evaluating less than")
+          (leftval,rightval) match {
+            case (IntVal(a),IntVal(b)) => BoolVal(a<b)
+            case(FloatVal(a),IntVal(b))=> BoolVal(a<b)
+            case(IntVal(a),FloatVal(b))=> BoolVal(a<b)
+            case (FloatVal(a),FloatVal(b))=> BoolVal(a<b)
+            case _=> throw new InterpreterError("Illegal less than operation",op)
+          }
+        case LessThanOrEqualBinOp()=>
+          trace("Evaluating less than or equal")
+          (leftval,rightval) match {
+            case(IntVal(a),IntVal(b)) => BoolVal(a<=b)
+            case(FloatVal(a),IntVal(b))=> BoolVal(a<=b)
+            case(IntVal(a),FloatVal(b))=> BoolVal(a<=b)
+            case(FloatVal(a),FloatVal(b))=> BoolVal(a<=b)
+            case _=> throw new InterpreterError("Illegal 'less than or equal' operation",op)
+          }
+        case AndBinOp()=>
+          trace("Evaluating less than or equal")
+          (leftval,rightval) match {
+            case (BoolVal(a),BoolVal(b)) => BoolVal(a&b)
+            case _=> throw new InterpreterError("Illegal 'and' operation",op)
+          }
+        case OrBinOp()=>
+          trace("Evaluating less than or equal")
+          (leftval,rightval) match {
+            case (BoolVal(a),BoolVal(b)) => BoolVal(a|b)
+            case _=> throw new InterpreterError("Illegal 'and' operation",op)
           }
       }
     case UnOpExp(op, exp) =>
@@ -119,7 +165,7 @@ object Interpreter {
           trace("If statement found, evaluating condition")
           if (a) {
             trace("evaluating then clause")
-            eval(thenexp, env)
+            return eval(thenexp, env)
           }
           else trace("evaluationg else clause")
           eval(elseexp, env)

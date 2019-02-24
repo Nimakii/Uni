@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Jens Kristian Refsgaard Nielsen}
+	\title{Assignment I1}
+	\date{21-02-2019}
+	\maketitle
+\section*{1.}
+We wish to show that $L_1 := \{ a^i b^j a^j\mid 0\leq i , 0\leq j \}$ is non regular, we proceed by applying the pumping lemma.\\Let $k\geq 0$ be given, choose $z = a^p b^q a^q $ for some $p,q\geq0$ such that $|z|> k$ i.e. $p+2q>k$, let $u,v,w \in\Sigma^*$ be given such that $z=uvw$ and $|uv|< k$ and $|v| > 0 $ we then get a few cases of how $u,v,w$ could look:
+\\\textbf{Case 1:} $u = a^l$, $v = a^j$, $w = a^{p-j-l}b^qa^q$ for $l\geq 0$ and $p\geq j>0$ such that $p-l-j\geq 0$.
+\\\textbf{Case 2:} $u = a^{p-l}$, $v = a^{l} b^j$, $w = b^{q-j}a^q$ for $p\geq l\geq0$ and $j>0$ since if $j=0$ we are in case 1.
+\\\textbf{Case 3:} $u = a^pb^j$, $v = b^l$, $w = b^{q-j-l}a^q$ for $l>0$ and $j\geq 0$ such that $q-l-j\geq 0$.
+\\\textbf{Case 4:} $u = a^pb^{q-j}$, $v = b^{j}a^l$, $w = a^{q-l}$ for $l>0$ and $j\geq 0$ and $|uv|=p+q+l < k$.
+\\Is it overkill to go through all these cases? absolutely.
+\\\textbf{Case 1:} Consider
+\begin{align*}
+	uv^iw &= a^l a^{ij} a^{p-j-l}b^qa^q = a^{l+ij+p-j-l}b^qa^q 
+	\\&= a^{(i-1)j+p}b^qa^q \in L_1	\iff (i-1)j+p \in \mathbb{N}
+\end{align*}
+Now we want to find an $i\geq 0$ such that $uv^iw\notin L_1$, but as shown above we cannot choose such an $i$ since $j$ is positive and smaller than $p$, and as such we are forced to choose $p=0$ to avoid case 1 altogether.
+\\After forcing $p=0$ case 2 becomes absorbed into case 3, and becomes:
+\\\textbf{Case 3':} $u = b^j$, $v = b^l$, $w = b^{q-j-l}a^q$ for $l>0$ and $j\geq 0$ such that $q-l-j\geq 0$. Consider
+\begin{align*}
+	uv^iw &= b^j b^{il} b^{q-j-l} a^q = b^{q+(i-1)l} a^q \\
+	uv^iw &\in L_1 \iff q+(i-1)l = q \iff (i-1)l = 0
+\end{align*}
+As in case 1, we wish $uv^iw\notin L_1$ so we can choose $i\neq 1$ since $l>0$.
+\\\textbf{Case 4:} After forcing $p=0$ case 4 now has $u = b^{q-j}$ and $q+l<k$, consider
+\begin{align*}
+	uv^iw &= b^{q-j} (b^{j}a^{l})^i a^{q-l}
+\end{align*}
+This looks very unlikely to be in $L_1$, but if we subdivide into cases of $j$ being zero or not we get
+\begin{align*}
+	j = 0 \Rightarrow& uv^iw = b^{q} a^{il} a^{q-l} = b^qa^{q+(i-1)l} \in L_1 \iff \\
+					 & q = q+(i-1)l \iff i=1\\
+	j > 0 \Rightarrow& uv^iw \in L_1 \Rightarrow i = 0 \vee i = 1 
+\end{align*}
+The $j>0$ case clearly breaks down if $i\geq 2$ because we cant have any $(abab)$ in our language, so we simply choose $i>1$ and this case has been taken care of.\\
+In conclusion we can choose $z = b^qa^q$ where $2q>k$ and the pumping lemma will show that $L_1$ is non regular. \qed  
+\section*{2.}
+Consider $L_2 := \{ a^i b^jb^j \mid i\geq 0, j\geq 0 \} = \{ a^i (bb)^{j} \mid i\geq 0, j\geq 0 \} = \mathcal{L}(a^*(bb)^*)$ so $L_2$ is regular.\\
+After spending (too) many hours trying to make the pumping lemma work on this set, I face palmed so hard that I am unable to formulate a coherent thought about how the above is non trivial.
+\section*{3.}
+Let $L_3$ be an arbitrary finite language, and $L_4$ be an arbitrary non-regular language. We wish to prove that $L_4\setminus L_3\in$NREG. Recall that for any sets we have
+\begin{align*}
+A = A\setminus B \cup (A \cap B)
+\end{align*}
+We take A, remove the bits of B in A and add those bits back in. Now if we assume for contradiction that $L_4\setminus L_3$ is regular, recall that REG is closed under union and intersection, and that all finite languages are regular. Note that $L_4 \cap L_3$ is finite since $L_3$ is, consider then
+\begin{align*}
+	L_4 = L_4\setminus L_3 \cup (L_4 \cap L_3)
+\end{align*}
+This is a union of regular languages and a contradiction, since $L_4$ is non regular. So $L_4\setminus L_3$ is non regular.
+\end{document}

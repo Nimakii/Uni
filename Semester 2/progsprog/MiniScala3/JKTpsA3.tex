@@ -60,8 +60,8 @@
   		var valString = ""
   		var endTuborg = ""
   		for(d <- vals){
-  			valString += unparse(d)
-  			endTuborg = endTuborg+" }"
+  			valString += " { " + unparse(d) + ";"
+  			endTuborg = endTuborg+" } "
   		}
   		valString+unparse(exp)+endTuborg
   	case IfThenElseExp(conditionexp,thenexp,elseexp) =>
@@ -149,6 +149,7 @@ def eval(e: Exp, env: VarEnv): Val = e match {
 					case (IntVal(a),IntVal(b)) => IntVal(a-b)
 					case (FloatVal(a),IntVal(b)) => FloatVal(a-b)
 					case (IntVal(a),FloatVal(b)) => FloatVal(a-b)
+					case (FloatVal(a),FloatVal(b)) => FloatVal(a-b)
 					case _ => throw new InterpreterError("Illegal subtraction",e)
 			}
 			case MultBinOp() =>
@@ -157,6 +158,7 @@ def eval(e: Exp, env: VarEnv): Val = e match {
 					case (IntVal(a),IntVal(b)) => IntVal(a*b)
 					case (FloatVal(a),IntVal(b)) => FloatVal(a*b)
 					case (IntVal(a),FloatVal(b)) => FloatVal(a*b)
+					case (FloatVal(a),FloatVal(b)) => FloatVal(a*b)
 					case _ => throw new InterpreterError("Illegal multiplication",e)
 				}
 			case DivBinOp() =>
@@ -167,6 +169,7 @@ def eval(e: Exp, env: VarEnv): Val = e match {
 					case (IntVal(a),IntVal(b)) => IntVal(a/b)
 					case (FloatVal(a),IntVal(b)) => FloatVal(a/b)
 					case (IntVal(a),FloatVal(b)) => FloatVal(a/b)
+					case (FloatVal(a),FloatVal(b)) => FloatVal(a/b)
 					case _ => throw new InterpreterError("Illegal division",e)
 				}
 			case ModuloBinOp() =>
@@ -176,16 +179,60 @@ def eval(e: Exp, env: VarEnv): Val = e match {
 					case (IntVal(a),IntVal(b)) => IntVal(a%b)
 					case (FloatVal(a),IntVal(b)) => FloatVal(a%b)
 					case (IntVal(a),FloatVal(b)) => FloatVal(a%b)
+					case (FloatVal(a),FloatVal(b)) => FloatVal(a%b)
 					case _ => throw new InterpreterError("Illegal modulation",e)
 				}
 			case MaxBinOp() =>
-			trace("Finding max of expressions")
-			(leftval,rightval) match{
-				case (IntVal(a),IntVal(b)) => if(a>b){IntVal(a)}else{IntVal(b)}
-				case (FloatVal(a),IntVal(b)) => if(a>b){FloatVal(a)}else{IntVal(b)}
-				case (IntVal(a),FloatVal(b)) => if(a>b){IntVal(a)}else{FloatVal(b)}
-				case _ => throw new InterpreterError("Illegal maksium",e)
-			}
+				trace("Finding max of expressions")
+				(leftval,rightval) match{
+					case (IntVal(a),IntVal(b)) => if(a>b){IntVal(a)}else{IntVal(b)}
+					case (FloatVal(a),IntVal(b)) => if(a>b){FloatVal(a)}else{FloatVal(b)}
+					case (IntVal(a),FloatVal(b)) => if(a>b){FloatVal(a)}else{FloatVal(b)}
+					case (FloatVal(a),FloatVal(b)) => if(a>b){FloatVal(a)}else{FloatVal(b)}
+					case _ => throw new InterpreterError("Illegal maksium",e)
+				}
+			case EqualBinOp()=>
+				trace("Evaluating equal")
+				(leftval,rightval) match {
+					case(IntVal(a),IntVal(b)) => BoolVal(a==b)
+					case(FloatVal(a),IntVal(b))=> BoolVal(a==b)
+					case(IntVal(a),FloatVal(b))=> BoolVal(a==b)
+					case(FloatVal(a),FloatVal(b))=> BoolVal(a==b)
+					case(StringVal(a),StringVal(b))=> BoolVal(a==b)
+					case(BoolVal(a),BoolVal(b)) => BoolVal(a==b)
+					case(TupleVal(a),TupleVal(b)) => BoolVal(a==b)
+					case _=> BoolVal(false)
+				}
+			case LessThanBinOp()=>
+				trace("Evaluating less than")
+				(leftval,rightval) match {
+					case (IntVal(a),IntVal(b)) => BoolVal(a<b)
+					case(FloatVal(a),IntVal(b))=> BoolVal(a<b)
+					case(IntVal(a),FloatVal(b))=> BoolVal(a<b)
+					case (FloatVal(a),FloatVal(b))=> BoolVal(a<b)
+					case _=> throw new InterpreterError("Illegal less than operation",op)
+				}
+			case LessThanOrEqualBinOp()=>
+				trace("Evaluating less than or equal")
+				(leftval,rightval) match {
+					case (IntVal(a),IntVal(b)) => BoolVal(a<=b)
+					case(FloatVal(a),IntVal(b))=> BoolVal(a<=b)
+					case(IntVal(a),FloatVal(b))=> BoolVal(a<=b)
+					case (FloatVal(a),FloatVal(b))=> BoolVal(a<=b)
+					case _=> throw new InterpreterError("Illegal 'less than or equal' operation",op)
+				}
+			case AndBinOp()=>
+				trace("Evaluating less than or equal")
+					(leftval,rightval) match {
+					case (BoolVal(a),BoolVal(b)) => BoolVal(a&b)
+					case _=> throw new InterpreterError("Illegal 'and' operation",op)
+				}
+			case OrBinOp()=>
+				trace("Evaluating less than or equal")
+					(leftval,rightval) match {
+					case (BoolVal(a),BoolVal(b)) => BoolVal(a|b)
+					case _=> throw new InterpreterError("Illegal 'and' operation",op)
+					}
 		}
 		case UnOpExp(op, exp) =>
 			trace("Unary expression found")
@@ -211,7 +258,7 @@ def eval(e: Exp, env: VarEnv): Val = e match {
 					trace("If statement found, evaluating condition")
 					if (a) {
 						trace("evaluating then clause")
-						eval(thenexp, env)
+						return eval(thenexp, env)
 					} else trace("evaluationg else clause")
 					eval(elseexp, env)
 				case _ => throw new InterpreterError("Condition clause not a boolean", IfThenElseExp(condexp, thenexp, elseexp))
@@ -284,6 +331,9 @@ def typeCheck(e: Exp, vtenv: VarTypeEnv): Type = e match {
   		case LessThanBinOp() | LessThanOrEqualBinOp() =>
   			(lefttype, righttype) match{
 		  		case (IntType(),IntType()) => BoolType()
+		  		case (FloatType(), FloatType()) => BoolType()
+		  		case (IntType(), FloatType()) => BoolType()
+		  		case (FloatType(), IntType()) => BoolType()
   				case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
 	  		}
   		case AndBinOp() | OrBinOp() =>
@@ -314,7 +364,7 @@ def typeCheck(e: Exp, vtenv: VarTypeEnv): Type = e match {
   		case (BoolType(),FloatType(),FloatType()) => FloatType()
   		case (BoolType(),StringType(),StringType()) => StringType()
   		case (BoolType(),BoolType(),BoolType()) => BoolType()
-  		case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp())
+  		case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp(condexp, thenexp, elseexp))
   }
   case BlockExp(vals, exp) =>
   	var vtenv1 = vtenv

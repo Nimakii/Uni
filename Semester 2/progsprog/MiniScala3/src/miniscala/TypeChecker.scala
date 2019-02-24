@@ -44,6 +44,9 @@ object TypeChecker {
         case LessThanBinOp() | LessThanOrEqualBinOp() =>
           (lefttype, righttype) match{
             case (IntType(),IntType()) => BoolType()
+            case (FloatType(), FloatType()) => BoolType()
+            case (IntType(), FloatType()) => BoolType()
+            case (FloatType(), IntType()) => BoolType()
             case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected types ${unparse(lefttype)} and ${unparse(righttype)}", op)
           }
         case AndBinOp() | OrBinOp() =>
@@ -72,7 +75,7 @@ object TypeChecker {
         case (BoolType(),FloatType(),FloatType()) => FloatType()
         case (BoolType(),StringType(),StringType()) => StringType()
         case (BoolType(),BoolType(),BoolType()) => BoolType()
-        case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp())
+        case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp(condexp, thenexp, elseexp))
       }
     case BlockExp(vals, exp) =>
       var vtenv1 = vtenv
