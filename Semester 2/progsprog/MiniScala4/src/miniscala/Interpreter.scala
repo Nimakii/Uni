@@ -9,7 +9,7 @@ import scala.io.StdIn
   */
 object Interpreter {
 
-  case class Closure(params: List[FunParam], optrestype: Option[Type], body: Exp, venv: VarEnv, fenv: FunEnv)
+  case class Closure(params: List[FunParam], optrestype: Option[Type], body: Exp, venv: VarEnv, fenv: FunEnv, defs: List[DefDecl])
 
   type VarEnv = Map[Var, Val]
   type FunEnv = Map[Fun, Closure]
@@ -184,10 +184,19 @@ object Interpreter {
         venv1 += (d.x -> dexp)
       }
       for (d <- defs){
-        val dexp = eval(d.body,venv1,fenv)
-        checkValueType(dexp, d.optrestype, d)
-        fenv1 += (d.fun -> dexp)
+        /**val dexp = eval(d.body,venv1,fenv)
+          *checkValueType(dexp, d.optrestype, d)
+          */
+        fenv1 += (d.fun -> Closure(d.params,d.optrestype,d.body,venv1,fenv1,defs))
       }
+      /** BlockExp(vals: List[ValDecl], defs: List[DefDecl], exp: Exp)
+        * DefDecl(fun: Fun, params: List[FunParam], optrestype: Option[Type], body: Exp)
+        * case class Closure(params: List[FunParam], optrestype (t2): Option[Type], body: Exp, venv: VarEnv, fenv: FunEnv, defs: List[DefDecl])
+        * case class CallExp(fun: Fun, args: List[Exp]) extends Exp
+        * type FunEnv = Map[Fun, Closure]
+        * type VarEnv = Map[Var, Val]
+        * case class FunParam(x: Var, opttype (t1): Option[Type]) extends AstNode
+        */
       eval(exp, venv1, fenv1)
     case TupleExp(exps) =>
       trace("Evaluation tuple of expressions")
@@ -212,12 +221,22 @@ object Interpreter {
     case CallExp(fun, args) =>
       val close = fenv(fun)
       if(args.length == close.params.length){
+        for(i <- 0 to args.length-1){
+          checkValueType(eval(args(i),venv,fenv),close.params(i).opttype,CallExp(fun,args))
+        }
         def halp(fp: FunParam): Var = fp.x
         val venv_update = close.params.map(halp).zip(args.map(exp => eval(exp,venv,fenv)))
-        eval(fenv(fun).body,close.venv++venv_update,close.fenv)
-        } else throw new Error(fun+"failed due to mismatch of number of arguments")
+        var fenv_updated = close.fenv
+        for(d <- close.defs){
+          fenv_updated += (d.fun -> Closure(d.params,d.optrestype,d.body,close.venv,close.fenv,close.defs))
+        }
+        val res = eval(close.body,close.venv++venv_update,fenv_updated)
+        checkValueType(res,close.optrestype,CallExp(fun, args))
+        return res
+        } else throw new InterpreterError(fun+" failed due to mismatch of number of arguments",CallExp(fun, args))
 
-      /** case class Closure(params: List[FunParam], optrestype: Option[Type], body: Exp, venv: VarEnv, fenv: FunEnv)
+      /** case class Closure(params: List[FunParam], optrestype: Option[Type], body: Exp, venv: VarEnv, fenv: FunEnv, defs: List[DefDecl])
+        * DefDecl(fun: Fun, params: List[FunParam], optrestype: Option[Type], body: Exp) extends Decl
         * case class CallExp(fun: Fun, args: List[Exp]) extends Exp
         * type FunEnv = Map[Fun, Closure]
         * type VarEnv = Map[Var, Val]
@@ -275,76 +294,6 @@ object Interpreter {
     if (Options.trace)
       println(msg)
 
-  import scala.collection.mutable.ListBuffer
-  def simplifyDecl(vd: ValDecl): ValDecl = vd match{
-    case ValDecl(x,o,exp) =>
-      ValDecl(x,o,simplify(exp))
-  }
-  def simplify(exp: Exp): Exp = {
-    var expNew = exp
-    while(expNew != simplify1(expNew)) {
-      expNew = simplify1(expNew)
-    }
-    expNew
-  }
-  def simplify1(exp: Exp): Exp =
-    exp match{
-    case IntLit(c)=> IntLit(c)
-    case VarExp(x)=> VarExp(x)
-    case UnOpExp(op,e)=> UnOpExp(op,simplify(e))
-    case BlockExp(vals,e)=>{
-      var vals1 = new ListBuffer[ValDecl]()
-      for (v <- vals){
-        vals1 += simplifyDecl(v)
-      }
-      val vals2 = vals1.toList
-      BlockExp(vals2,simplify(e))
-    }
-     case BinOpExp(IntLit(m),ModuloBinOp(),IntLit(n)) =>
-       if ((0 <= m) && (m < n)) IntLit(m)
-       else BinOpExp(IntLit(m), ModuloBinOp(), IntLit(n))
-     case BinOpExp(IntLit(m),MultBinOp(),IntLit(n)) =>
-       if ((m < 0) && (n < 0)) BinOpExp(IntLit(-m), MultBinOp(), IntLit(-n))
-       else if (m < 0) UnOpExp(NegUnOp(), BinOpExp(IntLit(-m), MultBinOp(), IntLit(n)))
-       else if (n < 0) UnOpExp(NegUnOp(), BinOpExp(IntLit(m), MultBinOp(), IntLit(-n)))
-       else if (n == 1) IntLit(m)
-       else if (m == 1) IntLit(n)
-       else if ((n == 0) || (m == 0)) IntLit(0)
-       else BinOpExp(IntLit(m), MultBinOp(), IntLit(n))
-    case BinOpExp(IntLit(m),MaxBinOp(),IntLit(n)) =>
-      if (m == n) IntLit(m)
-      else BinOpExp(IntLit(m), MaxBinOp(), IntLit(n))
-    case BinOpExp(le, op, re) => op match {
-      case PlusBinOp() =>
-        if(le == IntLit(0)) simplify(re)
-        else if(re == IntLit(0)) simplify(le)
-        else BinOpExp(simplify(le),op,simplify(re))
-      case MinusBinOp() =>
-        if(le == re) IntLit(0)
-        else if (le == IntLit(0)) UnOpExp(NegUnOp(),simplify(re))
-        else re match {
-          case IntLit(m) =>{
-            if (m<0) BinOpExp(simplify(le),PlusBinOp(),IntLit(-m))
-            else BinOpExp(simplify(le),op,simplify(re))
-          }
-          BinOpExp(simplify(le),op,simplify(re))
-        }
-      case MultBinOp() =>
-        if(le == IntLit(1)) simplify(re)
-        else if(re == IntLit(1)) simplify(le)
-        else if((le == IntLit(0))||(re == IntLit(0))) IntLit(0)
-        else BinOpExp(simplify(le),op,simplify(re))
-      case DivBinOp() =>
-        if(le == IntLit(0)) IntLit(0)
-        else if(re == IntLit(0)) throw new IllegalArgumentException("Division by zero")
-        else if(le == re) IntLit(1)
-        else BinOpExp(simplify(le),op,simplify(re))
-      case ModuloBinOp() =>
-        if(re == IntLit(0)) throw new IllegalArgumentException("Modulation by zero")
-        else BinOpExp(simplify(le),op,simplify(re))
-      case MaxBinOp() => BinOpExp(simplify(le),op,simplify(re))
-    }
-  }
 
   /**
     * Exception thrown in case of MiniScala runtime errors.

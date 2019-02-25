@@ -58,20 +58,20 @@ object TypeChecker {
           }
       }
     case UnOpExp(op, exp) => op match{
-      case NegUnOp() => typeCheck(exp,vtenv) match{
+      case NegUnOp() => typeCheck(exp,vtenv,ftenv) match{
         case IntType() => IntType()
         case FloatType() => FloatType()
-        case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected type ${unparse(typeCheck(exp,vtenv))}}", op)
+        case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected type ${unparse(typeCheck(exp,vtenv,ftenv))}}", op)
       }
-      case NotUnOp() => typeCheck(exp,vtenv) match{
+      case NotUnOp() => typeCheck(exp,vtenv,ftenv) match{
         case BoolType() => BoolType()
-        case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected type ${unparse(typeCheck(exp,vtenv))}}", op)
+        case _ => throw new TypeError(s"Type mismatch at '${unparse(op)}', unexpected type ${unparse(typeCheck(exp,vtenv,ftenv))}}", op)
       }
     }
     case IfThenElseExp(condexp, thenexp, elseexp) =>
-      val ce = typeCheck(condexp,vtenv)
-      val te = typeCheck(thenexp,vtenv)
-      val ee = typeCheck(elseexp,vtenv)
+      val ce = typeCheck(condexp,vtenv,ftenv)
+      val te = typeCheck(thenexp,vtenv,ftenv)
+      val ee = typeCheck(elseexp,vtenv,ftenv)
       (ce,te,ee) match{
         case (BoolType(),IntType(),IntType()) => IntType()
         case (BoolType(),FloatType(),FloatType()) => FloatType()
@@ -80,14 +80,20 @@ object TypeChecker {
         case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp(condexp, thenexp, elseexp))
       }
     case BlockExp(vals, defs, exp) =>
-      var tenv = (vtenv, ftenv)
+      var (vtenv1,ftenv1) = (vtenv, ftenv)
       for (d <- vals) {
-        val t = typeCheck(d.exp, tenv._1, tenv._2)
+        val t = typeCheck(d.exp, vtenv1, ftenv1)
         checkTypesEqual(t, d.opttype, d)
-        tenv = (tenv._1 + (d.x -> d.opttype.getOrElse(t)), tenv._2)
+        (vtenv1,ftenv1) = (vtenv1 + (d.x -> d.opttype.getOrElse(t)), ftenv)
       }
-      typeCheck(exp,vtenv1)
-    case TupleExp(exps) => TupleType(exps.map(x => typeCheck(x,vtenv)))
+      def halp(fp: FunParam): Var = fp.x
+      for (d <- defs) {
+        ftenv1 += (d.fun -> getFunType(d))
+        val vtenv_update = d.params.map(halp).zip(getFunType(d)._1)
+        checkTypesEqual(typeCheck(d.body,vtenv++vtenv_update,ftenv1),d.optrestype,d)
+      }
+      typeCheck(exp,vtenv1,ftenv1)
+    case TupleExp(exps) => TupleType(exps.map(x => typeCheck(x,vtenv,ftenv)))
     case MatchExp(exp, cases) =>
       val exptype = typeCheck(exp, vtenv, ftenv)
       exptype match {
@@ -95,7 +101,7 @@ object TypeChecker {
           for (c <- cases) {
             if (ts.length == c.pattern.length) {
               val venv_update = c.pattern.zip(ts)
-              return typeCheck(c.exp,vtenv++venv_update)
+              return typeCheck(c.exp,vtenv++venv_update,ftenv)
             }
           }
           throw new TypeError(s"No case matches type ${unparse(exptype)}", e)
