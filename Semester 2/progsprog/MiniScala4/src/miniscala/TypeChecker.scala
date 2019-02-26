@@ -72,25 +72,29 @@ object TypeChecker {
       val ce = typeCheck(condexp,vtenv,ftenv)
       val te = typeCheck(thenexp,vtenv,ftenv)
       val ee = typeCheck(elseexp,vtenv,ftenv)
-      (ce,te,ee) match{
-        case (BoolType(),IntType(),IntType()) => IntType()
-        case (BoolType(),FloatType(),FloatType()) => FloatType()
-        case (BoolType(),StringType(),StringType()) => StringType()
-        case (BoolType(),BoolType(),BoolType()) => BoolType()
-        case _ => throw new TypeError(s"Type mismatch at If statement, unexpected type either in the condition ${unparse(ce)} or in the inner expressions that must be of the same type ${unparse(te)} = ${unparse(ee)}", IfThenElseExp(condexp, thenexp, elseexp))
+      ce match {
+        case BoolType() =>
+          if (te == ee) te
+          else throw new TypeError("thenexp and elseexp must have the same type", IfThenElseExp(condexp, thenexp, elseexp))
+        case _ =>
+          throw new TypeError(s"If clause must be a boolean", IfThenElseExp(condexp, thenexp, elseexp))
       }
     case BlockExp(vals, defs, exp) =>
       var (vtenv1,ftenv1) = (vtenv, ftenv)
       for (d <- vals) {
         val t = typeCheck(d.exp, vtenv1, ftenv1)
         checkTypesEqual(t, d.opttype, d)
-        (vtenv1,ftenv1) = (vtenv1 + (d.x -> d.opttype.getOrElse(t)), ftenv)
+        vtenv1 += (d.x -> d.opttype.getOrElse(t))
       }
-      def halp(fp: FunParam): Var = fp.x
-      for (d <- defs) {
+      for (d <- defs)
         ftenv1 += (d.fun -> getFunType(d))
-        val vtenv_update = d.params.map(halp).zip(getFunType(d)._1)
-        checkTypesEqual(typeCheck(d.body,vtenv++vtenv_update,ftenv1),d.optrestype,d)
+      // ftenv1 ++ defs.map(d => d.fun).zip(defs.map(getFunType))
+      for (d <- defs) {
+        val funType = getFunType(d)
+        val vtenv_update = d.params.map(fp => fp.x).zip(funType._1)
+        if(d.optrestype.isDefined) {
+          checkTypesEqual(typeCheck(d.body, vtenv ++ vtenv_update, ftenv1), d.optrestype, d)
+        }
       }
       typeCheck(exp,vtenv1,ftenv1)
     case TupleExp(exps) => TupleType(exps.map(x => typeCheck(x,vtenv,ftenv)))
@@ -108,7 +112,15 @@ object TypeChecker {
         case _ => throw new TypeError(s"Tuple expected at match, found ${unparse(exptype)}", e)
       }
     case CallExp(fun, args) =>
-      ???
+      val paramz = ftenv(fun)
+      if(paramz._1.length == args.length){
+        for(i <- paramz._1.indices){
+          if(paramz._1(i) != typeCheck(args(i),vtenv,ftenv)){
+            throw new TypeError(s"Argument nr $i has the wrong type",CallExp(fun, args))
+          }
+        }
+        paramz._2
+      } else throw new TypeError("Wrong number of arguments for the function "+fun,CallExp(fun, args))
   }
 
   /**

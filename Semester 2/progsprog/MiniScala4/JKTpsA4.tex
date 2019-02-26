@@ -132,16 +132,103 @@
 	\begin{lstlisting}
 	def typeCheck(e: Exp, vtenv: VarTypeEnv, ftenv: FunTypeEnv): Type = e match {
 	// ...
-	case BlockExp(vals, defs, exp) => ???
+	case BlockExp(vals, defs, exp) =>
+		var (vtenv1,ftenv1) = (vtenv, ftenv)
+		for (d <- vals) {
+			val t = typeCheck(d.exp, vtenv1, ftenv1)
+			checkTypesEqual(t, d.opttype, d)
+			vtenv1 += (d.x -> d.opttype.getOrElse(t))
+		}
+		for (d <- defs)
+			ftenv1 += (d.fun -> getFunType(d))
+		// ftenv1 ++ defs.map(d => d.fun).zip(defs.map(getFunType)), how do we make this work?
+		for (d <- defs) {
+			val funType = getFunType(d)
+			val vtenv_update = d.params.map(fp => fp.x).zip(funType._1)
+			if(d.optrestype.isDefined) {
+				checkTypesEqual(typeCheck(d.body, vtenv ++ vtenv_update, ftenv1), d.optrestype, d)
+			}
+		}
+		typeCheck(exp,vtenv1,ftenv1)
 	// ...
-	case CallExp(fun, args) => ???
+	case CallExp(fun, args) =>
+		val paramz = ftenv(fun)
+		if(paramz._1.length == args.length){
+			for(i <- paramz._1.indices){
+				if(paramz._1(i) != typeCheck(args(i),vtenv,ftenv)){
+					throw new TypeError(s"Argument nr $i has the wrong type",CallExp(fun, args))
+				}
+			}
+			paramz._2
+		} else throw new TypeError("Wrong number of arguments for the function "+fun,CallExp(fun, args))
 	}
 	\end{lstlisting}
 	\section*{Opgave 49}
 	\begin{lstlisting}
 	def main(args: Array[String]): Unit = {
-	// ...
+		test("{ def f(x: Int): Int = x; f(2) }", IntVal(2),IntType())
+		testVal("{ val x = 1;{ def q(a) = x + a;{ val x = 2;q(3)}}}",IntVal(4))
+		testFail("{ def f(x: Int): Int = x; f(2, 3) }")
+		test("{ "+
+			"def isEven(n: Int): Boolean = " +
+				"if (n == 0) true " +
+				"else isOdd(n - 1) ; " +
+			"def isOdd(n: Int): Boolean = " +
+				"if (n == 0) false " +
+				"else isEven(n - 1) ; " +
+			"isEven(4) } ",BoolVal(true),BoolType())
+		test("{ def f(x: Int): Int = 2*x; { def g(x: Int, y: Int): Int = if(x<y) 3*f(x) else 4*f(y); g(5,6) }}",IntVal(30),IntType())
+		testFail("{ def f(x: Int): Int = 2*x; { def g(x: Int, y: Int): Int = if(x<y) 3*f(x) else 4*f(y); g(3,true) }}")
+		testFail("{ def f(x: Int): Int = 2*x; { def g(x: Int, y: Int): Int = if(x<y) 3*f(x) else 4*f(y); g(3,4,5) }}")
+		testVal("{ def f(x) = if(0<g(x)) g(x) else 0 ; def g(x) = 5 ; f(3) }",IntVal(5))
+		testType("{ def f(x: Int): Int = g(x) ; def g(x: Int): Int = f(x) ; f(3) }",IntType())
+		test("{ def f(x: Int): Int = x; f(2) }", IntVal(2), IntType())
+		test("{ def get(x: Int): Int = x; get(2) }", IntVal(2), IntType())
+		test("{ def f(x: Int) : Int = x; if(true) f(5) else f(3)}",IntVal(5),IntType())
+		test("{ def dyt(x: Int): Int = x*2; dyt(21)}",IntVal(42),IntType())
+		test("{ def fac(n: Int) : Int = if (n == 0) 1 else n * fac(n - 1); fac(2)} ",IntVal(2),IntType())
+		test("{ def f(y: Int): Boolean = (y == y); f(2)}",BoolVal(true),BoolType())
+		testFail("{ def f(x: Int): Int = x; f(2, 3) }")
+		testFail("{ def f(y: Int): Int = (y == y); f(2)}")
+		testFail("{ def fac(n: Int): Boolean = if (n == 0) 1 else n * fac(n - 1); fac(2)} ")
+		testFail("{ def f(x: Float): Int = x; f(2f) }")
 	}
+	//We didnt change the test methods
+	def test(prg: String, rval: Val, rtype: Type) = {
+	testVal(prg, rval)
+	testType(prg, rtype)
+	}
+	
+	def testFail(prg: String) = {
+	testValFail(prg)
+	testTypeFail(prg)
+	}
+	
+	def testVal(prg: String, value: Val, venv: VarEnv = Map[Var, Val](), fenv: FunEnv = Map[Var, Closure]()) = {
+	assert(eval(parse(prg), venv, fenv) == value)
+	}
+	
+	def testType(prg: String, out: Type, venv: VarTypeEnv = Map[Var, Type](), fenv: FunTypeEnv = Map[Var, (List[Type], Type)]()) = {
+	assert(typeCheck(parse(prg), venv, fenv) == out)
+	}
+	
+	def testValFail(prg: String) = {
+	try {
+	eval(parse(prg), Map[Var, Val](), Map[Var, Closure]())
+	assert(false)
+	} catch {
+	case _: InterpreterError => assert(true)
+	}
+	}
+	
+	def testTypeFail(prg: String) = {
+	try {
+	typeCheck(parse(prg), Map[Var, Type](), Map[Var, (List[Type], Type)]())
+	assert(false)
+	} catch {
+	case _: TypeError => assert(true)
+	}
+	}	.
 	\end{lstlisting}
 \end{document}
 

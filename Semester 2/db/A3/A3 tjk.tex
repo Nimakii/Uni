@@ -1,0 +1,163 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\usepackage{xcolor}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Jens Kristian R. Nielsen \& Thomas D. Vinther }
+	\title{Assignment G1}
+	\date{\today}
+	\maketitle
+	Consider the relation R, which has attributes that hold schedules of courses and sections at
+	a university (shorthand notation written in parenthesis): R = {Course Number (C), Section
+		Number (SN), Offering Department (D), Course Type (CT), Credit Hours (CH), Course
+		Level (CL), Instructor (I), Semester (S), Year (Y), Day and Hours (DH), Room Number
+		(R), Number of Students Enrolled (NS)}.
+	
+	
+	\section{Compute the minimal cover of \textbf{F}}
+	%% page 540
+	\begin{align*}
+	F = \{\text{ } \{C\} &\rightarrow \{D,CT,CH,CL,I \}\\
+	\{C,SN,S,Y\} &\rightarrow \{R,DH,NS,I \}\\
+	\{R,DH,S,Y\} &\rightarrow \{I,C,SN \}\\
+	\{I\} &\rightarrow \{D \}\\
+	\{CT\} &\rightarrow \{CH,CL\}\\
+	\{D,CT\} &\rightarrow \{I \}\\
+	\{I,C\} &\rightarrow \{D,CT \}\text{}\}
+	\end{align*}
+	We compute the minimal cover of F, using the technique described in the lectures. First we reduce right hand sides and get \\\textbf{Step 1 and 2} single right hand attributes and reducing left hand sides
+	\begin{align*}
+	F' = \{\text{ } 
+	\{C\} &\rightarrow \color{blue}\{D \}\\
+	\{C\} &\rightarrow \color{yellow}\{CT\}\\
+	\{C\} &\rightarrow \{CH \}\\
+	\{C\} &\rightarrow \{CL\}\\
+	\{C\} &\rightarrow \color{red}\{I \}\\
+	\{C,SN,S,Y\} &\rightarrow \{R\}\\
+	\{C,SN,S,Y\} &\rightarrow \{DH\}\\
+	\{C,SN,S,Y\} &\rightarrow \{NS\}\\
+	\color{red}\{C,SN,S,Y\} &\rightarrow \{I\}\\
+	\{R,DH,S,Y\} &\rightarrow \{I\}\\
+	\{R,DH,S,Y\} &\rightarrow \{C\}\\
+	\{R,DH,S,Y\} &\rightarrow \{SN \}\\
+	\{I\} &\rightarrow \{D \}\\
+	\{CT\} &\rightarrow \{CH\}\\
+	\{CT\} &\rightarrow \{CL\}\\
+	\{D,CT\} &\rightarrow \{I \}\\
+	\color{yellow}\{I,C\} &\rightarrow \{CT\}\\
+	\color{blue}\{I,C\} &\rightarrow \{D\}\text{}\}
+	\end{align*}
+	We remove the functional dependency with left hand side in a color, due to the FD with the right hand side in the same color.
+	\begin{align*}
+	F'' = \{\text{ } 
+	\{C\} &\rightarrow \{D \}\\
+	\{C\} &\rightarrow \{CT\}\\
+	\{C\} &\rightarrow \{CH \}\\
+	\{C\} &\rightarrow \{CL\}\\
+	\{C\} &\rightarrow \{I \}\\
+	\{C,SN,S,Y\} &\rightarrow \{R\}\\
+	\{C,SN,S,Y\} &\rightarrow \{DH\}\\
+	\{C,SN,S,Y\} &\rightarrow \{NS\}\\
+	\{R,DH,S,Y\} &\rightarrow \{I\}\\
+	\{R,DH,S,Y\} &\rightarrow \{C\}\\
+	\{R,DH,S,Y\} &\rightarrow \{SN \}\\
+	\{I\} &\rightarrow \{D \}\\
+	\{CT\} &\rightarrow \{CH\}\\
+	\{CT\} &\rightarrow \{CL\}\\
+	\{D,CT\} &\rightarrow \{I\} \}
+	\end{align*}
+	For step 3 consider
+	\begin{align*}
+	\{ C\} \rightarrow \{ I \} \rightarrow \{ D \} 
+	\stackrel{\text{transitivity} }{\Rightarrow} \{ C  \} &\rightarrow \{ D \} \\
+	\{ C\} \rightarrow \{ CT \} \rightarrow \{ CL, CH \} 
+	\stackrel{\text{transitivity} }{\Rightarrow} \{ C  \} &\rightarrow \{ CL, CH \}
+	\end{align*}
+	In conclusion $\{C\} \rightarrow \{D\}$ and $\{C\} \rightarrow \{CL\}$ and $\{C\} \rightarrow \{CH\}$ are redundant.
+	Which leaves us with the functional dependencies
+	\begin{align*}
+	F''' = \{\text{ } 
+	\{C\} &\rightarrow \{CT\}\\
+	\{C\} &\rightarrow \{I \}\\
+	\{C,SN,S,Y\} &\rightarrow \{R\}\\
+	\{C,SN,S,Y\} &\rightarrow \{DH\}\\
+	\{C,SN,S,Y\} &\rightarrow \{NS\}\\
+	\{R,DH,S,Y\} &\rightarrow \{I\}\\
+	\{R,DH,S,Y\} &\rightarrow \{C\}\\
+	\{R,DH,S,Y\} &\rightarrow \{SN \}\\
+	\{I\} &\rightarrow \{D \}\\
+	\{CT\} &\rightarrow \{CH\}\\
+	\{CT\} &\rightarrow \{CL\}\\
+	\{D,CT\} &\rightarrow \{I\} \}
+	\end{align*}
+	\section{}
+	\textbf{Based on your answer to (1), find the candidate keys of R based on F.}
+	Note that $C$ determines $\{CT,I,D,CH,CL\}$ wrt. $F'''$ and the set that $C$ determines is all the "small" functional dependencies
+	\textbf{Claim:} $\{ C,SN,S,Y\}$ and $\{ R, DH, S, Y \}$ are candidate keys.
+	Show that they are irreducible page 541ish
+	\section{}
+	\textbf{Normalize R to a lossless BCNF decomposition with respect to F.}
+	\section{}
+	\textbf{Is your BCNF decomposition dependency-preserving? Why?}
+	\section{}
+	\textbf{Can you produce a dependency-preserving BCNF decomposition of R? Why?}
+	\section{}
+	\textbf{Synthesize a lossless and dependency-preserving decomposition of R in 3NF.
+		Explain what foreign key constraints you will use to guarantee losslessness.}
+	\section{}
+	\textbf{Suggest a way to enforce all dependencies in F via integrity constraints in SQL DDL
+		(e.g., PRIMARY KEY, FOREIGN KEY, UNIQUE). Specifically, go through each
+		dependency in the minimal cover of F and explain how it is now enforced.}
+	\section{}
+	\textbf{Assuming you have answered Question 7 correctly, some dependency among
+		attributes within a table, which we call child table, must be enforced using a foreign
+		key constraint to a parent table (if not, you might consider this as a hint). Write a
+		trigger that enforces that same dependency, in case of an insertion to the child table.}
+	
+\end{document}
+
+%%\begin{align*}
+%%     \{ C, SN, S, Y \} &= \{ C, SN, S, Y \} \cup \{S,Y\} \stackrel{\text{reflexsivity}}{\rightarrow} \{ R, DH \} \cup \{ S, Y \} \rightarrow \{ I,C \} \\
+%%     \stackrel{\text{transitivity} }{\Rightarrow} \{ C, SN, S, Y \} &\rightarrow \{ I,C \}
+%%\end{align*}
