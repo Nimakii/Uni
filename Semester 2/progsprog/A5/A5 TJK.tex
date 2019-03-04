@@ -1,0 +1,186 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[danish]{babel}
+
+%%% Margins
+\usepackage[a4paper,left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+%%% Title
+\title{Aflevering 5}
+\author{Jens Kristian R. Nielsen, 201303862 \and Thomas D. Vinther , 201303874}
+\date{4. februar 2019}
+
+%%% Code environment
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{courier}
+\usepackage{xcolor}
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+\lstset{
+  basicstyle=\ttfamily\small,                   % the size of the fonts that are used for the code
+  breakatwhitespace=false,                      % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                              % sets automatic line breaking
+  frame=tb,                                     % adds a frame around the code
+  commentstyle=\color{commentsColor}\textit,    % comment style
+  keywordstyle=\color{keywordsColor}\bfseries,  % keyword style
+  stringstyle=\color{stringColor},              % string literal style
+  numbers=left,                                 % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                                % how far the line-numbers are from the code
+  numberstyle=\tiny\color{commentsColor},       % the style that is used for the line-numbers
+  showstringspaces=false,                       % underline spaces within strings only
+  tabsize=2,                                    % sets default tabsize to 2 spaces
+  language=Scala
+}
+
+\newcommand\reverse{\textsf{reverse}}
+\newcommand\append{\textsf{append}}
+\newcommand\Cons{\textsf{Cons}}
+\newcommand\Nil{\textsf{Nil}}
+\newcommand\IntList{\textsf{IntList}}
+\newcommand\Int{\textsf{Int}}
+
+%% Document
+\begin{document}
+\maketitle
+
+\section*{Opgave 51}
+\textbf{Proposition}: For alle $zs \in \IntList$ og $z \in \Int$:
+\[
+  \reverse(\append(zs, z)) = \Cons(z, \reverse(zs))
+\]
+Beviset går ved struktural induktion i listen $zs$ \\
+\\
+\textbf{Basis:} $zs = Nil$
+\begin{align}
+  \reverse(\append(zs, z)) &= \reverse(\append(\Nil,z)) && \text{(I. basis)} \nonumber\\
+                           &= \reverse(\Cons(z,\Nil)) && \text{(append case 0)} \nonumber\\
+                           &= \append(\reverse(\Nil),z)) && \text{(reverse case 1)} \nonumber\\
+                           &= \append(Nil,z) && \text{(reverse case 0)} \nonumber\\
+                           &= \Cons(z,\Nil) && \text{(append case 0)} \label{basis1}\\
+  \Cons(z,\reverse(zs)) &=\Cons(z,\reverse(Nil)) && \text{(I. basis)} \nonumber\\
+                            &= \Cons(z,Nil) && \text{(reverse case 0)}\nonumber\\
+                            &= \reverse(\append(zs, z)) && \text{(pr (\ref{basis1}))} \nonumber
+\end{align}
+Som ønsket.
+\textbf{Induktionsskridt:} lad intlisten $xs = \Cons(z,zs)\in\IntList$ og inten $x\in\Int$ være givet. Så induktionshypotesen bliver at propositionen holder for zs altså at $\forall y\in\Int:\reverse(\append(zs, y)) = \Cons(y, \reverse(zs))$.
+\\Vi ønsker at vise at $\reverse(\append(xs, x)) = \Cons(x, \reverse(xs))$
+\begin{align*}
+  \reverse(\append(xs, x)) &= \reverse(\append(\Cons(z,zs),x))  && \text{(xs "dekomposition")}\\
+                           &= \reverse(\Cons(z,\append(zs,x))  && \text{(append case 1)}\\
+                           &= \append(\reverse(\append(zs,x)),z)  && \text{(reverse case 1)} \\
+                           &= \append(\Cons(x,\reverse(zs)),z) && \text{(I.H. på zs)}\\
+                           &= \Cons(x,\append(\reverse(zs),z))  && \text{(append)} \\
+                           &= \Cons(x,\reverse(xs))  && \text{(definition af reverse på xs)}
+\end{align*}
+\section*{Opgave 56}
+\begin{lstlisting}
+    def merge(xs: IntList, ys: IntList): IntList = mergee(xs,ys,Nil)
+    
+    def mergee(xs: IntList, ys: IntList, ass: IntList):
+    IntList = (xs,ys) match{
+        case (Nil,Nil) => reverse(ass)
+        case (Nil,Cons(z,zs)) => mergee(xs,zs,Cons(z,ass))
+        case (Cons(z,zs),Nil) => mergee(zs,ys,Cons(z,ass))
+        case (Cons(z,zs),Cons(w,ws)) =>
+            if(z<w) mergee(zs,ys,Cons(z,ass))
+            else mergee(xs,ws,Cons(w,ass))
+  }
+
+def split(xs: IntList, n: Int): (IntList, IntList) =
+    if( length(xs)<= n)
+      (Nil,xs)
+    else if (n<0)
+        throw new RuntimeException("Illegal index")
+    else
+    splitt(xs,n,Nil)
+
+def splitt(xs: IntList,n: Int, ass: IntList) : (IntList,IntList) = xs match{
+
+    case Cons(z,zs) => if (n>0) splitt(zs,n-1,Cons(z,ass)) else (reverse(ass),xs)
+
+  }
+
+
+def ordered(xs: IntList): Boolean = xs match {
+    case Nil => true
+    case Cons(x,Nil) => true
+    case Cons(x,Cons(y,ys)) => if (x<=y) ordered(ys) else false
+  }
+
+def randomIntList(): IntList = randomIntListt(Nil,new Random().nextInt(101))
+
+def randomIntListt(ass : IntList,n:Int): IntList = {
+    if(n>0)
+    randomIntListt(Cons(new Random().nextInt(),ass),n-1)
+    else
+      ass
+  }
+
+def permuted(xs: IntList, ys: IntList): Boolean =
+    if (length(xs) == length(ys)) listChecker(xs, ys) //a necessary condition
+    else false
+  def boringMerge(xs: IntList,ys: IntList): IntList = xs match{
+    case Nil => ys //we are done
+    case Cons(z,zs) => boringMerge(zs,Cons(z,ys)) //merges xs and ys with no regard for sequence
+  }
+  def elementChecker(x: Int, ys: IntList, ass: IntList):
+  (Boolean,IntList,IntList) = ys match{
+    case Nil => (false,ys,ass) //x was not found in ys
+    case Cons(z,zs) =>
+      if (x==z) (true,zs,ass) //x was found in ys, return elements after and before x
+      else elementChecker(x,zs,Cons(z,ass)) //looks at next value in ys, with z added to accumulator
+  }
+  def listChecker(xs: IntList,ys: IntList): Boolean = xs match{
+    case Cons(x,zs) =>
+      val eC = elementChecker(x,ys,Nil) //checks if x is in y
+      if(eC._1) listChecker(zs,boringMerge(eC._2,eC._3)) //continues without x in xs and x in ys
+      else false
+    case Nil => true //xs is empty, and since the length of xs and ys are the same and we remove 1 element from each, ys is empty too
+  }
+
+def testMergeSort(): Unit =  testMergeSortHelp(100)
+def testMergeSortHelp(n: Int): Unit ={
+    if (n > 0){
+      val x = randomIntList()
+      val y = mergeSort(x)
+      assert(ordered(y))
+      assert(permuted(x,y))
+      testMergeSortHelp(n - 1)
+    }
+  }
+  
+def mergeSort(xs: IntList): IntList = {
+    val n = length(xs) / 2
+    if (n == 0) xs
+    else {
+      val (left, right) = split(xs, n)
+      merge(mergeSort(left), mergeSort(right))
+    }
+  }
+  
+  
+  
+/**
+* Helping functions
+*/
+  
+def reverse(xs: IntList): IntList = xs match {
+    case Nil => Nil
+    case Cons(x, ys) => append(reverse(ys), x)
+  }
+  
+  
+def append(xs: IntList, x: Int): IntList = xs match {
+    case Nil => Cons(x, Nil)
+    case Cons(y, ys) => Cons(y, append(ys, x))
+}
+
+def length(xs: IntList): Int = xs match {
+    case Nil => 0
+    case Cons(_, ys) => 1 + length(ys)
+  }
+
+\end{lstlisting}
+\end{document}
