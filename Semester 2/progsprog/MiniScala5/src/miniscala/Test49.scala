@@ -16,23 +16,24 @@ object Test49 {
     test("{def dyt(x: Int): Int = x*2; dyt(21)}",IntVal(42),IntType())
     test("{def fac(n: Int) : Int = if (n == 0) 1 else n * fac(n - 1); fac(2)}",IntVal(2),IntType())
     test("{def f(y: Int): Boolean = (y == y); f(2)}",BoolVal(true),BoolType())
-    testFail("{ def f(x: Int): Int = x; f(2, 3) }")
+    testFail("{def f(x: Int): Int = x; f(2, 3) }")
     testFail("{def f(y: Int): Int = (y == y); f(2)}")
     testFail("{def fac(n: Int) : Boolean = if (n == 0) 1 else n * fac(n - 1); fac(2)} ")
-    testFail("{ def f(x: Float): Int = x; f(2f) }")
-    val tests8a = "{ val x = 3; def use(f, y) = f(x, y); def add(a, b) = a + b; def mult(a, b) = a * b; use(add, 7) - use(mult, 13)}"
-    val tests8b = "{ def choose(c) = if (c) add else mult; def add(a, b) = a + b; def mult(a, b) = a * b;{ val foo = choose(true); foo(1, 2) - choose(false)(7, 13)}}"
-    testingVal(tests8a)
-    testingVal(tests8b)
+    testFail("{def f(x: Float): Int = x; f(2f) }")
+    val tests8a = "{val x: Int = 3; def use(f:((Int,Int)=>Int), y:Int): Int = f(x, y); def add(a: Int, b: Int): Int = a + b; def mult(a:Int, b:Int):Int = a * b; use(add, 7) - use(mult, 13)}"
+    val tests8b = "{def choose(c: Boolean):(Int,Int)=>Int = if (c) add else mult; def add(a: Int, b: Int): Int = a + b; def mult(a: Int, b: Int): Int = a * b;{ val foo:((Int,Int)=>Int) = choose(true); foo(1, 2) - choose(false)(7, 13)}}"
+    test(tests8a,IntVal(-29),IntType())
+    test(tests8b,IntVal(-88),IntType())
+    val tests9 = "{val x: Int = 1;val g:(Int => Int) = {val x: Int = 2;def f(a: Int): Int = a+x;f};{val x: Int = 3;g(4)}}"
+    test(tests9,IntVal(6),IntType())
     val tests29a = "{val inc: Int => Int = (x: Int) => x + 1;inc(3)}"
     val tests29b = "{val inc: Int => Int = (x: Int) => x + 1;def twice(f: Int => Int, x: Int): Int = f(f(x));twice(inc, 3)}"
-    val tests29c = "{val add: Int => (Int => Int) = (x: Int) => (y: Int) => x + y;val inc: Int => Int = add(1);add(1)(2) + inc(3)}"
-    testingVal(tests29a)
-    testingVal(tests29b)
-    testingVal(tests29c)
-    testingType(tests29a)
-    testingType(tests29b)
-    val tests35 = "{val x = (f: Int => Int) => (x: Int) => f(f(x));def g(a: Int) = a + 1;x(g)(2)}"
+    val tests29c = "{val add: Int => (Int => Int) = (x: Int) => (y: Int) => x + y;val inc: (Int => Int) = add(1);add(1)(2) + inc(3)}"
+    test(tests29a,IntVal(4),IntType())
+    test(tests29b,IntVal(5),IntType())
+    test(tests29c,IntVal(7),IntType())
+    val tests35 = "{val x: Int = (f: Int => Int) => (x: Int) => f(f(x));def g(a: Int) = a + 1;x(g)(2)}"
+    testType(tests35,IntType())
     curryTest("def f(x,y)=x+y;curry(f)(2)(3)")
     curryTest("def hej(x) = 3*x; def med(y) = y+2; def dig(x,y) = hej(x)+med(y);curry(dig)(1)(2)")
   }
@@ -42,9 +43,6 @@ object Test49 {
   }
   def testingVal(prg: String) = {
     testVal(prg,eval(parse(prg),Map[Id, Val]()))
-  }
-  def testingType(prg: String) = {
-    testType(prg,typeCheck(parse(prg),Map[Id, Type]()))
   }
 
   def test(prg: String, rval: Val, rtype: Type) = {

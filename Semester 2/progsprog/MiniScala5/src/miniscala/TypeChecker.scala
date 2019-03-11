@@ -1,6 +1,7 @@
 package miniscala
 
 import miniscala.Ast._
+import miniscala.TypeChecker.TypeError
 import miniscala.Unparser.unparse
 
 /**
@@ -79,7 +80,7 @@ object TypeChecker {
     case BlockExp(vals, defs, exp) =>
       var tenv_updated = tenv
       for (d <- vals) {
-        val t = typeCheck(d.exp, tenv)
+        val t = typeCheck(d.exp, tenv_updated)
         checkTypesEqual(t, d.opttype, d)
         tenv_updated += (d.x -> d.opttype.getOrElse(throw new TypeError("No type annotation",BlockExp(vals, defs, exp))))
       }
@@ -109,12 +110,9 @@ object TypeChecker {
         case _ => throw new TypeError(s"Tuple expected at match, found ${unparse(exptype)}", e)
       }
     case LambdaExp(params, body) =>
-      var tenv_updated = tenv
-      for(p<-params){
-        tenv_updated += (p.x -> p.opttype.getOrElse(
-          throw new TypeError("Missing type annotation",LambdaExp(params, body))))
-      }
-      FunType(params.map(p=>p.opttype.get),typeCheck(body,tenv_updated))
+      val Jeppe = params.map(p => (p.x -> p.opttype.getOrElse(
+        throw new TypeError("Missing type annotation",LambdaExp(params, body)))))
+      FunType(Jeppe.unzip._2,typeCheck(body,tenv ++ Jeppe))
 
     /**
       * LambdaExp(params: List[FunParam], body: Exp)
