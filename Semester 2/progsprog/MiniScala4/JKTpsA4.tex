@@ -88,7 +88,7 @@
 		for (d <- vals) {
 			val dexp = eval(d.exp,venv1,fenv)
 			checkValueType(dexp, d.opttype, d)
-			venv1 += (d.x -> dexp)
+			venv1 += (d.x -> dexp)\\
 		}
 		for (d <- defs){
 			fenv1 += (d.fun -> Closure(d.params,d.optrestype,d.body,venv1,fenv1))
