@@ -1,7 +1,6 @@
 package miniscala
 
 import miniscala.Ast._
-import miniscala.TypeChecker.TypeError
 import miniscala.Unparser.unparse
 
 /**
@@ -81,8 +80,8 @@ object TypeChecker {
       var tenv_updated = tenv
       for (d <- vals) {
         val t = typeCheck(d.exp, tenv_updated)
-        checkTypesEqual(t, d.opttype, d)
         tenv_updated += (d.x -> d.opttype.getOrElse(throw new TypeError("No type annotation",BlockExp(vals, defs, exp))))
+        checkTypesEqual(t, d.opttype, d)
       }
       for (d <- defs){
         tenv_updated += (d.fun -> getFunType(d))

@@ -32,8 +32,6 @@ object Test49 {
     test(tests29a,IntVal(4),IntType())
     test(tests29b,IntVal(5),IntType())
     test(tests29c,IntVal(7),IntType())
-    val tests35 = "{val x: Int = (f: Int => Int) => (x: Int) => f(f(x));def g(a: Int) = a + 1;x(g)(2)}"
-    testType(tests35,IntType())
     curryTest("def f(x,y)=x+y;curry(f)(2)(3)")
     curryTest("def hej(x) = 3*x; def med(y) = y+2; def dig(x,y) = hej(x)+med(y);curry(dig)(1)(2)")
   }

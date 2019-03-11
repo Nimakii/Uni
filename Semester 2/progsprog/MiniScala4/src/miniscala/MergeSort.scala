@@ -2,8 +2,6 @@ package miniscala
 
 import java.util.Random
 
-import miniscala.Ast.MiniScalaError
-
 sealed abstract class IntList
 case object Nil extends IntList
 case class Cons(x: Int, xs: IntList) extends IntList
