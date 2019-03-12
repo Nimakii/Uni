@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Jens Kristian Refsgaard Nielsen}
+	\title{Assignment I1}
+	\date{\today}
+	\maketitle
+\section*{Question 1.}
+\textbf{Claim: } the language of the Spanish flag $L = \{ r^n w y^{2n} r^n \mid n\geq 0 \}$ is not context-free\\
+\textbf{Proof: } we proceed by using the contraposition of the pumping lemma for context-free languages that states:
+\begin{align*}
+	&X\subseteq \Sigma^* \text{ is not context free if:}\\
+	&\forall k\geq 1 \exists z \in X : |z|>k:\\
+	&\forall u,v,\epsilon,x,\zeta\in\Sigma^* : z=uv\epsilon x\zeta, |v\epsilon x|\leq k, |vx|>0:\\
+	&\exists i\geq 0 : uv^i\epsilon x^i \zeta \notin X 
+\end{align*}
+So let $k\geq 1$ be given, we then choose $z=r^k w y^{2k} r^k$, and let a decomposition $u,v,\epsilon,x,\zeta\in\Sigma^* : z=uv\epsilon x\zeta, |v\epsilon x|\leq k, |vx|>0$ be given. Now we proceed by looking at the possible cases of how the decomposition looks.\\
+\includegraphics[scale=0.09]{cases}\\
+%\textbf{Case 1:} $u = \Lambda, v\epsilon x = r^l, \zeta = r^{k-l}w y^{2k}r^k$ for $0<l\leq k$\\
+\textbf{Case 1:} $u = r^l, v\epsilon x = r^j, \zeta = r^{k-l-j}w y^{2k}r^k$ for $0\leq l\leq k$ and $0<j<k-l$\\
+The condition $|vx|>0$ forces atleast one of $v$ and $x$ to have atleast one $r$, so if we choose to pump with $i = 2$ we get atleast one more $r$ in $v\epsilon x$ so $v^2\epsilon x^2 = r^p$ for $p>j$, consider then
+\begin{align*}
+	uv^2\epsilon x^2\zeta = r^l r^p r^{k-l-j}w y^{2k}r^k = r^{k-j+p}w y^{2k}r^k \notin L
+\end{align*}
+Because $p>j$ we get more r's in front of our expression than in the back, which is not allowed in L, concluding the case.\\
+\textbf{Case 2:} If $w$ is part of either $v$ or $x$, simply pump $i = 2$ and we get two $w$'s which our language doesnt support, completing the small case.\\
+\textbf{Case 3:} $u = r^{k-l}, v = r^l, \epsilon = w, x = y^j, \zeta = y^{2k-j}r^k$ for $0<l+1+j\leq k$\\
+We have $l$ and $j$ not both zero, if \\
+\textbf{Case 4:} $u = r^{k}wy^l, v\epsilon x = y^j, \zeta = y^{2k-j-l}r^k$ for $0<j\leq k$ and $0\leq l \leq k$\\
+\textbf{Case 5:} $u = r^{k}wy^{2k-l}, v\epsilon x = y^lr^j, \zeta = r^{k-j}$ for $0<l+j\leq k$\\
+\textbf{Case 6:} $u = r^{k}wy^{2k}r^{k-l-j}, v\epsilon x = r^l, \zeta = r^{j}$ for $0<l$ and $l+j\leq k$\\
+\section*{Question 2.}
+
+\section*{Question 3.}
+
+\section*{Question 4.}
+
+\end{document}
