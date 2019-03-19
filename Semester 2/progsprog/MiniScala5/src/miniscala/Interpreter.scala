@@ -177,14 +177,14 @@ object Interpreter {
     case BlockExp(vals, defs, exp) =>
       var env1 = env
       trace("Calculating variable values and adding to variable environment")
-      for (d <- vals) {
-        val dexp = eval(d.exp,env1)
+      env1 = vals.foldLeft(env1)((en:Env,d:ValDecl) => {
+        val dexp = eval(d.exp, en)
         checkValueType(dexp, d.opttype, d)
-        env1 += (d.x -> dexp)
-      }
-      for (d <- defs){
-        env1 += (d.fun -> ClosureVal(d.params,d.optrestype,d.body,env1,defs))
-      }
+        en + (d.x -> dexp)
+      })
+      env1 = defs.foldLeft(env1)((en: Env,d:DefDecl)=> {
+        en + (d.fun -> ClosureVal(d.params,d.optrestype,d.body,en,defs) )
+      })
       /** BlockExp(vals: List[ValDecl], defs: List[DefDecl], exp: Exp)
         * DefDecl(fun: Fun, params: List[FunParam], optrestype: Option[Type], body: Exp)
         * case class Closure(params: List[FunParam], optrestype (t2): Option[Type], body: Exp, venv: VarEnv, fenv: FunEnv, defs: List[DefDecl])
@@ -196,10 +196,7 @@ object Interpreter {
       eval(exp, env1)
     case TupleExp(exps) =>
       trace("Evaluation tuple of expressions")
-      var vals = List[Val]()
-      for (ex <- exps)
-        vals = eval(ex, env) :: vals
-      TupleVal(vals.reverse)
+      TupleVal(exps.foldLeft(List[Val]())((v: List[Val],e:Exp)=> eval(e, env) :: v).reverse)
     case MatchExp(exp, cases) =>
       trace("Updating ")
       val expval = eval(exp, env)
@@ -290,12 +287,10 @@ object Interpreter {
     * Builds an initial environment, with a value for each free variable in the program.
     */
   def makeInitialEnv(program: Exp): Env = {
-    var env = Map[Id, Val]()
-    for (x <- Vars.freeVars(program)) {
+    miniscala.A7.foldRight(Vars.freeVars(program),Map[Id, Val](),(x:Id,t:Env) => {
       print(s"Please provide an integer value for the variable $x: ")
-      env = env + (x -> IntVal(StdIn.readInt()))
-    }
-    env
+      t + (x -> IntVal(StdIn.readInt()))
+    })
   }
 
   /**

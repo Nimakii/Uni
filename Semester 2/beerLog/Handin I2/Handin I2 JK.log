@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.7)  12 MAR 2019 22:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.7)  14 MAR 2019 20:25
 entering extended mode
 **"./Handin I2 JK.tex"
 ("Handin I2 JK.tex"
@@ -950,12 +950,27 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 51.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 51.
-<cases.jpg, id=1, 3774.1pt x 1357.07pt>
+<cases.jpg, id=1, 2882.77pt x 1260.71pt>
 File: cases.jpg Graphic file (type jpg)
 <use cases.jpg>
 Package pdftex.def Info: cases.jpg  used on input line 60. on input line 60.
-Package pdftex.def Info: Requested size: 339.65434pt x 122.13103pt on input lin
+Package pdftex.def Info: Requested size: 374.77325pt x 163.89806pt on input lin
 e 60.
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--64
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--74
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--74
+
+ []
+
 
 Underfull \hbox (badness 10000) in paragraph at lines 66--74
 
@@ -964,32 +979,83 @@ Underfull \hbox (badness 10000) in paragraph at lines 66--74
 [1
 
 {C:/Users/Jens Kristian/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./c
-ases.jpg>] 
+ases.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 81--86
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--86
+
+ []
+
+[2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 126--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 146--150
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 153--157
+
+ []
+
+
+Overfull \hbox (29.61426pt too wide) in paragraph at lines 153--157
+\T1/lmr/m/n/10 If (0.10[]) do-es not hold we must ha-ve a trip-ple $\OT1/lmr/m/
+n/10 ((\OML/lmm/m/it/10 q[]; q[]\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ; a; A\OT1/lm
+r/m/n/10 )$ \T1/lmr/m/n/10 such that bo-th $\OML/lmm/m/it/10 \OT1/lmr/m/n/10 (
+(\OML/lmm/m/it/10 q[]; q[]\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ; a; A\OT1/lmr/m/n/
+10 )$
+ []
+
+
+Overfull \hbox (54.38461pt too wide) in paragraph at lines 153--157
+\T1/lmr/m/n/10 and $\OML/lmm/m/it/10 \OT1/lmr/m/n/10 ((\OML/lmm/m/it/10 q[]; q
+[]\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 \OML/lmm/m/it/10 ; A\OT1
+/lmr/m/n/10 )$ \T1/lmr/m/n/10 are non emp-ty. We then ta-ke ele-ments $\OT1/lmr
+/m/n/10 ((\OML/lmm/m/it/10 q[]; q[]\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ; B\OT1/lm
+r/m/n/10 ) \OMS/lmsy/m/n/10 2 \OML/lmm/m/it/10 \OT1/lmr/m/n/10 ((\OML/lmm/m/it
+/10 q[]; q[]\OT1/lmr/m/n/10 )\OML/lmm/m/it/10 ; a; A\OT1/lmr/m/n/10 )$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--166
+
+ []
+
+[4] 
 AED: lastpage setting LastPage
-[2] ("Handin I2 JK.aux") ) 
+[5] ("Handin I2 JK.aux") ) 
 Here is how much of TeX's memory you used:
- 8904 strings out of 493312
- 126750 string characters out of 3138874
- 225007 words of memory out of 3000000
- 12217 multiletter control sequences out of 15000+200000
+ 8923 strings out of 493312
+ 126905 string characters out of 3138874
+ 234130 words of memory out of 3000000
+ 12236 multiletter control sequences out of 15000+200000
  75243 words of font info for 78 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,14n,94p,803b,303s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ma
-thsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program 
-Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/
-fonts/enc/dvips/lm/lm-ec.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm
-/lmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/lm/lmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/
-lmsy7.pfb>
-Output written on "Handin I2 JK.pdf" (2 pages, 992065 bytes).
+ 60i,18n,94p,803b,321s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec
+.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}{C:/Program 
+Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/
+fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm
+-mathit.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi7
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/l
+m/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on "Handin I2 JK.pdf" (5 pages, 881729 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
+ 76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
