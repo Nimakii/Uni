@@ -42,53 +42,51 @@
     <expand />
     <select />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="1382223651">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="s" value="5" />
-          <entry key="scala" value="12" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Scala" value="12" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="s" value="5" />
-          <entry key="scala" value="87" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Scala" value="87" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FavoritesManager">
     <favorites_list name="MiniScala1" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/miniscala/Lambda.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="115" column="30" lean-forward="true" selection-start-line="115" selection-start-column="30" selection-end-line="115" selection-end-column="30" />
+            <state relative-caret-position="1682">
+              <caret line="119" column="24" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="24" />
               <folding>
                 <element signature="e#19#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/miniscala/virkDog.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+              <folding>
+                <element signature="e#19#49#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/miniscala/Main.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="197">
+              <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="43" selection-end-column="66" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="363">
+              <caret line="188" column="21" lean-forward="true" selection-start-line="188" selection-start-column="21" selection-end-line="188" selection-end-column="21" />
+              <folding>
+                <element signature="e#18#40#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -164,26 +162,21 @@
         <option value="$PROJECT_DIR$/examples/80a.s" />
         <option value="$PROJECT_DIR$/examples/80e.s" />
         <option value="$PROJECT_DIR$/examples/80b.s" />
-        <option value="$PROJECT_DIR$/src/miniscala/Interpreter.scala" />
-        <option value="$PROJECT_DIR$/src/miniscala/Lambda.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Options.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Main.scala" />
         <option value="$PROJECT_DIR$/examples/80c.s" />
         <option value="$PROJECT_DIR$/examples/80d.s" />
         <option value="$PROJECT_DIR$/examples/fac.s" />
+        <option value="$PROJECT_DIR$/src/miniscala/Lambda.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/Interpreter.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/virkDog.scala" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-12" />
-    <option name="width" value="981" />
-    <option name="height" value="1032" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="953" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -208,12 +201,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="MiniScala7" type="b2602c69:ProjectViewProjectNode" />
               <item name="MiniScala7" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MiniScala7" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MiniScala7" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MiniScala7" type="b2602c69:ProjectViewProjectNode" />
@@ -230,15 +229,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553527870679" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MiniScala5 - lambda" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553543325701" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -264,7 +262,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Fac">
+  <component name="RunManager" selected="Application.80c">
     <configuration name="80a" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="miniscala.Main" />
       <module name="MiniScala1" />
@@ -311,20 +309,6 @@
       <option name="MAIN_CLASS_NAME" value="miniscala.Main" />
       <module name="MiniScala1" />
       <option name="PROGRAM_PARAMETERS" value="-lambdaBool examples/80d.s" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="miniscala.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="80e" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="miniscala.Main" />
-      <module name="MiniScala1" />
-      <option name="PROGRAM_PARAMETERS" value="-lambda examples/80e.s" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="miniscala.*" />
@@ -407,6 +391,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="virkDog" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="miniscala.virkDog" />
+      <module name="MiniScala1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="miniscala.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Tester" />
       <item itemvalue="Application.Mc91" />
@@ -415,17 +412,17 @@
       <item itemvalue="Application.Fac" />
       <item itemvalue="Application.Takeuchi" />
       <item itemvalue="Application.80b" />
-      <item itemvalue="Application.80e" />
       <item itemvalue="Application.80a" />
       <item itemvalue="Application.Lambda" />
+      <item itemvalue="Application.virkDog" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.virkDog" />
+        <item itemvalue="Application.Lambda" />
         <item itemvalue="Application.Takeuchi" />
         <item itemvalue="Application.80b" />
         <item itemvalue="Application.80a" />
-        <item itemvalue="Application.Lambda" />
-        <item itemvalue="Application.80e" />
       </list>
     </recent_temporary>
   </component>
@@ -470,14 +467,16 @@
       <workItem from="1553249897737" duration="65000" />
       <workItem from="1553250003294" duration="36395000" />
       <workItem from="1553521072501" duration="5390000" />
+      <workItem from="1553541292578" duration="2075000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="214714000" />
+    <option name="totallyTimeSpent" value="216789000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" sideWeight="0.50149256" side_tool="true" weight="0.12135417" />
       <window_info id="Image Layers" order="1" />
@@ -485,10 +484,10 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" sideWeight="0.501006" side_tool="true" weight="0.12135417" />
-      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.49850747" visible="true" weight="0.23072916" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.49850747" visible="true" weight="0.2866521" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32293764" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32603937" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -498,7 +497,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32897383" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.3249497" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32394367" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -516,9 +515,6 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.s" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/examples/fib.s">
@@ -699,13 +695,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/Main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="584">
-          <caret line="53" selection-start-line="53" selection-end-line="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/80c.s">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -736,8 +725,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7095">
-          <caret line="218" column="24" selection-start-line="218" selection-start-column="24" selection-end-line="218" selection-end-column="24" />
+        <state relative-caret-position="363">
+          <caret line="188" column="21" lean-forward="true" selection-start-line="188" selection-start-column="21" selection-end-line="188" selection-end-column="21" />
           <folding>
             <element signature="e#18#40#0" expanded="true" />
           </folding>
@@ -746,10 +735,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/Lambda.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="115" column="30" lean-forward="true" selection-start-line="115" selection-start-column="30" selection-end-line="115" selection-end-column="30" />
+        <state relative-caret-position="1682">
+          <caret line="119" column="24" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="24" />
           <folding>
             <element signature="e#19#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="43" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/virkDog.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+          <folding>
+            <element signature="e#19#49#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -13,6 +13,27 @@ import scala.io.StdIn
 
 object Lambda {
 
+  def helvete(p: String): Unit = {
+    val program = Parser.parse(p)
+    val encoded = Lambda.encode(program)
+    println(s"Encoded program: ${Unparser.unparse(encoded)}")
+    val initialEnv = Lambda.makeInitialEnv(program)
+    val result = Interpreter.eval(encoded, initialEnv)
+    println(s"Output from encoded program: ${Interpreter.valueToString(result)}")
+    println(s"Decoded output: ${Lambda.decodeNumber(result)}")
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(Parser.parse("{val x = 1; val y = 2; val z = 3; x+y+z}"))
+    println(encode(Parser.parse("{val x = 1; val y = 2; val z = 3; x+y+z}")))
+    println(evaltest(Parser.parse("{val x = 1; val y = 2; val z = 3; x+y+z}")))
+    println(Unparser.unparse(encode(Parser.parse("{val x = 1; val y = 2; val z = 3; x+y+z}"))))
+    println(evaltest(encode(Parser.parse("{val x = 1; val y = 2; val z = 3; x+y+z}"))))
+    println(decodeNumber(evaltest(encode(Parser.parse("{ def fac(n: Int): Int =    if (n == 0) 1    else n * fac(n - 1);  fac(4)}")))))
+    helvete("{ def fac(n: Int): Int =    if (n == 0) 1    else n * fac(n - 1);  fac(4)}")
+    println(Unparser.unparse(encode(Parser.parse("(b)=>(s)=>fac((s)=>(z)=>n((g)=>(h)=>h(g(s)))((u)=>z)((u)=>u))(n(s))(b)"))))
+  }
+
   val FIX: Exp = Parser.parse("((x)=>(y)=>(y((z)=>x(x)(y)(z))))((x)=>(y)=>(y((z)=>x(x)(y)(z))))")
 
   def encode(e: Exp): Exp =
@@ -85,11 +106,8 @@ object Lambda {
 
 
       case BlockExp(vals,List(), e2: Exp) => // { val x = e1; e2 }, slide 23
-        //CallExp(LambdaExp(List(FunParam(id,None)),encode(e2)),encode(e1))
-        //CallExp(LambdaExp(List(FunParam(id, None)), encode(e2)),
-        //List(encode(e1)))
-        val lambda = vals.foldRight(e2)((va,y)=>LambdaExp(List(FunParam(va.x,None)),y))
-        vals.foldLeft(lambda)((y,va)=>CallExp(y,List(va.exp)))
+        val lambda = vals.foldRight(e2)((va,y)=>LambdaExp(List(FunParam(va.x,None)),y)) //iterates the lambda bits (x)=>(y)=>..=>e
+        vals.foldLeft(lambda)((y,va)=>CallExp(y,List(va.exp))) //calls the lambdas on their arguments ((x)=>((y)=>..=>e)(x_0))(y_0))..)
       case BlockExp(List(), List(DefDecl(f, List(FunParam(x, _)), _, e1)), e2: Exp) => // { def f(x) = e1; e2 }, slide 23
         CallExp(LambdaExp(List(FunParam(f, None)), encode(e2)),
           List(CallExp(FIX,

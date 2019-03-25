@@ -28,6 +28,7 @@ object Options {
   var trace = false
 
   var lambda = false
+  var lambdaBool = false
 
   var file: String = _
 
@@ -43,6 +44,7 @@ object Options {
           case "-types" => types = true
           case "-trace" => trace = true
           case "-lambda" => lambda = true
+          case "-lambdaBool" => lambdaBool = true
           case _ =>
             throw new OptionsError(s"Error: option not recognized: $arg")
         }

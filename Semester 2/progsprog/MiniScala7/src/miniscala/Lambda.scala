@@ -113,9 +113,9 @@ object Lambda {
           List(LambdaExp(List(FunParam("b", None)), CallExp(encode(elseexp), List(VarExp("b")))))) // mimics call-by-name
 
 
-      case BlockExp(List(ValDecl(id, _, e1)), List(), e2: Exp) => // { val x = e1; e2 }, slide 23
-        CallExp(LambdaExp(List(FunParam(id, None)), encode(e2)), List( encode(e1)))
-
+      case BlockExp(vals, List(), e2: Exp) => // { val x = e1; e2 }, slide 23
+        val lambda = vals.foldRight(e2)((va,y)=>LambdaExp(List(FunParam(va.x,None)),y)) //iterates the lambda bits (x)=>(y)=>..=>e
+        vals.foldLeft(lambda)((y,va)=>CallExp(y,List(va.exp))) //calls the lambdas on their arguments ((x)=>((y)=>..=>e)(x_0))(y_0))..)
       case BlockExp(List(), List(DefDecl(f, List(FunParam(x, _)), _, e1)), e2: Exp) => // { def f(x) = e1; e2 }, slide 23
         CallExp(LambdaExp(List(FunParam(f, None)), encode(e2)),
           List(CallExp(FIX,

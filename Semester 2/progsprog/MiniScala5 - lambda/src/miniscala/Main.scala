@@ -38,7 +38,15 @@ object Main {
         val encoded = Lambda.encode(program)
         println(s"Encoded program: ${Unparser.unparse(encoded)}")
         val initialEnv = Lambda.makeInitialEnv(program)
-        val result = Interpreter.eval(program, initialEnv)
+        val result = Interpreter.eval(encoded, initialEnv)
+        println(s"Output from encoded program: ${Interpreter.valueToString(result)}")
+        println(s"Decoded output: ${Lambda.decodeNumber(result)}")
+      }
+      if (Options.lambdaBool) {
+        val encoded = Lambda.encode(program)
+        println(s"Encoded program: ${Unparser.unparse(encoded)}")
+        val initialEnv = Lambda.makeInitialEnv(program)
+        val result = Interpreter.eval(encoded, initialEnv)
         println(s"Output from encoded program: ${Interpreter.valueToString(result)}")
         println(s"Decoded output: ${Lambda.decodeBoolean(result)}")
       }

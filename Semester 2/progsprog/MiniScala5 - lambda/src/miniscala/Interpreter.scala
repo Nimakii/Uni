@@ -214,6 +214,7 @@ object Interpreter {
       }
     case LambdaExp(params, body) =>
       ClosureVal(params,None,body,env,List[DefDecl]())
+
     case CallExp(funexp, args) =>
       eval(funexp,env) match{
         case ClosureVal(params, optrestype, body, cenv, defs) =>

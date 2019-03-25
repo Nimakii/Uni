@@ -304,7 +304,7 @@ object Interpreter {
   /**
     * Prints message if option -trace is used.
     */
-  def trace(msg: String): Unit =
+  def trace(msg: => String): Unit =
     if (Options.trace)
       println(msg)
 
