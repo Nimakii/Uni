@@ -154,10 +154,8 @@ object TypeChecker {
     * Builds an initial type environment, with a type for each free variable in the program.
     */
   def makeInitialTypeEnv(program: Exp): TypeEnv = {
-    var tenv: TypeEnv = Map()
-    for (x <- Vars.freeVars(program))
-      tenv = tenv + (x -> IntType())
-    tenv
+    val tenv: TypeEnv = Map()
+    miniscala.A7.foldRight(Vars.freeVars(program),tenv,(x:Id,t: TypeEnv)=>t+(x->IntType()))
   }
 
   /**
