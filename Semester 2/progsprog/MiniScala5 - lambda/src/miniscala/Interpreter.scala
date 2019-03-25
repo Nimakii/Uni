@@ -117,10 +117,10 @@ object Interpreter {
         case LessThanBinOp()=>
           trace("Evaluating less than")
           (leftval,rightval) match {
-            case (IntVal(a),IntVal(b)) => BoolVal(a<b)
+            case(IntVal(a),IntVal(b)) => BoolVal(a<b)
             case(FloatVal(a),IntVal(b))=> BoolVal(a<b)
             case(IntVal(a),FloatVal(b))=> BoolVal(a<b)
-            case (FloatVal(a),FloatVal(b))=> BoolVal(a<b)
+            case(FloatVal(a),FloatVal(b))=> BoolVal(a<b)
             case _=> throw new InterpreterError("Illegal less than operation",op)
           }
         case LessThanOrEqualBinOp()=>
@@ -299,7 +299,7 @@ object Interpreter {
   /**
     * Prints message if option -trace is used.
     */
-  def trace(msg: String): Unit =
+  def trace(msg: => String): Unit =
     if (Options.trace)
       println(msg)
 

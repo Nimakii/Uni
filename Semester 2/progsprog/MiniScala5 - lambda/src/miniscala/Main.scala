@@ -37,10 +37,10 @@ object Main {
       if (Options.lambda) {
         val encoded = Lambda.encode(program)
         println(s"Encoded program: ${Unparser.unparse(encoded)}")
-        val initialEnv = Interpreter.makeInitialEnv(program)
+        val initialEnv = Lambda.makeInitialEnv(program)
         val result = Interpreter.eval(program, initialEnv)
         println(s"Output from encoded program: ${Interpreter.valueToString(result)}")
-        println(s"Decoded output: ${Lambda.decodeNumber(result)}")
+        println(s"Decoded output: ${Lambda.decodeBoolean(result)}")
       }
 
     } catch { // report all errors to the console
