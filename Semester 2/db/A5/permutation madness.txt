@@ -1,0 +1,192 @@
+
+
+
+
+
+%Mange permutationer senere....
+
+Here follows a small portion (183) of all the permutations of ways to perform a strict two phase lock of the transaction sequence: \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; assuming that the certify lock allows reading and writing\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; RL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1A; WL1B; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1B; WL1A; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1B; WL1A; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1B; RL1A; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; RL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1A; WL1B; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1A; RL1B; WL1B; WL1A; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1A; U1B\\
+RL1A; RL1B; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1B; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1B; WL1A; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1A; U1B\\
+RL1B; RL1A; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; RL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; Cl1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1B; U1A\\
+RL1A; RL1B; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; RL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1A; WL1B; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; WL1A; WL1B; Cl1A; CL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1B; U1A\\
+RL1A; RL1B; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1B; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; Cl1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; U1B; U1A\\
+RL1B; RL1A; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+RL1A; WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1B; WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+WL1A; Cl1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1B; U1A\\
+Interlude: at this point we have 128 versions, that is a complete permuted list of 10 base cases of moving "forward" and omitting redundant locks, what follows is 53 more base cases without permutations. There are VERY many ways to do this.\\
+RL1A; \textbf{r1(A)}; RL1B; WL1A;\textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; WL1A; WL1B;\textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; WL1A; WL1B;\textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; WL1A; WL1B; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; WL1A; WL1B; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; WL1B; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; WL1A; WL1B; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; \textbf{r1(A)}; WL1B; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; \textbf{r1(A)}; WL1A; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; \textbf{r1(A)}; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; WL1B; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; WL1B; CL1A;\textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1B; CL1A;\textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; \textbf{r1(A)}; RL1B; \textbf{r1(B)}; WL1A; WL1B; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1A;\textbf{r1(B)}; \textbf{w1(A)}; WL1B; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1A; WL1B;\textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1A; WL1B; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1B; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1A; WL1B; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1B; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; WL1A; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; WL1B; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; WL1B; CL1A;\textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; CL1A;\textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; WL1B; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; WL1A; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; \textbf{r1(A)}; \textbf{r1(B)}; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; \textbf{w1(A)}; CL1A; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; \textbf{w1(A)}; CL1A; CL1B; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; CL1A;\textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; WL1B;\textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1A; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; WL1B; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; WL1B; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; CL1A;\textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; WL1B; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; \textbf{r1(A)}; \textbf{r1(B)}; CL1A; CL1B;\textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; CL1A; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; CL1A; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; CL1B; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; CL1A; CL1B; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; CL1A; \textbf{w1(A)}; CL1B; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; CL1A; \textbf{r1(B)}; \textbf{w1(A)}; CL1B; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; \textbf{r1(B)}; CL1A; CL1B; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; CL1A; \textbf{r1(B)}; CL1B; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; \textbf{r1(A)}; CL1A; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; \textbf{w1(A)}; CL1B; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; CL1A; \textbf{r1(A)}; \textbf{r1(B)}; CL1B; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\
+RL1A; RL1B; WL1A; WL1B; CL1A; \textbf{r1(A)}; CL1B; \textbf{r1(B)}; \textbf{w1(A)}; \textbf{w1(B)}; U1A; U1B\\

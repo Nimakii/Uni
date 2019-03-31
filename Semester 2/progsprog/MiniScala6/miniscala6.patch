@@ -1,0 +1,385 @@
+diff --git a/src/miniscala/Ast.scala b/src/miniscala/Ast.scala
+index 8ed533a..d763efe 100644
+--- a/src/miniscala/Ast.scala
++++ b/src/miniscala/Ast.scala
+@@ -30,7 +30,7 @@ object Ast {
+ 
+   case class IfThenElseExp(condexp: Exp, thenexp: Exp, elseexp: Exp) extends Exp
+ 
+-  case class BlockExp(vals: List[ValDecl], defs: List[DefDecl], exp: Exp) extends Exp
++  case class BlockExp(vals: List[ValDecl], vars: List[VarDecl], defs: List[DefDecl], exps: List[Exp]) extends Exp
+ 
+   case class TupleExp(exps: List[Exp]) extends Exp
+ 
+@@ -40,6 +40,10 @@ object Ast {
+ 
+   case class LambdaExp(params: List[FunParam], body: Exp) extends Exp
+ 
++  case class AssignmentExp(x: Id, exp: Exp) extends Exp
++
++  case class WhileExp(cond: Exp, body: Exp) extends Exp
++
+   /**
+     * Literals.
+     */
+@@ -96,6 +100,8 @@ object Ast {
+ 
+   case class ValDecl(x: Id, opttype: Option[Type], exp: Exp) extends Decl
+ 
++  case class VarDecl(x: Id, opttype: Option[Type], exp: Exp) extends Decl
++
+   case class DefDecl(fun: Id, params: List[FunParam], optrestype: Option[Type], body: Exp) extends Decl
+ 
+   /**
+@@ -111,7 +117,7 @@ object Ast {
+   /**
+     * Types.
+     */
+-  sealed abstract class Type extends AstNode
++  abstract class Type extends AstNode
+ 
+   case class IntType() extends Type
+ 
+diff --git a/src/miniscala/Interpreter.scala b/src/miniscala/Interpreter.scala
+index deaa569..36361f2 100644
+--- a/src/miniscala/Interpreter.scala
++++ b/src/miniscala/Interpreter.scala
+@@ -17,31 +17,43 @@ object Interpreter {
+   case class StringVal(v: String) extends Val
+   case class TupleVal(vs: List[Val]) extends Val
+   case class ClosureVal(params: List[FunParam], optrestype: Option[Type], body: Exp, env: Env) extends Val
++  case class RefVal(loc: Loc, opttype: Option[Type]) extends Val
++
++  val unitVal = TupleVal(Nil)
+ 
+   type Env = Map[Id, Val]
+ 
+-  def eval(e: Exp, env: Env): Val = e match {
+-    case IntLit(c) => IntVal(c)
++  type Sto = Map[Loc, Val]
++
++  type Loc = Int
++
++  def nextLoc(sto: Sto): Loc = sto.size
++
++  def eval(e: Exp, env: Env, sto: Sto): (Val, Sto) = e match {
++    case IntLit(c) => (IntVal(c), sto)
+     case BoolLit(c) => ???
+     case FloatLit(c) => ???
+     case StringLit(c) => ???
+     case VarExp(x) =>
+-      env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e))
++      env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e)) match {
++        case RefVal(loc, _) => (sto(loc), sto)
++        case v: Val => (v, sto)
++      }
+     case BinOpExp(leftexp, op, rightexp) =>
+-      val leftval = eval(leftexp, env)
+-      val rightval = eval(rightexp, env)
++      val (leftval, sto1) = eval(leftexp, env, sto)
++      val (rightval, sto2) = eval(rightexp, env, sto1)
+       op match {
+         case PlusBinOp() =>
+           (leftval, rightval) match {
+-            case (IntVal(v1), IntVal(v2)) => IntVal(v1 + v2)
+-            case (FloatVal(v1), FloatVal(v2)) => FloatVal(v1 + v2)
+-            case (IntVal(v1), FloatVal(v2)) => FloatVal(v1 + v2)
+-            case (FloatVal(v1), IntVal(v2)) => FloatVal(v1 + v2)
+-            case (StringVal(v1), StringVal(v2)) => StringVal(v1 + v2)
+-            case (StringVal(v1), IntVal(v2)) => StringVal(v1 + v2)
+-            case (StringVal(v1), FloatVal(v2)) => StringVal(v1 + v2)
+-            case (IntVal(v1), StringVal(v2)) => StringVal(v1 + v2)
+-            case (FloatVal(v1), StringVal(v2)) => StringVal(v1 + v2)
++            case (IntVal(v1), IntVal(v2)) => (IntVal(v1 + v2), sto2)
++            case (FloatVal(v1), FloatVal(v2)) => (FloatVal(v1 + v2), sto2)
++            case (IntVal(v1), FloatVal(v2)) => (FloatVal(v1 + v2), sto2)
++            case (FloatVal(v1), IntVal(v2)) => (FloatVal(v1 + v2), sto2)
++            case (StringVal(v1), StringVal(v2)) => (StringVal(v1 + v2), sto2)
++            case (StringVal(v1), IntVal(v2)) => (StringVal(v1 + v2), sto2)
++            case (StringVal(v1), FloatVal(v2)) => (StringVal(v1 + v2), sto2)
++            case (IntVal(v1), StringVal(v2)) => (StringVal(v1 + v2), sto2)
++            case (FloatVal(v1), StringVal(v2)) => (StringVal(v1 + v2), sto2)
+             case _ => throw new InterpreterError(s"Type mismatch at '+', unexpected values ${valueToString(leftval)} and ${valueToString(rightval)}", op)
+           }
+         case MinusBinOp() => ???
+@@ -50,10 +62,10 @@ object Interpreter {
+           if (rightval == IntVal(0) || rightval == FloatVal(0.0f))
+             throw new InterpreterError(s"Division by zero", op)
+           (leftval, rightval) match {
+-            case (IntVal(v1), IntVal(v2)) => IntVal(v1 / v2)
+-            case (FloatVal(v1), FloatVal(v2)) => FloatVal(v1 / v2)
+-            case (IntVal(v1), FloatVal(v2)) => FloatVal(v1 / v2)
+-            case (FloatVal(v1), IntVal(v2)) => FloatVal(v1 / v2)
++            case (IntVal(v1), IntVal(v2)) => (IntVal(v1 / v2), sto2)
++            case (FloatVal(v1), FloatVal(v2)) => (FloatVal(v1 / v2), sto2)
++            case (IntVal(v1), FloatVal(v2)) => (FloatVal(v1 / v2), sto2)
++            case (FloatVal(v1), IntVal(v2)) => (FloatVal(v1 / v2), sto2)
+             case _ => throw new InterpreterError(s"Type mismatch at '/', unexpected values ${valueToString(leftval)} and ${valueToString(rightval)}", op)
+           }
+         case ModuloBinOp() => ???
+@@ -65,34 +77,47 @@ object Interpreter {
+         case OrBinOp() => ???
+       }
+     case UnOpExp(op, exp) =>
+-      val expval = eval(exp, env)
++      val (expval, sto1) = eval(exp, env, sto)
+       op match {
+         case NegUnOp() =>
+           expval match {
+-            case IntVal(v) => IntVal(-v)
+-            case FloatVal(v) => FloatVal(-v)
++            case IntVal(v) => (IntVal(-v), sto1)
++            case FloatVal(v) => (FloatVal(-v), sto1)
+             case _ => throw new InterpreterError(s"Type mismatch at '-', unexpected value ${valueToString(expval)}", op)
+           }
+         case NotUnOp() => ???
+       }
+     case IfThenElseExp(condexp, thenexp, elseexp) => ???
+-    case BlockExp(vals, defs, exp) =>
++    case BlockExp(vals, vars, defs, exps) =>
+       var env1 = env
++      var sto1 = sto
+       for (d <- vals) {
+-        val v = eval(d.exp, env1)
++        val (v, sto2) = eval(d.exp, env1, sto1)
+         env1 = env1 + (d.x -> v)
++        sto1 = sto2
+       }
++      for (d <- vars)
++        ???
+       var env2 = env1
+       for (d <- defs)
+         ???
+-      eval(exp, env2)
++      var res: Val = unitVal
++      for (exp <- exps) {
++        val (res1, sto2) = eval(exp, env2, sto1)
++        res = res1
++        sto1 = sto2
++      }
++      (res, sto1)
+     case TupleExp(exps) =>
+-      var vals = List[Val]()
+-      for (exp <- exps)
+-        vals = eval(exp, env) :: vals
+-      TupleVal(vals.reverse)
++      var (vals, sto1) = (List[Val](), sto)
++      for (exp <- exps) {
++        val (v, sto2) = eval(exp, env, sto1)
++        vals = v :: vals
++        sto1 = sto2
++      }
++      (TupleVal(vals.reverse), sto1)
+     case MatchExp(exp, cases) =>
+-      val expval = eval(exp, env)
++      val (expval, sto1) = eval(exp, env, sto)
+       expval match {
+         case TupleVal(vs) =>
+           for (c <- cases) {
+@@ -107,6 +132,10 @@ object Interpreter {
+       ???
+     case LambdaExp(params, body) =>
+       ???
++    case AssignmentExp(x, exp) =>
++      ???
++    case WhileExp(cond, body) =>
++      ???
+   }
+ 
+   /**
+@@ -154,6 +183,7 @@ object Interpreter {
+     case TupleVal(vs) => vs.map(v => valueToString(v)).mkString("(", ",", ")")
+     case ClosureVal(params, _, exp, _) => // the resulting string ignores the result type annotation and the declaration environment
+       s"<(${params.map(p => unparse(p)).mkString(",")}), ${unparse(exp)}>"
++    case RefVal(loc, _) => s"#$loc" // the resulting string ignores the type annotation
+   }
+ 
+   /**
+diff --git a/src/miniscala/Main.scala b/src/miniscala/Main.scala
+index 42056da..ca3da1b 100644
+--- a/src/miniscala/Main.scala
++++ b/src/miniscala/Main.scala
+@@ -29,7 +29,7 @@ object Main {
+       // execute the program, if enabled
+       if (Options.run) {
+         val initialEnv = Interpreter.makeInitialEnv(program)
+-        val result = Interpreter.eval(program, initialEnv)
++        val (result, _) = Interpreter.eval(program, initialEnv, Map())
+         println(s"Output: ${Interpreter.valueToString(result)}")
+       }
+ 
+diff --git a/src/miniscala/TypeChecker.scala b/src/miniscala/TypeChecker.scala
+index 0cc0ff7..9f99c11 100644
+--- a/src/miniscala/TypeChecker.scala
++++ b/src/miniscala/TypeChecker.scala
+@@ -10,12 +10,19 @@ object TypeChecker {
+ 
+   type TypeEnv = Map[Id, Type]
+ 
++  case class RefType(thetype: Type) extends Type
++
++  val unitType = TupleType(Nil)
++
+   def typeCheck(e: Exp, tenv: TypeEnv): Type = e match {
+     case IntLit(_) => IntType()
+     case BoolLit(_) => ???
+     case FloatLit(_) => ???
+     case StringLit(_) => ???
+-    case VarExp(x) => ???
++    case VarExp(x) => tenv.getOrElse(x, throw new TypeError(s"Unknown identifier '$x'", e)) match {
++      case RefType(thetype) => thetype
++      case t: Type => t
++    }
+     case BinOpExp(leftexp, op, rightexp) =>
+       val lefttype = typeCheck(leftexp, tenv)
+       val righttype = typeCheck(rightexp, tenv)
+@@ -40,7 +47,7 @@ object TypeChecker {
+       }
+     case UnOpExp(op, exp) => ???
+     case IfThenElseExp(condexp, thenexp, elseexp) => ???
+-    case BlockExp(vals, defs, exp) =>
++    case BlockExp(vals, vars, defs, exps) =>
+       var tenv1 = tenv
+       for (d <- vals) {
+         val t = typeCheck(d.exp, tenv1)
+@@ -65,6 +72,10 @@ object TypeChecker {
+       ???
+     case LambdaExp(params, body) =>
+       ???
++    case AssignmentExp(x, exp) =>
++      ???
++    case WhileExp(cond, body) =>
++      ???
+   }
+ 
+   /**
+diff --git a/src/miniscala/Vars.scala b/src/miniscala/Vars.scala
+index f14d6f3..038771c 100644
+--- a/src/miniscala/Vars.scala
++++ b/src/miniscala/Vars.scala
+@@ -13,13 +13,15 @@ object Vars {
+     case BinOpExp(leftexp, _, rightexp) => freeVars(leftexp) ++ freeVars(rightexp)
+     case UnOpExp(_, exp) => freeVars(exp)
+     case IfThenElseExp(condexp, thenexp, elseexp) => freeVars(condexp) ++ freeVars(thenexp) ++ freeVars(elseexp)
+-    case BlockExp(vals, defs, exp) =>
+-      var fv = freeVars(exp)
++    case BlockExp(vals, vars, defs, exps) =>
++      var fv = Set[Id]()
++      for (e2 <- exps)
++        fv = fv ++ freeVars(e2)
+       for (d <- defs)
+         fv = fv ++ freeVars(d)
+       for (d <- defs)
+         fv = fv -- declaredVars(d)
+-      for (d <- vals.reverse)
++      for (d <- vars.reverse ++ vals.reverse)
+         fv = fv -- declaredVars(d) ++ freeVars(d)
+       fv
+     case TupleExp(exps) =>
+@@ -35,15 +37,19 @@ object Vars {
+     case CallExp(funexp, args) =>
+       ???
+     case LambdaExp(params, body) => freeVars(body) -- params.map(p => p.x)
++    case AssignmentExp(x, exp) => freeVars(exp) + x
++    case WhileExp(guard, body) => freeVars(guard) ++ freeVars(body)
+   }
+ 
+   def freeVars(decl: Decl): Set[Id] = decl match {
+     case ValDecl(_, _, exp) => freeVars(exp)
++    case VarDecl(_, _, exp) => freeVars(exp)
+     case DefDecl(_, params, _, body) => freeVars(body) -- params.map(p => p.x)
+   }
+ 
+   def declaredVars(decl: Decl): Set[Id] = decl match {
+     case ValDecl(x, _, _) => Set(x)
++    case VarDecl(x, _, _) => Set(x)
+     case DefDecl(x, _, _, _) => Set(x)
+   }
+ }
+diff --git a/src/miniscala/parser/Parser.scala b/src/miniscala/parser/Parser.scala
+index 6150fc0..faae1b1 100644
+--- a/src/miniscala/parser/Parser.scala
++++ b/src/miniscala/parser/Parser.scala
+@@ -24,6 +24,8 @@ object Parser extends PackratParsers {
+     antiPrecedence match {
+       case 8 =>
+         ifthenelse |
++          wwhile |
++          assignment |
+           lambda |
+           expr(7)
+       case 7 =>
+@@ -70,11 +72,17 @@ object Parser extends PackratParsers {
+     }
+   }
+ 
+-  private lazy val blockel: PackratParser[AstNode] = valdecl | defdecl
++  private lazy val wwhile: PackratParser[Exp] = positioned {
++    (WWHILE() ~ LEFT_PAREN() ~ expr() ~ RIGHT_PAREN() ~ expr()) ^^ {
++      case _ ~ _ ~ exp1 ~ _ ~ exp2 => WhileExp(exp1, exp2)
++    }
++  }
+ 
+-  private lazy val blockelmseq: PackratParser[List[AstNode]] = rep { blockel ~ SEMICOLON() } ^^ (_.map(_._1))
++  private lazy val blockel: PackratParser[AstNode] = valdecl | vardecl | defdecl | expr()
+ 
+-  type BlockTupleType = Tuple2[List[ValDecl], List[DefDecl]]
++  private lazy val blockelmseq: PackratParser[List[AstNode]] = repsep(blockel, SEMICOLON())
++
++  type BlockTupleType = Tuple4[List[ValDecl], List[VarDecl], List[DefDecl], List[Exp]]
+ 
+   private def validBlock[T](l: List[T]): Option[BlockTupleType] = {
+     // Matchers for each part of the block
+@@ -82,8 +90,14 @@ object Parser extends PackratParsers {
+       { case _: ValDecl => true
+       case _ => false
+       },
++      { case _: VarDecl => true
++      case _ => false
++      },
+       { case _: DefDecl => true
+       case _ => false
++      },
++      { case _: Exp => true
++      case _ => false
+       })
+     // Extractor of the various parts of the block
+     val (remaining, splits) = matchers.foldLeft((l, List[List[T]]())) { case ((list: List[T], outcome: List[List[T]]), matcher) =>
+@@ -93,13 +107,21 @@ object Parser extends PackratParsers {
+     val items = splits.reverse
+     if (remaining.isEmpty) Some((
+       items(0).map(_.asInstanceOf[ValDecl]),
+-      items(1).map(_.asInstanceOf[DefDecl]))
++      items(1).map(_.asInstanceOf[VarDecl]),
++      items(2).map(_.asInstanceOf[DefDecl]),
++      items(3).map(_.asInstanceOf[Exp]))
+     )
+     else None
+   }
+ 
+   private lazy val block: PackratParser[BlockExp] = positioned {
+-    ((LEFT_BRACE() ~ blockelmseq ~ expr() ~ RIGHT_BRACE()) ^^ {case _ ~ l ~ exp ~ _ => validBlock(l).map(t => BlockExp(t._1, t._2, exp)) } filter(_.isDefined)) ^^ {_.get}
++    ((LEFT_BRACE() ~ blockelmseq ~ RIGHT_BRACE()) ^^ {case _ ~ l ~ _ => validBlock(l).map(BlockExp.tupled) } filter(_.isDefined)) ^^ {_.get}
++  }
++
++  private lazy val assignment: PackratParser[Exp] = positioned {
++    (identifier ~ EQ() ~ expr()) ^^ {
++      case id ~ _ ~ exp => AssignmentExp(id.str, exp)
++    }
+   }
+ 
+   private def call(context: Context.Value): PackratParser[Exp] =
+@@ -131,6 +153,13 @@ object Parser extends PackratParsers {
+     (VVAL() ~ identifier ~ opttypeannotation ~ EQ() ~ expr()) ^^ { case _ ~ id ~ t ~ _ ~ exp => ValDecl(id.str, t, exp) }
+   }
+ 
++  private lazy val vardecl: PackratParser[Decl] = positioned {
++    (VVAR() ~ identifier ~ opttypeannotation ~ EQ() ~ expr()) ^^ {
++      case _ ~ id ~ t ~ _ ~ exp =>
++        VarDecl(id.str, t, exp)
++    }
++  }
++
+   private lazy val defdecl: PackratParser[Decl] = positioned {
+     (DDEF() ~ identifier ~ LEFT_PAREN() ~ repsep(identifier ~ opttypeannotation, COMMA()) ~ RIGHT_PAREN() ~ opttypeannotation ~ EQ() ~ expr()) ^^ {
+       case _ ~ id ~ _ ~ identifiers ~ _ ~ retType ~ _ ~ exp =>
