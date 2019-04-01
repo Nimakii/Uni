@@ -9,9 +9,9 @@ import miniscala.Unparser.unparse
 object TypeChecker {
   type TypeEnv = Map[Id, Type]
 
-  case class RefType(thetype: Type) extends Type
+  case class RefType(theType: Type) extends Type
 
-  val unitType = TupleType(Nil)
+  val unitType = TupleType(List[Type]())
 
   def typeCheck(e: Exp, tenv: TypeEnv): Type = e match {
     case IntLit(_) => IntType()
@@ -85,22 +85,36 @@ object TypeChecker {
       }
     case BlockExp(vals, vars, defs, exps) =>
       var tenv_updated = tenv
-      for (d <- vals) {
+      for (d <- vals) { //valDecl
         val t = typeCheck(d.exp, tenv_updated)
         tenv_updated += (d.x -> d.opttype.getOrElse(throw new TypeError("No type annotation",BlockExp(vals, defs, exp))))
         checkTypesEqual(t, d.opttype, d)
       }
-      for (d <- defs){
+      //VarDecl
+      for (vaR <- vars){
+        val vaRType = typeCheck(vaR.exp,tenv_updated) //theta|-e:tau
+        checkTypesEqual(vaRType,vaR.opttype,BlockExp(vals, vars, defs, exps)) //tau = type(t)
+        tenv_updated += (vaR.x -> RefType(vaRType)) //theta' = theta[x ->Ref(tau)
+        //theta' is returned because tenv_updated is a var.
+      }
+      //defDecl with mutual recursion via lecture 6 slide 36
+      for (d <- defs){ //theta'
         tenv_updated += (d.fun -> getFunType(d))
       }
       for (d <- defs){
         var tenvy = tenv_updated
         for (p <- d.params){
-          tenvy += (p.x -> p.opttype.getOrElse(throw new TypeError("",p)))
+          tenvy += (p.x -> p.opttype.getOrElse(throw new TypeError("",p))) //tau_1 = type(t_1) paramtype
         }
-        checkTypesEqual(typeCheck(d.body,tenvy),d.optrestype,BlockExp(vals, defs, exp))
+        //theta'[x->tau_1]|-e:tau_2
+        checkTypesEqual(typeCheck(d.body,tenvy),d.optrestype,BlockExp(vals, vars, defs, exps)) //tau_2 = type(t_2) restype
       }
-      typeCheck(exp,tenv_updated)
+      //T-Block2 & T-BlockEmpty
+      var res: Type = unitType
+      for (exp <- exps){
+        res = typeCheck(exp,tenv_updated)
+      }
+      res
     case TupleExp(exps) => TupleType(exps.map(x => typeCheck(x,tenv)))
     case MatchExp(exp, cases) =>
       val exptype = typeCheck(exp, tenv)
@@ -120,9 +134,17 @@ object TypeChecker {
         throw new TypeError("Missing type annotation",LambdaExp(params, body))))
       FunType(Jeppe.unzip._2,typeCheck(body,tenv ++ Jeppe))
     case AssignmentExp(x, exp) =>
-      ???
+      tenv(x) match{
+        case RefType(a) => if(typeCheck(exp,tenv)==a){ //husk at Some(a) kalder constructor for Option
+          return unitType
+        } else throw new TypeError("Incompatible types, expected "+a+" but got "+typeCheck(exp,tenv), e)
+        case _ => throw new TypeError("Not a var", e)
+      }
     case WhileExp(cond, body) =>
-      ???
+      typeCheck(cond,tenv) match{
+        case BoolType() => typeCheck(body,tenv); return unitType
+        case _ => throw new TypeError("Condition is not a Boolean",cond)
+      }
 
     /**
       * LambdaExp(params: List[FunParam], body: Exp)

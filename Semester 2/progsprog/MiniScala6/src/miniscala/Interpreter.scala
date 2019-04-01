@@ -10,6 +10,12 @@ import scala.io.StdIn
   */
 object Interpreter {
 
+  type Env = Map[Id, Val]
+
+  type Sto = Map[Loc, Val]
+
+  type Loc = Int
+
   sealed abstract class Val
 
   case class IntVal(v: Int) extends Val
@@ -28,12 +34,6 @@ object Interpreter {
   case class RefVal(loc: Loc, opttype: Option[Type]) extends Val
 
   val unitVal = TupleVal(List[Val]())
-
-  type Env = Map[Id, Val]
-
-  type Sto = Map[Loc, Val]
-
-  type Loc = Int
 
   def nextLoc(sto: Sto): Loc = sto.size
 
@@ -217,17 +217,20 @@ object Interpreter {
     case BlockExp(vals, vars, defs, exps) =>
       var env1 = env
       var sto1 = sto
-      for (d <- vals) {
+      for (d <- vals) { //ValDeclAnno
         val (v, sto2) = eval(d.exp, env1, sto1)
         env1 = env1 + (d.x -> v)
         sto1 = sto2
+        checkValueType(v,d.opttype,e)
       }
-      for (d <- vars) {
+      for (d <- vars) { //VarDeclAnno
         val (v, sto2) = eval(d.exp, env1, sto1)
         val loc = nextLoc(sto2)
         env1 = env1 + (d.x -> RefVal(loc, d.opttype))
         sto1 = sto2 + (loc -> v)
+        checkValueType(v,d.opttype,e)
       }
+      //DefDeclAnno
       env1 = defs.foldLeft(env1)((en: Env, d: DefDecl) => {
         en + (d.fun -> ClosureVal(d.params, d.optrestype, d.body, en, defs))
       })
@@ -285,15 +288,15 @@ object Interpreter {
             def halp(fp: FunParam): Id = fp.x
             var cenv_updated = cenv
             var sto2 = sto1
+            for (d <- defs) { //rebind function defs, to achieve mutual recursion
+              cenv_updated += (d.fun -> ClosureVal(d.params, d.optrestype, d.body, cenv, defs))
+            }
             for (i <- args.indices) {
               val evaluation = eval(args(i), env, sto2)
               val argval = evaluation._1
               sto2 = evaluation._2
               checkValueType(argval, params(i).opttype, CallExp(funexp, args))
               cenv_updated += (halp(params(i)) -> argval)
-            }
-            for (d <- defs) { //rebind function defs, to achieve mutual recursion
-              cenv_updated += (d.fun -> ClosureVal(d.params, d.optrestype, d.body, cenv, defs))
             }
             val res = eval(body, cenv_updated,sto2)
             checkValueType(res._1, optrestype, CallExp(funexp, args))
