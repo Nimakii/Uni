@@ -27,14 +27,15 @@ object Unparser {
       val op1 = unparse(op)
       val exp1 = unparse(exp)
       op1+"("+exp1+")"
-    case BlockExp(vals,defs,exp) => /** BlockExp(List[ValDecl],List[DefDecl],Exp)*/
+    case BlockExp(vals,_,defs,_) => /** BlockExp(List[ValDecl],List[DefDecl],Exp)*/
       var valString = ""
       var endTuborg = ""
       for(d <- vals){
         valString += "{ " + unparse(d) + ";"
         endTuborg = endTuborg+" }"
       }
-      valString+unparse(exp)+endTuborg
+      ""
+      //valString+unparse(exp)+endTuborg
     case IfThenElseExp(conditionexp,thenexp,elseexp) =>
       val condi = unparse(conditionexp)
       val thene = unparse(thenexp)
