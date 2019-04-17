@@ -10,7 +10,11 @@ import scala.io.StdIn
   */
 object Interpreter {
 
+  case class Constructor(params: List[FunParam], body: BlockExp, env: Env, cenv: ClassEnv, classes: List[ClassDecl])
+
   type Env = Map[Id, Val]
+
+  type ClassEnv = Map[Id, Constructor]
 
   type Sto = Map[Loc, Val]
 
@@ -28,17 +32,20 @@ object Interpreter {
 
   case class TupleVal(vs: List[Val]) extends Val
 
+  //case class ClosureVal(params: List[FunParam], optrestype: Option[Type],
+                        //body: Exp, env: Env, cenv: ClassEnv) extends Val
   case class ClosureVal(params: List[FunParam], optrestype: Option[Type],
-                        body: Exp, env: Env, defs: List[DefDecl]) extends Val
+                        body: Exp, env: Env, cenv: ClassEnv, defs: List[DefDecl]) extends Val
 
   case class RefVal(loc: Loc, opttype: Option[Type]) extends Val
+  case class ObjectVal(members: Env) extends Val
 
   val unitVal = TupleVal(List[Val]())
 
   def nextLoc(sto: Sto): Loc = sto.size
 
-  def evaltest(e: Exp): (Val,Sto) = eval(e,Map[Id,Val](),Map[Loc,Val]())
-  def eval(e: Exp, env: Env, sto: Sto): (Val, Sto) = e match {
+  //def evaltest(e: Exp): (Val,Sto) = eval(e,Map[Id,Val](),Map[Loc,Val]())
+  def eval(e: Exp, env: Env, cenv:ClassEnv, sto: Sto): (Val, Sto) = e match {
     case IntLit(c) =>
       trace("Integer " + c + " found")
       (IntVal(c), sto)
@@ -53,14 +60,11 @@ object Interpreter {
       (StringVal(c), sto)
     case VarExp(x) =>
       trace(s"Variable $x found, lookup of variable value in environment gave " + env(x))
-      env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e)) match {
-        case RefVal(loc, _) => (sto(loc), sto)
-        case v: Val => (v, sto)
-      }
+      (getValue(env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e)), sto), sto)
     case BinOpExp(leftexp, op, rightexp) =>
       trace("BinOpExp found, evaluating left and right expressions")
-      val (leftval, sto1) = eval(leftexp, env, sto)
-      val (rightval, sto2) = eval(rightexp, env, sto1)
+      val (leftval, sto1) = eval(leftexp, env, cenv, sto)
+      val (rightval, sto2) = eval(rightexp, env, cenv, sto1)
       op match {
         case PlusBinOp() => trace("Adding expressions")
           (leftval, rightval) match {
@@ -186,7 +190,7 @@ object Interpreter {
       }
     case UnOpExp(op, exp) =>
       trace("Unary expression found")
-      val (expval, sto1) = eval(exp, env, sto)
+      val (expval, sto1) = eval(exp, env, cenv, sto)
       op match {
         case NegUnOp() =>
           trace("Negation of number")
@@ -203,17 +207,19 @@ object Interpreter {
           }
       }
     case IfThenElseExp(condexp, thenexp, elseexp) =>
-      eval(condexp, env, sto) match {
+      eval(condexp, env,cenv, sto) match {
         case (BoolVal(a), st) =>
           trace("If statement found, evaluating condition")
           if (a) {
             trace("evaluating then clause")
-            return eval(thenexp, env, st)
+            return eval(thenexp, env,cenv, st)
           }
           else trace("evaluationg else clause")
-          eval(elseexp, env, st)
+          eval(elseexp, env,cenv, st)
         case _ => throw new InterpreterError("Condition clause not a boolean", IfThenElseExp(condexp, thenexp, elseexp))
       }
+
+    /**
     case BlockExp(vals, vars, defs, exps) =>
       var env1 = env
       var sto1 = sto
@@ -242,32 +248,36 @@ object Interpreter {
         sto1 = sto2
       }
       (res, sto1)
+      **/
+      case b: BlockExp =>
+      val (res, _, sto1) = evalBlock(b, env, cenv, sto)
+      (res, sto1)
     case TupleExp(exps) =>
       var (vals, sto1) = (List[Val](), sto)
       for (exp <- exps) {
-        val (v, sto2) = eval(exp, env, sto1)
+        val (v, sto2) = eval(exp, env, cenv, sto1)
         vals = v :: vals
         sto1 = sto2
       }
       (TupleVal(vals.reverse), sto1)
     case MatchExp(exp, cases) =>
       trace("Updating ")
-      val (expval, sto1) = eval(exp, env, sto)
+      val (expval, sto1) = eval(exp, env, cenv, sto)
       expval match {
         case TupleVal(vs) =>
           for (c <- cases) {
             if (vs.length == c.pattern.length) {
               val venv_update = c.pattern.zip(vs)
-              return eval(c.exp, env ++ venv_update,sto1)
+              return eval(c.exp, env ++ venv_update,cenv,sto1)
             }
           }
           throw new InterpreterError(s"No case matches value ${valueToString(expval)}", e)
         case _ => throw new InterpreterError(s"Tuple expected at match, found ${valueToString(expval)}", e)
       }
     case LambdaExp(params, body) =>
-      (ClosureVal(params, None, body, env, List[DefDecl]()),sto)
+      (ClosureVal(params, None, body, env,cenv, List[DefDecl]()),sto)
     case AssignmentExp(x, exp) =>
-      val (v, sto1) = eval(exp, env, sto)
+      val (v, sto1) = eval(exp, env,cenv, sto)
       env(x) match {
         case RefVal(loc,opttype) =>
           checkValueType(v,opttype,e)
@@ -275,36 +285,160 @@ object Interpreter {
         case _ => throw new InterpreterError("Not a var",e)
       }
     case WhileExp(cond, body) =>
-      eval(cond,env,sto) match {
-        case (BoolVal(true),st) => eval(WhileExp(cond,body),env,eval(body,env,st)._2)
+      eval(cond, env, cenv, sto) match {
+        case (BoolVal(true),st) => eval(WhileExp(cond,body),env,cenv,eval(body,env,cenv,st)._2)
         case (BoolVal(false),st) => (unitVal,st)
         case _ => throw new InterpreterError("Not a boolean",cond)
       }
 
     case CallExp(funexp, args) =>
-      eval(funexp, env, sto) match {
-        case (ClosureVal(params, optrestype, body, cenv, defs), sto1) =>
+      trace("Attempting a function call")
+      eval(funexp, env, cenv, sto) match {
+        case (ClosureVal(params, optrestype, body, kenv, cenv1, defs), sto1) =>
+          trace("Function found, attempting evaluation")
           if (args.length == params.length) {
             def halp(fp: FunParam): Id = fp.x
-            var cenv_updated = cenv
+            var kenv_updated = kenv
             var sto2 = sto1
+            trace("Rebinding to achieve mutual recursion")
             for (d <- defs) { //rebind function defs, to achieve mutual recursion
-              cenv_updated += (d.fun -> ClosureVal(d.params, d.optrestype, d.body, cenv, defs))
+              kenv_updated += (d.fun -> ClosureVal(d.params, d.optrestype, d.body, kenv, cenv1, defs))
             }
+            trace("Evaluating paramters")
             for (i <- args.indices) {
-              val evaluation = eval(args(i), env, sto2)
+              val evaluation = eval(args(i), env, cenv, sto2)
               val argval = evaluation._1
               sto2 = evaluation._2
               checkValueType(argval, params(i).opttype, CallExp(funexp, args))
-              cenv_updated += (halp(params(i)) -> argval)
+              kenv_updated += (halp(params(i)) -> argval)
             }
-            val res = eval(body, cenv_updated,sto2)
+            trace("Evaluating function body with paramter values")
+            val res = eval(body, kenv_updated, cenv1, sto2)
             checkValueType(res._1, optrestype, CallExp(funexp, args))
             res
           } else throw new InterpreterError("Wrong number of arguments", CallExp(funexp, args))
         case _ =>
           throw new InterpreterError("Not a function", funexp)
       }
+    case NewObjExp(klass, args) =>
+      trace("Trying to create new object")
+      val c = cenv.getOrElse(klass, throw new InterpreterError(s"Unknown class name '$klass'", e))
+      trace("Rebinding to achieve mutual recursion")
+      val declcenv1 = rebindClasses(c.env, c.cenv, c.classes) //kappa2
+      trace("Evaluating arguments")
+      val (declenv1, sto1) = evalArgs(args, c.params, env, sto, cenv, c.env, e) //v,sigma1
+      trace("Building methods for the object")
+      val (_, env1, sto2) = evalBlock(c.body, declenv1, declcenv1, sto1) //rho3,sigma2
+      trace("Finding unused location in the storage")
+      val newloc = nextLoc(sto2)
+      trace("Making the restricted enviroment")
+                                        //funktion i klasse med samme navn            feltVARiable                       feltVALiable
+      val objenv = env1.filterKeys(p => c.body.defs.exists(d => d.fun == p) || c.body.vars.exists(d => d.x == p) || c.body.vals.exists(d => d.x == p))
+      trace("Adding object to storage")
+      val sto3 = sto2 + (newloc -> ObjectVal(objenv))
+      trace("Returning object location and updated storage")
+      (RefVal(newloc, None), sto3)
+    case LookupExp(objexp, member) =>
+      trace("Evaluating base value")
+      val (objval, sto1) = eval(objexp, env, cenv, sto)
+      objval match {
+        case RefVal(loc, _) =>
+          trace("Location found, looking in storage")
+          sto1(loc) match {
+            case ObjectVal(members) =>
+              trace("Looking for matching class method")
+              (getValue(members.getOrElse(member, throw new InterpreterError(s"No such member: $member", e)), sto1), sto1)
+            case v => throw new InterpreterError(s"Base value of lookup is not a reference to an object: ${valueToString(v)}", e)
+          }
+        case _ => throw new InterpreterError(s"Base value of lookup is not a location: ${valueToString(objval)}", e)
+      }
+  }
+
+  /**
+    * Evaluates the given block.
+    * Returns the resulting value, the updated environment after evaluating all declarations, and the latest store.
+    */
+  def evalBlock(b: BlockExp, env: Env, cenv: ClassEnv, sto: Sto): (Val, Env, Sto) = {
+    var env1 = env
+    var sto1 = sto
+    trace("Calculating values and adding to enviroment and storage")
+    for (d <- b.vals) {
+      val (v, sto2) = eval(d.exp, env1, cenv, sto1)
+      env1 = env1 + (d.x -> v)
+      sto1 = sto2
+    }
+    trace("Calculating variables and adding to enviroment and storage")
+    for (d <- b.vars) {
+      val (v, sto2) = eval(d.exp, env1,cenv, sto1)
+      val loc = nextLoc(sto2)
+      env1 = env1 + (d.x -> RefVal(loc, d.opttype))
+      sto1 = sto2 + (loc -> v)
+    }
+    trace("Defining functions and adding to enviroment")
+    env1 = b.defs.foldLeft(env1)((en: Env, d: DefDecl) => {
+      en + (d.fun -> ClosureVal(d.params, d.optrestype, d.body, en, cenv, b.defs))
+    })
+    var cenv1 = cenv
+    trace("Defining classes and adding to class enviroment")
+    for (d <- b.classes)
+      cenv1 = cenv1 + (d.klass -> Constructor(d.params, d.body, env1, cenv, b.classes))
+    var res: Val = unitVal
+    trace("Evaluating side effects of expressions")
+    for (exp <- b.exps) {
+      val (res1, sto2) = eval(exp, env1, cenv1, sto1)
+      res = res1
+      sto1 = sto2
+    }
+    trace("Returning result of last expression in this block")
+    (res, env1, sto1)
+  }
+
+  /**
+    * Evaluates the arguments `args` in environment `env` with store `sto`,
+    * extends the environment `declenv` with the new bindings, and
+    * returns the extended environment and the latest store.
+    */
+  def evalArgs(args: List[Exp], params: List[FunParam], env: Env, sto: Sto, cenv: ClassEnv, declenv: Env, e: Exp): (Env, Sto) = {
+    trace("Evaluating arguments ")
+    if (args.length != params.length) throw new InterpreterError("Wrong number of arguments at call/new", e)
+    var (env1, sto1) = (declenv, sto)
+    trace("Extending enviroment ")
+    for ((p, arg) <- params.zip(args) ) {
+      val (argval, sto2) = eval(arg, env, cenv, sto1)
+      checkValueType(argval, p.opttype, arg)
+      env1 = env1 + (p.x -> argval)
+      sto1 = sto2
+    }
+    trace("Returning extended enviroment and store")
+    (env1, sto1)
+  }
+
+  /**
+    * If `v` is a reference to an object or it is a non-reference value, then return `v` itself;
+    * otherwise, it must be a reference to a non-object value, so return that value.
+    */
+  def getValue(v: Val, sto: Sto): Val = v match {
+    case RefVal(loc, _) => trace("Reference value found, looking in storage")
+      sto(loc) match {
+        case _: ObjectVal => trace("Object found, returning reference")
+          v
+        case stoval => trace("Value found, returning value")
+          stoval
+      }
+    case _ => trace("Not a reference, no lookup in storage needed, returning value")
+      v
+  }
+
+  /**
+    * Rebinds `classes` in `cenv` to support recursive class declarations.
+    */
+  def rebindClasses(env: Env, cenv: ClassEnv, classes: List[ClassDecl]): ClassEnv = {
+    trace("Rebinding classes")
+    var cenv1 = cenv
+    for (d <- classes)
+      cenv1 = cenv1 + (d.klass -> Constructor(d.params, d.body, env, cenv, classes))
+    trace("Returning rebound class enviroment")
+    cenv1
   }
 
   /**
@@ -321,7 +455,7 @@ object Interpreter {
         case (TupleVal(vs), TupleType(ts)) if vs.length == ts.length =>
           for ((vi, ti) <- vs.zip(ts))
             checkValueType(vi, Some(ti), n)
-        case (ClosureVal(cparams, optcrestype, _, _, _), FunType(paramtypes, restype)) if cparams.length == paramtypes.length =>
+        case (ClosureVal(cparams, optcrestype, _, _,_, _), FunType(paramtypes, restype)) if cparams.length == paramtypes.length =>
           for ((p, t) <- cparams.zip(paramtypes))
             checkTypesEqual(t, p.opttype, n)
           checkTypesEqual(restype, optcrestype, n)
@@ -350,9 +484,10 @@ object Interpreter {
     case BoolVal(c) => c.toString
     case StringVal(c) => c
     case TupleVal(vs) => vs.map(v => valueToString(v)).mkString("(", ",", ")")
-    case ClosureVal(params, _, exp, _, _) => // the resulting string ignores the result type annotation and the declaration environment
+    case ClosureVal(params, _, exp, _,_, _) => // the resulting string ignores the result type annotation and the declaration environment
       s"<(${params.map(p => unparse(p)).mkString(",")}), ${unparse(exp)}>"
     case RefVal(loc, _) => s"#$loc" // the resulting string ignores the type annotation
+    case ObjectVal(_) => "object" // (unreachable case)
   }
 
   /**

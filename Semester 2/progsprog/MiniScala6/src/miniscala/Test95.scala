@@ -8,6 +8,7 @@ import miniscala.parser.Parser.parse
 object Test95 {
 
   def main(args: Array[String]): Unit = {
+    
     test("{ def f(x: Int): Int = x; f(2) }", IntVal(2), IntType())
     testFail("{ def f(x: Int): Int = x; f(2, 3) }")
     test("2",IntVal(2),IntType())
@@ -54,7 +55,7 @@ object Test95 {
   }
 
   def testVal(prg: String, value: Val, env: Env = Map[Id, Val](), sto: Sto = Map[Loc, Val]()) = {
-    val (res, _) = eval(parse(prg), env, sto)
+    val (res, _) = eval(parse(prg), env,Map[Id, Constructor](), sto)
     assert(res == value)
   }
 
@@ -64,7 +65,7 @@ object Test95 {
 
   def testValFail(prg: String,env: Env = Map[Id, Val](), sto: Sto = Map[Loc, Val]() ) = {
     try {
-      eval(parse(prg), env, sto)
+      eval(parse(prg), env,Map[Id, Constructor](), sto)
       assert(false)
     } catch {
       case _: InterpreterError => assert(true)
