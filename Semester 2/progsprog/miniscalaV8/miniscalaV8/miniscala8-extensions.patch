@@ -1,0 +1,85 @@
+diff --git a/src/miniscala/Ast.scala b/src/miniscala/Ast.scala
+index 71c489f..2cacf27 100644
+--- a/src/miniscala/Ast.scala
++++ b/src/miniscala/Ast.scala
+@@ -44,6 +44,8 @@ object Ast {
+ 
+   case class WhileExp(cond: Exp, body: Exp) extends Exp
+ 
++  case class DoWhileExp(body: Exp, cond: Exp) extends Exp
++
+   case class NewObjExp(klass: Id, args: List[Exp]) extends Exp
+ 
+   case class LookupExp(objexp: Exp, member: Id) extends Exp
+@@ -90,6 +92,10 @@ object Ast {
+ 
+   case class OrBinOp() extends BinOp
+ 
++  case class AndAndBinOp() extends BinOp
++
++  case class OrOrBinOp() extends BinOp
++
+   /**
+     * Unary operators.
+     */
+diff --git a/src/miniscala/parser/Lexer.scala b/src/miniscala/parser/Lexer.scala
+index f649067..e77ef29 100644
+--- a/src/miniscala/parser/Lexer.scala
++++ b/src/miniscala/parser/Lexer.scala
+@@ -73,7 +73,7 @@ object Lexer extends RegexParsers {
+ 
+   private def literalNull = positioned { """null\b""".r ^^ { lit => NULL() } }
+ 
+-  private def op = positioned { """\+|\*|-|/|<=|==|<|%|!|\||&|\|\||\&\&|max""".r ^^ { lit => OP(lit) } }
++  private def op = positioned { """\+|\*|-|/|<=|==|<|%|!|\|\||\&\&|\||&|max""".r ^^ { lit => OP(lit) } }
+ 
+   private def simpleType = positioned { """(String|Int|Float|Boolean|Unit|Null)\b""".r ^^ { lit => SIMPLE_TYPE(lit) } }
+ 
+diff --git a/src/miniscala/parser/Parser.scala b/src/miniscala/parser/Parser.scala
+index c53e62c..34b31ad 100644
+--- a/src/miniscala/parser/Parser.scala
++++ b/src/miniscala/parser/Parser.scala
+@@ -25,6 +25,7 @@ object Parser extends PackratParsers {
+       case 8 =>
+         ifthenelse |
+           wwhile |
++          dowhile |
+           assignment |
+           lambda |
+           expr(7)
+@@ -80,6 +81,12 @@ object Parser extends PackratParsers {
+     }
+   }
+ 
++  private lazy val dowhile: PackratParser[Exp] = positioned {
++    (DO() ~ expr() ~ WWHILE() ~ LEFT_PAREN() ~ expr() ~ RIGHT_PAREN()) ^^ {
++      case _ ~ exp1 ~ _ ~ _ ~ exp2 ~ _ => DoWhileExp(exp1, exp2)
++    }
++  }
++
+   private lazy val blockel: PackratParser[AstNode] = valdecl | vardecl | defdecl | classdecl | expr()
+ 
+   private lazy val blockelmseq: PackratParser[List[AstNode]] = repsep(blockel, SEMICOLON())
+@@ -273,9 +280,9 @@ object Parser extends PackratParsers {
+       case 3 =>
+         lt | lteq
+       case 4 =>
+-        and
++        and | andand
+       case 5 =>
+-        or
++        or | oror
+       case 6 =>
+         max
+     }
+@@ -314,6 +321,10 @@ object Parser extends PackratParsers {
+ 
+   private lazy val or: PackratParser[BinOp] = OP("|") ^^ { _ => OrBinOp() }
+ 
++  private lazy val andand: PackratParser[BinOp] = OP("&&") ^^ { _ => AndAndBinOp() }
++
++  private lazy val oror: PackratParser[BinOp] = OP("||") ^^ { _ => OrOrBinOp() }
++
+   private lazy val max: PackratParser[BinOp] = OP("max") ^^ { _ => MaxBinOp() }
+ 
+   private lazy val lt: PackratParser[BinOp] = OP("<") ^^ { _ => LessThanBinOp() }

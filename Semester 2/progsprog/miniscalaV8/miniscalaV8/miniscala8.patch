@@ -1,0 +1,305 @@
+diff --git a/src/miniscala/Ast.scala b/src/miniscala/Ast.scala
+index b9419b7..71c489f 100644
+--- a/src/miniscala/Ast.scala
++++ b/src/miniscala/Ast.scala
+@@ -61,6 +61,8 @@ object Ast {
+ 
+   case class StringLit(c: String) extends Literal
+ 
++  case class NullLit() extends Literal
++
+   /**
+     * Binary operators.
+     */
+@@ -137,6 +139,10 @@ object Ast {
+ 
+   case class FunType(paramtypes: List[Type], restype: Type) extends Type
+ 
++  case class ClassType(klass: Id) extends Type
++
++  case class NullType() extends Type
++
+   /**
+     * Exception with a message and (optionally) a source code position.
+     */
+diff --git a/src/miniscala/Interpreter.scala b/src/miniscala/Interpreter.scala
+index 61d8112..9605b78 100644
+--- a/src/miniscala/Interpreter.scala
++++ b/src/miniscala/Interpreter.scala
+@@ -4,6 +4,7 @@ import miniscala.Ast._
+ import miniscala.Unparser.unparse
+ 
+ import scala.io.StdIn
++import scala.util.parsing.input.Position
+ 
+ /**
+   * Interpreter for MiniScala.
+@@ -22,7 +23,9 @@ object Interpreter {
+ 
+   val unitVal = TupleVal(Nil)
+ 
+-  case class Constructor(params: List[FunParam], body: BlockExp, env: Env, cenv: ClassEnv, classes: List[ClassDecl])
++  case class Constructor(params: List[FunParam], body: BlockExp, env: Env, cenv: ClassEnv, classes: List[ClassDecl], srcpos: Position)
++
++  case class ClassDeclType(srcpos: Position) extends Type
+ 
+   type Env = Map[Id, Val]
+ 
+@@ -39,6 +42,7 @@ object Interpreter {
+     case BoolLit(c) => ???
+     case FloatLit(c) => ???
+     case StringLit(c) => ???
++    case NullLit() => ???
+     case VarExp(x) =>
+       (getValue(env.getOrElse(x, throw new InterpreterError(s"Unknown identifier '$x'", e)), sto), sto)
+     case BinOpExp(leftexp, op, rightexp) =>
+@@ -124,12 +128,12 @@ object Interpreter {
+     case NewObjExp(klass, args) =>
+       val c = cenv.getOrElse(klass, throw new InterpreterError(s"Unknown class name '$klass'", e))
+       val declcenv1 = rebindClasses(c.env, c.cenv, c.classes)
+-      val (declenv1, sto1) = evalArgs(args, c.params, env, sto, cenv, c.env, e)
++      val (declenv1, sto1) = evalArgs(args, c.params, env, sto, cenv, c.env, declcenv1, e)
+       val (_, env1, sto2) = evalBlock(c.body, declenv1, declcenv1, sto1)
+       val newloc = nextLoc(sto2)
+       val objenv = env1.filterKeys(p => c.body.defs.exists(d => d.fun == p) || c.body.vars.exists(d => d.x == p) || c.body.vals.exists(d => d.x == p))
+       val sto3 = sto2 + (newloc -> ObjectVal(objenv))
+-      (RefVal(newloc, None), sto3)
++      (RefVal(newloc, Some(ClassDeclType(c.srcpos))), sto3)
+     case LookupExp(objexp, member) =>
+       val (objval, sto1) = eval(objexp, env, cenv, sto)
+       objval match {
+@@ -152,6 +156,7 @@ object Interpreter {
+     var sto1 = sto
+     for (d <- b.vals) {
+       val (v, sto2) = eval(d.exp, env1, cenv, sto1)
++      val ot = getType(d.opttype, cenv)
+       env1 = env1 + (d.x -> v)
+       sto1 = sto2
+     }
+@@ -162,7 +167,7 @@ object Interpreter {
+       ???
+     var cenv1 = cenv
+     for (d <- b.classes)
+-      cenv1 = cenv1 + (d.klass -> Constructor(d.params, d.body, env2, cenv, b.classes))
++      cenv1 = cenv1 + (d.klass -> Constructor(d.params, d.body, env2, cenv, b.classes, d.pos))
+     var res: Val = unitVal
+     for (exp <- b.exps) {
+       val (res1, sto2) = eval(exp, env2, cenv1, sto1)
+@@ -177,12 +182,12 @@ object Interpreter {
+     * extends the environment `declenv` with the new bindings, and
+     * returns the extended environment and the latest store.
+     */
+-  def evalArgs(args: List[Exp], params: List[FunParam], env: Env, sto: Sto, cenv: ClassEnv, declenv: Env, e: Exp): (Env, Sto) = {
++  def evalArgs(args: List[Exp], params: List[FunParam], env: Env, sto: Sto, cenv: ClassEnv, declenv: Env, declcenv: ClassEnv, e: Exp): (Env, Sto) = {
+     if (args.length != params.length) throw new InterpreterError("Wrong number of arguments at call/new", e)
+     var (env1, sto1) = (declenv, sto)
+     for ((p, arg) <- params.zip(args) ) {
+       val (argval, sto2) = eval(arg, env, cenv, sto1)
+-      checkValueType(argval, p.opttype, arg)
++      checkValueType(argval, getType(p.opttype, declcenv), arg)
+       env1 = env1 + (p.x -> argval)
+       sto1 = sto2
+     }
+@@ -208,11 +213,26 @@ object Interpreter {
+   def rebindClasses(env: Env, cenv: ClassEnv, classes: List[ClassDecl]): ClassEnv = {
+     var cenv1 = cenv
+     for (d <- classes)
+-      cenv1 = cenv1 + (d.klass -> Constructor(d.params, d.body, env, cenv, classes))
++      cenv1 = cenv1 + (d.klass -> Constructor(d.params, d.body, env, cenv, classes, d.pos))
+     cenv1
+   }
+ 
+   /**
++    * Returns the proper type for the type annotation `ot` (if present).
++    * Class names are converted to proper types according to the class environment `cenv`.
++    */
++  def getType(ot: Option[Type], cenv: ClassEnv): Option[Type] = ot.map(t => {
++    def getType(t: Type): Type = t match {
++      case ClassType(klass) => ClassDeclType(cenv.getOrElse(klass, throw new InterpreterError(s"Unknown class '$klass'", t)).srcpos)
++      case IntType() | BoolType() | FloatType() | StringType() | NullType() => t
++      case TupleType(ts) => TupleType(ts.map(getType))
++      case FunType(paramtypes, restype) => FunType(paramtypes.map(getType), getType(restype))
++      case _ => throw new RuntimeException(s"Unexpected type $t") // this case is unreachable
++    }
++    getType(t)
++  })
++
++  /**
+     * Checks whether value `v` has type `ot` (if present), generates runtime type error otherwise.
+     */
+   def checkValueType(v: Val, ot: Option[Type], n: AstNode): Unit = ot match {
+@@ -226,10 +246,13 @@ object Interpreter {
+         case (TupleVal(vs), TupleType(ts)) if vs.length == ts.length =>
+           for ((vi, ti) <- vs.zip(ts))
+             checkValueType(vi, Some(ti), n)
+-        case (ClosureVal(cparams, optcrestype, _, _, _), FunType(paramtypes, restype)) if cparams.length == paramtypes.length =>
++        case (ClosureVal(cparams, optcrestype, _, _, cenv), FunType(paramtypes, restype)) if cparams.length == paramtypes.length =>
+           for ((p, t) <- cparams.zip(paramtypes))
+-            checkTypesEqual(t, p.opttype, n)
+-          checkTypesEqual(restype, optcrestype, n)
++            checkTypesEqual(t, getType(p.opttype, cenv), n)
++          checkTypesEqual(restype, getType(optcrestype, cenv), n)
++        case (RefVal(_, Some(vd: ClassDeclType)), td: ClassDeclType) =>
++          if (vd != td)
++            throw new InterpreterError(s"Type mismatch: object of type ${unparse(vd)} does not match type ${unparse(td)}", n)
+         case _ =>
+           throw new InterpreterError(s"Type mismatch: value ${valueToString(v)} does not match type ${unparse(t)}", n)
+       }
+diff --git a/src/miniscala/Main.scala b/src/miniscala/Main.scala
+index 1c8c4fc..fb123ae 100644
+--- a/src/miniscala/Main.scala
++++ b/src/miniscala/Main.scala
+@@ -23,7 +23,7 @@ object Main {
+       // type check the program, if enabled
+       if (Options.types) {
+         val initialTypeEnv = TypeChecker.makeInitialTypeEnv(program)
+-        TypeChecker.typeCheck(program, initialTypeEnv)
++        TypeChecker.typeCheck(program, initialTypeEnv, Map())
+       }
+ 
+       // execute the program, if enabled
+diff --git a/src/miniscala/TypeChecker.scala b/src/miniscala/TypeChecker.scala
+index 8a68b76..6cc869a 100644
+--- a/src/miniscala/TypeChecker.scala
++++ b/src/miniscala/TypeChecker.scala
+@@ -3,6 +3,8 @@ package miniscala
+ import miniscala.Ast._
+ import miniscala.Unparser.unparse
+ 
++import scala.util.parsing.input.Position
++
+ /**
+   * Type checker for MiniScala.
+   */
+@@ -10,22 +12,27 @@ object TypeChecker {
+ 
+   type TypeEnv = Map[Id, Type]
+ 
++  type ClassTypeEnv = Map[Id, ConstructorType]
++
+   case class RefType(thetype: Type) extends Type
+ 
++  case class ConstructorType(srcpos: Position, params: List[FunParam], membertypes: TypeEnv) extends Type
++
+   val unitType = TupleType(Nil)
+ 
+-  def typeCheck(e: Exp, tenv: TypeEnv): Type = e match {
++  def typeCheck(e: Exp, tenv: TypeEnv, ctenv: ClassTypeEnv): Type = e match {
+     case IntLit(_) => IntType()
+     case BoolLit(_) => ???
+     case FloatLit(_) => ???
+     case StringLit(_) => ???
++    case NullLit() => ???
+     case VarExp(x) => tenv.getOrElse(x, throw new TypeError(s"Unknown identifier '$x'", e)) match {
+       case RefType(thetype) => thetype
+       case t: Type => t
+     }
+     case BinOpExp(leftexp, op, rightexp) =>
+-      val lefttype = typeCheck(leftexp, tenv)
+-      val righttype = typeCheck(rightexp, tenv)
++      val lefttype = typeCheck(leftexp, tenv, ctenv)
++      val righttype = typeCheck(rightexp, tenv, ctenv)
+       op match {
+         case PlusBinOp() =>
+           (lefttype, righttype) match {
+@@ -47,17 +54,18 @@ object TypeChecker {
+       }
+     case UnOpExp(op, exp) => ???
+     case IfThenElseExp(condexp, thenexp, elseexp) => ???
+-    case BlockExp(vals, vars, defs, _, exps) =>
++    case BlockExp(vals, vars, defs, classes, exps) =>
+       var tenv1 = tenv
+       for (d <- vals) {
+-        val t = typeCheck(d.exp, tenv1)
+-        checkTypesEqual(t, d.opttype, d)
+-        tenv1 = tenv1 + (d.x -> d.opttype.getOrElse(t))
++        val t = typeCheck(d.exp, tenv1, ctenv)
++        val ot = getType(d.opttype, ctenv, d)
++        checkTypesEqual(t, ot, d)
++        tenv1 = tenv1 + (d.x -> ot.getOrElse(t))
+       }
+       ???
+     case TupleExp(exps) => TupleType(???)
+     case MatchExp(exp, cases) =>
+-      val exptype = typeCheck(exp, tenv)
++      val exptype = typeCheck(exp, tenv, ctenv)
+       exptype match {
+         case TupleType(ts) =>
+           for (c <- cases) {
+@@ -83,6 +91,23 @@ object TypeChecker {
+   }
+ 
+   /**
++    * Returns the proper type for `t`.
++    * Class names are converted to proper types according to the class-type environment `ctenv`.
++    */
++  def getType(t: Type, ctenv: ClassTypeEnv): Type = t match {
++    case ClassType(klass) => ctenv.getOrElse(klass, throw new TypeError(s"Unknown class '$klass'", t))
++    case IntType() | BoolType() | FloatType() | StringType() | NullType() => t
++    case TupleType(ts) => TupleType(ts.map(tt => getType(tt, ctenv)))
++    case FunType(paramtypes, restype) => FunType(paramtypes.map(tt => getType(tt, ctenv)), getType(restype, ctenv))
++    case _ => throw new RuntimeException(s"Unexpected type $t") // this case is unreachable...
++  }
++
++  /**
++    * Returns the proper type for `t` (if present).
++    */
++  def getType(ot: Option[Type], ctenv: ClassTypeEnv, n: AstNode): Option[Type] = ot.map(t => getType(t, ctenv))
++
++  /**
+     * Returns the function type for the function declaration `d`.
+     */
+   def getFunType(d: DefDecl): FunType =
+@@ -90,6 +115,20 @@ object TypeChecker {
+       d.optrestype.getOrElse(throw new TypeError(s"Type annotation missing at function result ${d.fun}", d)))
+ 
+   /**
++    * Returns the constructor type for the class declaration `d`.
++    */
++  def getConstructorType(d: ClassDecl, ctenv: ClassTypeEnv, classes: List[ClassDecl]): ConstructorType = {
++    var membertypes: TypeEnv = Map()
++    for (m <- d.body.vals)
++      membertypes = membertypes + (m.x -> m.opttype.getOrElse(throw new TypeError(s"Type annotation missing at field ${m.x}", m)))
++    for (m <- d.body.vars)
++      membertypes = membertypes + (m.x -> m.opttype.getOrElse(throw new TypeError(s"Type annotation missing at field ${m.x}", m)))
++    for (m <- d.body.defs)
++      membertypes = membertypes + (m.fun -> getFunType(m))
++    ConstructorType(d.pos, d.params, membertypes)
++  }
++
++  /**
+     * Checks that the types `t1` and `ot2` are equal (if present), throws type error exception otherwise.
+     */
+   def checkTypesEqual(t1: Type, ot2: Option[Type], n: AstNode): Unit = ot2 match {
+diff --git a/src/miniscala/parser/Parser.scala b/src/miniscala/parser/Parser.scala
+index a0d5dd8..c53e62c 100644
+--- a/src/miniscala/parser/Parser.scala
++++ b/src/miniscala/parser/Parser.scala
+@@ -205,7 +205,8 @@ object Parser extends PackratParsers {
+     strliteral ^^ { lit => StringLit(lit.str) } |
+       boolliteral ^^ { lit => BoolLit(lit.b) } |
+       intliteral ^^ { lit => IntLit(lit.i) } |
+-      floatliteral ^^ { lit => FloatLit(lit.v) }
++      floatliteral ^^ { lit => FloatLit(lit.v) } |
++      nullliteral ^^ { lit => NullLit() }
+   }
+ 
+   private lazy val unopexp: PackratParser[Exp] = positioned {
+@@ -248,6 +249,7 @@ object Parser extends PackratParsers {
+       case "Boolean" => Left(BoolType())
+       case "Float" => Left(FloatType())
+       case "Unit" => Left(TupleType(Nil))
++      case "Null" => Left(NullType())
+     }
+     } |
+       (LEFT_PAREN() ~ RIGHT_PAREN()) ^^ { case _ ~ _ => Left(TupleType(Nil)) } |
+@@ -256,7 +258,8 @@ object Parser extends PackratParsers {
+         case Left(TupleType(it)) => Right(TupleType(it))  // if parenthesis was of the kind ((T, T')) we generate a Right
+         case Right(x) => Right(x)                         // we ignore any further nesting, i.e. (((T, T'))) == ((T, T'))
+         case Left(x) => Left(x)                           // parenthesization of a non-tuple type: ignoring nesting
+-      } }
++      } } |
++      identifier ^^ (id => Left(ClassType(id.str).setPos(id.pos)))
+   }
+ 
+   private def binop(antiPrecedence: Int): PackratParser[BinOp] = positioned {
