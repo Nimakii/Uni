@@ -29,7 +29,7 @@ object Main {
       // execute the program, if enabled
       if (Options.run) {
         val initialEnv = Interpreter.makeInitialEnv(program)
-        val (result, _) = Interpreter.eval(program, initialEnv, Map())
+        val (result, _) = Interpreter.eval(program, initialEnv, Map(), Map())
         println(s"Output: ${Interpreter.valueToString(result)}")
       }
 

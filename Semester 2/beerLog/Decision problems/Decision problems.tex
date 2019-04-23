@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{3} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section] 
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+	\author{Jens Kristian Refsgaard Nielsen}
+	\title{List of decision problems}
+	\date{\today}
+	\maketitle
+\section{The theory}
+A decision problem is something that takes an input and asks a question, we wish to determine whether it is possible to make a general algorithm that can answer this question.\\
+\subsection{Reduces to, $P_1\leq P_2$}
+We say a decision problem $P_1=(I_1,Q_1)$ reduces to another problem $P_2=(I_2,Q_2)$ iff $\exists F:I_1\rightarrow I_2$ such that $\forall i \in I_1 : i $ is a yes instance of $Q_1$ iff $F(i)$ is a yes instance of $Q_2$.
+\subsection{Reduction theorem}
+Given two problems and a reduction $P_1\leq P_2$ we get two very important results:\\
+\textbf{Decideable} if $P_2$ is decideable then so is $P_1$,
+\\\indent\textit{"if you live inside something solveable, then you too are solveable"}\\
+\textbf{Undecideable} if $P_1$ is undecideable then so is $P_2$,
+\\\indent\textit{"if something unsolveable lives inside of you, there is no salvation in more data"}\\
+\subsection{Language property}
+A property R on TMs is a language property if
+\begin{align*}
+	\forall M,T\in\text{TM}: \mathcal{L}(M)=\mathcal{L}(T)\Rightarrow(R(M)\iff R(T))
+\end{align*}
+And non trivial if there exists two TM's such that R(M) and $\neg$R(T), i.e. there is a language with the property and one without it.
+\subsubsection{Rice theorem}
+Every non-trivial language property of Turing machines is undecideable.
+\subsubsection{Examples}
+
+\section{The list}
+In order to decide whether something is decideable or not, it is very important to have a good list of results to use for our deductions. What follows are lists of problems handled in the lectures and exercise classes of "Beregnelighed \& Logik" at Aarhus university in the spring of 2019.\\
+Each will be of the form: Name I: input Q: question\\
+Notation:
+\begin{align*}
+	\text{TM }&=\text{ set of turing machines}\\
+	\text{CFG }&=\text{ set of context free grammars}\\
+	\text{REC }&=\text{ set of recursive languages}\\
+	\text{RECE }&=\text{ set of recursive enumerable languages}\\
+	\text{REG }&=\text{ set of regular languages}
+\end{align*}
+\subsection{Decideable problems}
+\begin{align}
+	&\text{} &&\text{I: }G\in\text{CFG},w\in\Sigma_G^* &&&\text{Q: }w\in\mathcal{L}(G)?\\
+	&\text{} &&\text{I: }G\in\text{CFG} &&&\text{Q: }\mathcal{L}(G)=\emptyset?\\
+	&\text{} &&\text{I: }G_1,G_2\in\text{CFG} &&&\text{Q: }\mathcal{L}(G_1)\cup\mathcal{L}(G_2)=\emptyset?\\
+	&\text{} &&\text{I:} &&&\text{Q:}
+\end{align}
+\subsection{Undecideable problems}
+\begin{align}
+	&\text{Halting} &&\text{I: T$\in$TM,}w\in\Sigma_\text{T} \text{,}&&&\text{Q: does T halt on }w?\\
+	&\text{Self-Accept} &&\text{I: M}\in\text{TM} &&&\text{Q: Does M halt on e(M)?}\\
+	&\text{Accepts} &&\text{I: M}\in\text{TM},\text{w}\in\Sigma_M^*
+	&&&\text{Q: Does M accept w?}\\
+	&\text{Halts} &&\text{I: M}\in\text{TM},\text{w}\in\Sigma_M^* &&&\text{Q: Does M halt on w?}\\
+	&\text{Accept-}\Lambda &&\text{I: M}\in\text{TM} &&&\text{Q:}\Lambda\in\mathcal{L}(M)?\\
+	&\text{Accepts All} &&\text{I: M}\in\text{TM} &&&\text{Q:}\mathcal{L}(M)=\Sigma_M^*?\\
+	&\text{Subset } &&\text{I: M$_1$,M$_2$}\in\text{TM} &&&\text{Q:}in\mathcal{L}(M_1)\subset\mathcal{L}(M_2)?\\
+	&\text{Equivalent }\Lambda &&\text{I: M$_1$,M$_2$}\in\text{TM} &&&\text{Q:}\mathcal{L}(M_1)=\mathcal{L}(M_2)\\
+	&\text{WriteSym } &&\text{I: M}\in\text{TM},a\in\Sigma_M^* &&&\text{Q: will M write a}?\\
+	&\text{PCP } &&\text{I: A,B}:|\text{A}|=|\text{B}| &&&\text{Q: }\exists J: \Pi_{j\in J} A_{i_j} = \Pi_{j\in i} A_{i_j}?\\
+	&\text{MPCP } &&\text{I: A,B}:|\text{A}|=|\text{B}| &&&\text{Q: }\exists J: A_1\Pi_{j\in J} A_{i_j} = B_1 \Pi_{j\in i} A_{i_j}?\\
+	&\text{AmbiCFG } &&\text{I: }G\in\text{CFG} &&&\text{Q: is $G$ ambiguous}?
+\end{align}
+\begin{align}
+	&\text{KitchenTiling } &&\text{I: set of tiles} &&&\text{Q: can we tile ANY square with matching sides}?
+\end{align}
+\subsection{Reductions}
+\begin{align}
+	\text{Accepts }&\leq \text{ MPCP } \leq \text{ PCP}\\
+	\text{SelfAccept }&\leq\text{ Accept }\leq\text{ Halts}\\
+	\text{Accept }&\leq \text{ Accept-}\Lambda \leq \text{writeSym}\\
+	\text{Accept-}\Lambda&\leq\text{ AcceptAll }\leq\text{ Subset }\leq\text{ Equivvalent}\\
+	\text{PCP }&\leq\text{AmbiCFG}
+\end{align}
+\end{document}
