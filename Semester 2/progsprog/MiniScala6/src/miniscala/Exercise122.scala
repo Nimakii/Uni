@@ -56,7 +56,13 @@ object Exercise122 {
         case SNil => SNil
         case SCons(x, xs) => SCons(() => f(x()), () => xs().map(f))
       }
-
+      def mapFold[U](f: T => U): Stream[U] = {
+        foldRight(()=>SNil,(h,s)=> SCons(() => f(h),s))
+      }
+      def foldRight[B](z: () => B, f: (T, () => B) => B): B = this match {
+        case SNil => z()
+        case SCons(h, t) => f(h(), () => t().foldRight(z, f))
+      }
       def foreach(f: T => Unit): Unit = this match {
         case SNil =>
         case SCons(x, xs) =>
@@ -67,8 +73,6 @@ object Exercise122 {
       def filter(p: T => Boolean): Stream[T] = this match {
         case SNil => SNil
         case SCons(y, ys) =>
-          //val f = () => if (p(y)) y else Nil
-          //SCons(() => f,() => ys().filter(p))
           if (p(y())) SCons(y, () => ys().filter(p)) else ys().filter(p)
       }
 
@@ -82,10 +86,7 @@ object Exercise122 {
       def take(n: Int): Stream[T] =
         if (n == 0) SNil else SCons(() => head(), () => tail().take(n - 1))
 
-      def foldRight[B](z: () => B, f: (T, () => B) => B): B = this match {
-        case SNil => z()
-        case SCons(h, t) => f(h(), () => t().foldRight(z, f))
-      }
+
 
       def toList(): List[T] = this match {
         case SNil => Nil
@@ -199,6 +200,20 @@ object Exercise122 {
     val g: (Int,Int) => Option[(Int,(Int,Int))] = (x,y) => Option((x,(y,x+y)))
     val fibz = unfoldRight[Int,(Int,Int)]((0,1),x => Option((x._1,(x._2,x._1+x._2))))
     println(fibz.take(25))
-    println(fibs2.take(25))
+
+    val cyclic = unfoldRight(0,(x: Int) => if(x==0)Option(0,1) else Option(1,0))
+    println(cyclic.take(25))
+
+    val elephants3: Int =
+      sightings.filter(s => { println("filtering"); s.animal == "Elephant" })
+        .map(s => { println("counting"); s.count })
+        .foldRight(0, (x: Int, res: Int) => { println("adding"); x + res})
+    println(s"Elephant sightings: $elephants3")
+
+    val elephants4: Int =
+      listToStream(sightings).filter(s => { println("filtering"); s.animal == "Elephant" })
+        .map(s => { println("counting"); s.count})
+        .foldRight(() => 0, (x: Int, res: () => Int) => {println("adding?"); val t = res(); println("adding"); x + t})
+    println(s"Elephant sightings: $elephants4")
   }
 }
