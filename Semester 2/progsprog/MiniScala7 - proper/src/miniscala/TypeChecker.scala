@@ -87,7 +87,7 @@ object TypeChecker {
       var tenv_updated = tenv
       for (d <- vals) { //valDecl
         val t = typeCheck(d.exp, tenv_updated)
-        tenv_updated += (d.x -> d.opttype.getOrElse(throw new TypeError("No type annotation",BlockExp(vals, defs, exp))))
+        tenv_updated += (d.x -> d.opttype.getOrElse(throw new TypeError("No type annotation",BlockExp(vals, vars, defs, exps))))
         checkTypesEqual(t, d.opttype, d)
       }
       //VarDecl

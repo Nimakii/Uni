@@ -1,7 +1,7 @@
 package miniscala
 
 import miniscala.Ast.MiniScalaError
-import miniscala.parser.Parser
+import miniscala.parser.{Files, Parser}
 
 object Main {
 
@@ -16,9 +16,15 @@ object Main {
       // parse the program
       val program = Parser.parse(Parser.readFile(Options.file))
 
-      // unparse the program, if enabled
-      if (Options.unparse)
-        println(Unparser.unparse(program))
+      // load and execute abstract machine code, if enabled
+      if (Options.machine) {
+        val bin = Files.load(Options.file)
+        println(s"Executable (symbolic form): $bin")
+        val initialEnv = AbstractMachine.makeInitialEnv(bin)
+        val result = AbstractMachine.execute(bin, initialEnv)
+        println(s"Output: $result")
+
+      }
 
       // type check the program, if enabled
       if (Options.types) {
