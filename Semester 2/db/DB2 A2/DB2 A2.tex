@@ -1,0 +1,198 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\usepackage{xcolor}         %Color things with \color{farve}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+\addto\captionsenglish{\renewcommand{\figurename}{Figur}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\numberwithin{equation}{section}
+
+\begin{document}
+\author{Jens Kristian R. Nielsen \& Thomas D. Vinther }
+\title{Handin 2 – Relational Algebra and Calculus}
+\date{\today}
+\maketitle
+
+\section{Abstract}
+
+\section{Solution}
+Consider a database application for a pizza chain. The chain runs several stores. Each pizza is
+identified by a code, and has a name and a size in inches. Each store is identified by its name. The database
+also records the store’s location and its telephone number. Different stores may sell the same pizza at
+different prices. The schema of the database is as follows:
+\\PIZZA (\underline{code}, name, size)
+\\STORE (\underline{name}, location, phone)
+\\SELLS (\underline{store\_name, code}, price)
+\subsection{Query a}
+Find the names of pizzas that come in a 10 inch size.\\
+\subsubsection{Structured Query Language}
+\begin{verbatim}
+SELECT p.name
+   FROM Pizza p
+   WHERE p.size = 10;
+\end{verbatim}
+Good old SQL.
+\subsubsection{Relational Algebra}
+\begin{align*}
+    \textit{RESULT} \leftarrow\pi_{\text{name}}(\sigma_{\textit{size}=10}(PIZZA))
+\end{align*}
+Starting from the inside going out, we use a select to get the tuples satisfying condition and a project to to get the name attribute as wanted.
+\subsubsection{Tuple Relational Calculus}
+\begin{align*}
+    \{p.name\mid\text{PIZZA}(p) \wedge p.size = 10\}
+\end{align*}
+We declare that we want the names coordinate of tuples that are in the pizza table and have size equal to ten.
+\subsection{Query b}
+(SQL,RA,DRC) Find the names of pizzas that come in a 10 inch or a 12 inch size.\\
+\subsubsection{SQL}
+\begin{verbatim}
+SELECT name
+   FROM Pizza p
+   WHERE p.size = 10 OR p.size = 12;
+\end{verbatim}
+Good old SQL.
+\subsubsection{RA}
+\begin{align*}
+    \text{RESULT} \leftarrow\pi_{\text{name}}(\sigma_{\text{size}=10}(PIZZA))\cup\pi_{\text{name}}(\sigma_{\textit{size}=12}(PIZZA))
+\end{align*}
+We reuse the structure from Query a to get the two sets of names of pizzas that come in size 10 and 12, then we union the two sets to get them all, recall that union takes care not to get duplicates.
+\subsubsection{Domain Relational Calculus}
+\begin{align*}
+    \{N\mid\exists C,S(\text{PIZZA}(C,N,S) \wedge( S = 10 \vee S  = 12 ))\}
+\end{align*}
+We declare that we wish to get values N such that there exists C and S such that there is a tuple (C,N,S) in PIZZA with S=10 or S=12.
+\subsection{Query c}
+Find the names of pizzas that come in both a 10 inch and a 12 inch size.\\
+\subsubsection{SQL}
+\begin{verbatim}
+SELECT p.name
+   FROM Pizza p, pizza p1
+   WHERE p.size = 10 AND p1.size = 12 AND p.name = p1.name;
+\end{verbatim}
+
+\subsubsection{RA}
+\begin{align*}
+    \text{RESULT} \leftarrow\pi_{\text{name}}(\sigma_{\text{size}=10}(\text{PIZZA}))\cap\pi_{\text{name}}(\sigma_{\textit{size}=12}(\text{PIZZA}))
+\end{align*}
+To achieve the and part of the query, we take the query from b and change the union to an intersection, which exactly means that a name is in the result iff there exists two entries in PIZZA with that name and one has size 10 the other size 12, as wanted.
+\subsubsection{TRC}
+\begin{align*}
+    \{p.name\mid\text{PIZZA}(p) \wedge( p.size = 10 \wedge ((\exists d) \text{PIZZA}(d)\wedge d.size = 12 \wedge d.name = p.name))\}
+\end{align*}
+We wish to get the name of the pizza from p, that has size 10, where there exists another pizza d with size 12 that has the same name. 
+\subsection{Query d}
+Find the names and phone numbers of the stores in “Aarhus” or “Randers” that sell a
+10 inch pizza named “pepperoni” for less than 80 DKK.
+\subsubsection{SQL}
+\begin{verbatim}
+SELECT s.name, s.phone
+   FROM Store s, Sells se, Pizza p
+   WHERE p.name = 'pepperoni' AND p.size = 10 AND p.code = se.code 
+      AND se.store_name = s.name 
+      AND (s.location = 'Randers' OR s.location ='Aarhus')
+      AND se.price < 80;  
+\end{verbatim}
+We perform an SQL query that just checks that all requirements are met and that all the data fits together by using the primary keys, i.e. se.store\_name = s.name and p.code = se.code because code is the primary key of PIZZA and name is the primary key of STORE, and the corresponding values in SELLS together forms the primary key of that table. This ensures that all the other checks are performed on the properly linked tuples.
+\subsubsection{RA}
+\begin{align*}
+    &\text{RESULT1}\leftarrow\text{PIZZA}\bowtie_{code=code}\text{SELLS}\\
+    &\text{RESULT2}\leftarrow\text{RESULT1}\bowtie_{store\_name = store\_name}\rho_{(store\_name,location,phone)}(\text{STORE})\\
+    &\text{RESULT3}\leftarrow\sigma_{size = 10 \text{ AND } location \in\{Randers,Aarhus\}\text{ AND }price<80\text{ AND }name = pepperoni}(\text{RESULT2})\\
+    &\text{RESULT}\leftarrow \pi_{store\_name,phone}(\text{RESULT3})
+\end{align*}
+In the relational algebra example we use the same basic idea, join PIZZA and SELLS on code, primary key in PIZZA and then join this new big table on store\_name with a modified STORE, where store\_name now is the PK. Then we make a selection over all the relevant restrictions and finally project onto the desired return values.
+\subsubsection{DRC}
+\begin{align*}
+    \{SN,PH\mid &\exists C,SN,P,L\text{ }( \text{PIZZA}(C,N,S)\wedge \text{STORE}(SN,L,PH) \wedge \text{SELLS}(SN,C,P)\\
+    &\wedge N = pepperoni \wedge S = 10
+ \wedge (L=\text{'Aarhus'} \vee L = \text{'Randers'})\wedge p < 80) \}
+\end{align*}
+In the Domain Relational Calculus we ensure that the relevant restrictions hold, by using an "implicit" join operation, by using the same C and SN in the three tables, thus retrieving the correct store name and phone number of the appropriate stores.   
+\subsection{Query e}
+For each pizza, give its code and the lowest price it is sold for.\\
+\begin{align*}
+    \{p.code,se.price \mid &\text{PIZZA}(p) \wedge \text{SELLS}(se) \wedge
+    \\&(\forall st (\text{SELLS}(st)\wedge se.price\leq st.price \wedge
+    \\&st.code=p.code \wedge se.code=p.code)) \}
+\end{align*}
+When using the TRC in this example, we choose the two attributes code and price respectively from PIZZA and SELLS. Then we say that for all st in a new SELLS, that the original SELLS price should be lower and the codes from both SELLS should be the same as the one found in PIZZA, as it is a Primaery key, it determines the pizza we find.
+Notice that if a pizza is not sold it is not returned here, we deem this to be fitting.
+
+\subsection{Query f}
+For each pizza, give its code, the name of the store that sells it for the lowest price, and that lowest price.
+\begin{align*}
+    \{C,SN,P \mid &\exists  N,S \text{ }( \text{PIZZA}(C,N,S) \wedge \text{SELLS}(SN,C,P)\wedge\\
+    &(\forall SN',P' \text{ }( \text{SELLS}(SN',C,P') \wedge P \leq P' )
+    )\}
+\end{align*}
+Notice in this DRC notation that we do not need a lookup in the STORE table to get the store name, because it is already stored in SELLS. Furthermore we implicitly perform the two code checks by having the same C in all the table look ups.
+\subsection{Query g}
+(TRC) For each store, give the store’s name and the name of the most expensive pizza sold in it.\\
+\begin{align*}
+    \{se.store\_name, p.name \mid &\text{PIZZA}(p) \wedge \text{SELLS}(se) \wedge
+    \\&(\forall st (\text{SELLS}(st)\wedge se.price\geq st.price \wedge
+    \\&st.code=p.code \wedge se.code=p.code)) \}
+\end{align*}
+When you want the most expensive thing you have to turn the inequality around, compared to finding the least expensive. And return the values we are asked for.
+\subsection{Query h}
+(RA,DRC) Find the names of the stores that sell all pizzas.\\
+\begin{align*}
+    \{SN \mid &\exists  N,S,C,P \text{ }( \text{PIZZA}(C,N,S) \wedge \text{SELLS}(SN,C,P)\wedge\\
+    &\neg(\exists C',S',N' \text{ }( \text{PIZZA}(C',N',S') \wedge\\ &\neg (\exists P'( \text{SELLS}(SN,C',P') ))))
+    )\}
+\end{align*}
+The name of the store that has no pizza that it doesn't sell.
+\subsection{Query i}
+(RA,TRC) Find the codes of pizzas that are sold in all stores.\\
+1. SQL (queries a,b,c,d)
+2. Relational Algebra (RA; all queries except for e, f, g)
+3. Relational Calculus (as specified below alternating Tuple Relational Calculus TRC and Domain Relational
+Calculus DRC)
+\subsection{Query j}
+Now assume that the schema is reduced to PIZZA (code, price)\\
+j. (RA,DRC) Find the code(s) of the most expensive pizza(s) (hint: in algebra, rename the relation first,
+then do a product with itself with some condition on price, then use division)\\
+1. SQL (queries a,b,c,d)
+2. Relational Algebra (RA; all queries except for e, f, g)
+3. Relational Calculus (as specified below alternating Tuple Relational Calculus TRC and Domain Relational
+Calculus DRC)
+
+\section{Summary}
+DRC is shorter and TRC is easier on the eyes
+\end{document}

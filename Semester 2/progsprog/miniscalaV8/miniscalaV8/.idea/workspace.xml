@@ -53,24 +53,8 @@
         <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="506">
+            <state relative-caret-position="1411">
               <caret line="87" column="51" selection-start-line="61" selection-start-column="4" selection-end-line="87" selection-end-column="51" />
-              <folding>
-                <element signature="e#2161#3026#0" />
-                <element signature="e#3090#3666#0" />
-                <element signature="e#3705#4139#0" />
-                <element signature="e#4177#4749#0" />
-                <element signature="e#4823#4897#0" />
-                <element signature="e#4946#5333#0" />
-                <element signature="e#5395#6191#0" />
-                <element signature="e#6231#6840#0" />
-                <element signature="e#6899#7294#0" />
-                <element signature="e#7368#7827#0" />
-                <element signature="e#7865#8101#0" />
-                <element signature="e#11643#11890#0" />
-                <element signature="e#11907#12205#1" />
-                <element signature="e#12271#13777#0" />
-                <element signature="e#13821#14910#0" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -78,8 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/miniscala/TypeChecker.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="173" column="21" lean-forward="true" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
+            <state relative-caret-position="2890">
+              <caret line="173" column="21" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
               <folding>
                 <element signature="e#19#41#0" expanded="true" />
               </folding>
@@ -90,8 +74,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/miniscala/Unparser.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="30" lean-forward="true" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+            <state relative-caret-position="425">
+              <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
               <folding>
                 <element signature="e#19#41#0" expanded="true" />
               </folding>
@@ -102,7 +86,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/miniscala/Ast.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
+            <state relative-caret-position="2006">
               <caret line="118" column="22" selection-start-line="118" selection-start-column="22" selection-end-line="118" selection-end-column="22" />
             </state>
           </provider>
@@ -111,7 +95,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/miniscala/Test95.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
+            <state relative-caret-position="204">
               <caret line="14" column="167" selection-start-line="14" selection-start-column="167" selection-end-line="14" selection-end-column="167" />
               <folding>
                 <element signature="e#19#48#0" expanded="true" />
@@ -128,7 +112,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/miniscala/Vars.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="591">
+            <state relative-caret-position="731">
               <caret line="43" column="35" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
             </state>
           </provider>
@@ -474,11 +458,13 @@
       <workItem from="1555927160305" duration="494000" />
       <workItem from="1555927914295" duration="584000" />
       <workItem from="1555928718271" duration="22821000" />
+      <workItem from="1556649572964" duration="1013000" />
+      <workItem from="1556710106807" duration="599000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="288213000" />
+    <option name="totallyTimeSpent" value="289825000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -499,7 +485,7 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" sideWeight="0.501006" side_tool="true" weight="0.12135417" />
-      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.49850747" visible="true" weight="0.124200426" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" sideWeight="0.49850747" visible="true" weight="0.117803834" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2708559" />
@@ -716,9 +702,6 @@
     <entry file="file://$PROJECT_DIR$/examples/counter.s">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/fac2.s">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.8-sources.jar!/scala/collection/immutable/Map.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="208">
@@ -742,7 +725,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
+        <state relative-caret-position="527">
           <caret line="33" column="64" selection-start-line="33" selection-start-column="64" selection-end-line="33" selection-end-column="64" />
           <folding>
             <element signature="e#19#69#0" expanded="true" />
@@ -750,16 +733,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/Vars.scala">
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="591">
-          <caret line="43" column="35" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
+        <state relative-caret-position="1411">
+          <caret line="87" column="51" selection-start-line="61" selection-start-column="4" selection-end-line="87" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/TypeChecker.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2890">
+          <caret line="173" column="21" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
+          <folding>
+            <element signature="e#19#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Ast.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2006">
+          <caret line="118" column="22" selection-start-line="118" selection-start-column="22" selection-end-line="118" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/Test95.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
+        <state relative-caret-position="204">
           <caret line="14" column="167" selection-start-line="14" selection-start-column="167" selection-end-line="14" selection-end-column="167" />
           <folding>
             <element signature="e#19#48#0" expanded="true" />
@@ -767,51 +767,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="87" column="51" selection-start-line="61" selection-start-column="4" selection-end-line="87" selection-end-column="51" />
-          <folding>
-            <element signature="e#2161#3026#0" />
-            <element signature="e#3090#3666#0" />
-            <element signature="e#3705#4139#0" />
-            <element signature="e#4177#4749#0" />
-            <element signature="e#4823#4897#0" />
-            <element signature="e#4946#5333#0" />
-            <element signature="e#5395#6191#0" />
-            <element signature="e#6231#6840#0" />
-            <element signature="e#6899#7294#0" />
-            <element signature="e#7368#7827#0" />
-            <element signature="e#7865#8101#0" />
-            <element signature="e#11643#11890#0" />
-            <element signature="e#11907#12205#1" />
-            <element signature="e#12271#13777#0" />
-            <element signature="e#13821#14910#0" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/examples/fac2.s">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/Ast.scala">
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Vars.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="118" column="22" selection-start-line="118" selection-start-column="22" selection-end-line="118" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/TypeChecker.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="173" column="21" lean-forward="true" selection-start-line="173" selection-start-column="21" selection-end-line="173" selection-end-column="21" />
-          <folding>
-            <element signature="e#19#41#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="731">
+          <caret line="43" column="35" selection-start-line="43" selection-start-column="35" selection-end-line="43" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/Unparser.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="30" lean-forward="true" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+        <state relative-caret-position="425">
+          <caret line="25" column="34" selection-start-line="25" selection-start-column="34" selection-end-line="25" selection-end-column="34" />
           <folding>
             <element signature="e#19#41#0" expanded="true" />
           </folding>
