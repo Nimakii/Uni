@@ -5,6 +5,53 @@ import scala.io.StdIn
 
 object AbstractMachine {
 
+  def Validate(prg: List[Instruction],opstack: Int, envstack: Int):(Int,Int)={
+    class ValidateError(msg:String) extends Exception
+    def ValidateList(prg: List[Instruction]):(Int,Int) =
+      prg.foldLeft(0,0)((a:(Int,Int),b:Instruction) =>
+        ((c:(Int,Int),d:(Int,Int)) =>
+          (c._1+d._1,c._2+d._2))(a,ValidateInst(b,a._1,a._2)))
+    def ValidateInst(ins:Instruction,op:Int,en:Int):(Int,Int) ={
+      if(op <0 || en < 0 ){throw new ValidateError("")}
+      ins match{
+        case Const(_) => (op+1,en)
+        case Add | Sub | Mul | Div | Eq | Lt | Leq | And | Or => if(op<2){throw new ValidateError("BinOpExp invalid")}
+          (op-1,en)
+        case Neg | Not => if(op<1){throw new ValidateError("UnOpExp invalid")}
+          (op,en)
+        case Dup => if(op<1){throw new ValidateError("Duplicate invalid")}
+          (op+1,en)
+        case Pop => if(op<1){throw new ValidateError("Pop invalid")}
+          (op-1,en)
+        case Unit => (op+1,en)
+        case Branch(thenlist,elselist) =>
+          if(ValidateList(thenlist) != (1,0) || ValidateList(elselist) != (1,0) || op <1 ){
+            throw new ValidateError("Branch invalid")}
+          (op-1,en)
+        case Loop(condlist,bodylist) =>
+          if(ValidateList(condlist) != (1,0) || ValidateList(bodylist) != (1,0)){
+            throw new ValidateError("Loop invalid")}
+          (op,en)
+        case Enter => if(op<1){throw new ValidateError("Enter invalid")}
+          (op-1,en+1)
+        case Exit(n) => if(en<n){throw new ValidateError("Exit invalid")}
+          (op,en-n)
+        case Read(i) => if(en<i){throw new ValidateError("Read invalid")}
+          (op+1,en)
+        case Alloc => (op+1,en)
+        case Load => (op,en)
+        case Store => if(op<2){throw new ValidateError("Store invalid")}
+          (op-2,en)
+        case EnterDefs(n) => if(op<n){throw new ValidateError("EnterDefs invalid")}
+          (op-n,en+n)
+        case Lambda(_,body) => if(ValidateList(body) != (1,0)){throw new ValidateError("Lambda invalid")}
+          (op+1,en)
+        case _ => throw new ValidateError("Uncovered instruction or some other error")
+      }
+    }
+    ValidateList(prg)
+  }
+
   case class Executable(freevars: List[String], code: List[Instruction])
 
   sealed abstract class Instruction
@@ -207,6 +254,8 @@ object AbstractMachine {
       StdIn.readInt() :: env
     })
   }
+
+
 
   def trace(msg: => String): Unit = if (Options.trace) println(msg)
 
