@@ -83,7 +83,7 @@ object TypeChecker {
         case _ =>
           throw new TypeError(s"If clause must be a boolean", IfThenElseExp(condexp, thenexp, elseexp))
       }
-    case BlockExp(vals, vars, defs, exps) =>
+    case BlockExp(vals, vars, defs, List(), exps) =>
       var tenv_updated = tenv
       for (d <- vals) { //valDecl
         val t = typeCheck(d.exp, tenv_updated)
@@ -93,7 +93,7 @@ object TypeChecker {
       //VarDecl
       for (vaR <- vars){
         val vaRType = typeCheck(vaR.exp,tenv_updated) //theta|-e:tau
-        checkTypesEqual(vaRType,vaR.opttype,BlockExp(vals, vars, defs, exps)) //tau = type(t)
+        checkTypesEqual(vaRType,vaR.opttype,BlockExp(vals, vars, defs,List(), exps)) //tau = type(t)
         tenv_updated += (vaR.x -> RefType(vaRType)) //theta' = theta[x ->Ref(tau)
         //theta' is returned because tenv_updated is a var.
       }
@@ -107,7 +107,7 @@ object TypeChecker {
           tenvy += (p.x -> p.opttype.getOrElse(throw new TypeError("",p))) //tau_1 = type(t_1) paramtype
         }
         //theta'[x->tau_1]|-e:tau_2
-        checkTypesEqual(typeCheck(d.body,tenvy),d.optrestype,BlockExp(vals, vars, defs, exps)) //tau_2 = type(t_2) restype
+        checkTypesEqual(typeCheck(d.body,tenvy),d.optrestype,BlockExp(vals, vars, defs,List(), exps)) //tau_2 = type(t_2) restype
       }
       //T-Block2 & T-BlockEmpty
       var res: Type = unitType
