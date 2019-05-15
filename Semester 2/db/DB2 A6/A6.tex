@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 					% 
+\usepackage{lmodern} 						% Skrifttype
+\usepackage[danish]{babel}
+\usepackage{amsmath,amssymb,bm,mathtools,amsthm}	% Matematik pakker
+\usepackage{fancyhdr,lastpage}
+\usepackage{subfiles}
+\usepackage{graphicx,float}
+\usepackage{graphicx}
+\usepackage{SASnRdisplay}
+\usepackage{mathrsfs}
+\setcounter{secnumdepth}{2} 				% No numbering
+\fancypagestyle{plain}{
+	\fancyhf{}								% Clear header/footer
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot[C]{Side \thepage \hspace{1pt} of \pageref{LastPage}}
+}
+\pagestyle{plain}
+\usepackage{graphicx}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{appendix}
+\usepackage{dsfont}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{setspace}
+\newtheorem{theorem}{Sætning}[section]
+\newtheorem{corollary}[theorem]{Korollar}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{obs}[theorem]{Observation}
+\newtheorem{remark}[theorem]{Bemærkning}
+\newcommand*{\LargerCdot}{\raisebox{-0.25ex}{\scalebox{1.4}{$\cdot$}}}
+
+%%% Code environment
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{mathpartir}
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+\lstset{
+  basicstyle=\ttfamily\small,                   % the size of the fonts that are used for the code
+  breakatwhitespace=false,                      % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                              % sets automatic line breaking
+  frame=tb,                                     % adds a frame around the code
+  commentstyle=\color{commentsColor}\textit,    % comment style
+  keywordstyle=\color{keywordsColor}\bfseries,  % keyword style
+  stringstyle=\color{stringColor},              % string literal style
+  numbers=left,                                 % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                                % how far the line-numbers are from the code
+  numberstyle=\tiny\color{commentsColor},       % the style that is used for the line-numbers
+  showstringspaces=false,                       % underline spaces within strings only
+  tabsize=2,                                    % sets default tabsize to 2 spaces
+  language=Scala
+}
+
+%%% Useful math
+\usepackage{amsmath}
+
+\newcommand\exec{\textsf{exec}}
+\newcommand\compile{\textsf{compile}}
+\newcommand\plusplus{\text{\;++\;}}
+\newcommand\Add{\textsf{Add}}
+\newcommand\List{\textsf{List}}
+\newcommand\evalu{\textsf{eval}}
+\newcommand\Const{\textsf{Const}}
+\usepackage{yfonts}
+
+\title{IR+DM}
+\author{Jens Kristian R. Nielsen, Thomas D. Vinther}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+Abstract: a paragraph of 3-10 lines text summarizing what you did and whether your solution works (i.e., to which extent do you consider it complete and sufficiently detailed? Which issues, if any, remain to be solved?), anything else that should be taken into account when assessing your solution.
+\section{Solution}
+\subsection{A}
+\textbf{Consider the data in the table about playing tennis. Apply the information gain based algorithm to obtain a decision tree. Hint: the lecture on Data Mining shows how to get started (and you can use the numbers for humidity and wind on the top level to see if you are on the right track).}\\\\
+
+We use the information gain algorithm as seen in the lectures, where we choose class to be our "target"/ decision.  And so we start to calculate the information gain, for building our decision tree by looking at the different splits as seen in the tables below: 
+\\$\begin{array}{|c|c|c|} \hline
+    O\backslash C & \text{Yes} & \text{No}\\\hline
+    \text{Sunny} & 3 & 2\\\hline
+    \text{Overcast} & 5 & 0\\\hline
+    \text{Rain} & 2 & 3\\\hline
+\end{array}
+\begin{array}{|c|c|c|} \hline
+    T\backslash C & \text{Yes} & \text{No}\\ \hline
+    \text{Hot} & 2 & 2\\ \hline
+    \text{Mild} & 4 & 2\\\hline
+    \text{Cool} & 3 & 1\\\hline
+\end{array}  
+\begin{array}{|c|c|c|}\hline
+    H\backslash C & \text{Yes} & \text{No}\\\hline
+    \text{High} & 3 & 4\\\hline
+    \text{Normal} & 6 & 1\\\hline
+\end{array}
+\begin{array}{|c|c|c|}\hline
+    W\backslash C & \text{Yes} & \text{No}\\\hline
+    \text{False} & 6 & 2\\\hline
+    \text{True} & 3 & 3 \\\hline
+\end{array}
+$
+
+\subsection{B}
+\textbf{Consider the data and its initial partitions (light blue, dark blue) depicted on the right side. Apply the k-means algorithm to find two clusters. Instead of the (usual) Euclidean Distance between points, use the Manhattan Distance. The Manhattan Distance between two points is the sum of absolute differences in each dimension (so basically, no need to square and take the square root as in Euclidean Distance). Formally, MD(x,y)=, where x=(x1, x2) is a point with 2 dimensions as is the case here. Using Manhattan Distance, it should be relatively easy to sketch the steps and results of k-means in (copies of) the figure.}
+\subsection{C}
+\textbf{C. Take the following three text examples: \\
+“Unlike classification or prediction, which analyzes data objects with class labels, clustering analyzes data objects without consulting a known class label.”\\
+“Classification can be used for prediction of class labels of data objects. However, in many applications, prediction of missing values is performed to fit data objects into a schema.”\\
+“Sun Salutation, a ritual performed in the early morning, combines seven different postures. The sun, the life generator, is invoked by this Yogic exercise.”\\
+Using word frequency (simple word counts), Euclidean Distance and Cosine Similarity, as well as the following “stop words”, which of these are most similar? Stopwords = \{ a, an, are, be, because, by, can, for, however, in, into, is, keep, many, not,  of, or, rather, than, the, they, this, to, unlike, used, way, which, with, without \} }
+\section{Summary}
+Summary: a paragraph of 3-10 lines text summarizing what you have learned and what you would still like to learn: what have you realized when working with the hand-in material and what would you like to continue with?
+\end{document}

@@ -214,7 +214,7 @@ object Interpreter {
           eval(elseexp, env, st)
         case _ => throw new InterpreterError("Condition clause not a boolean", IfThenElseExp(condexp, thenexp, elseexp))
       }
-    case BlockExp(vals, vars, defs, exps) =>
+    case BlockExp(vals, vars, defs,_, exps) =>
       var env1 = env
       var sto1 = sto
       for (d <- vals) { //ValDeclAnno
