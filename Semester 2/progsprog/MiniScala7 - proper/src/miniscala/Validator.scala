@@ -1,14 +1,21 @@
 package miniscala
 import miniscala.AbstractMachine.{Add, Alloc, And, Branch, Const, Div, Dup, Enter, EnterDefs, Eq, Exit, Instruction, Lambda, Leq, Load, Loop, Lt, Mul, Neg, Not, Or, Pop, Read, Store, Sub, Unit}
 object Validator {
-  def Validate(prg: List[Instruction],opstack: Int, envstack: Int):(Int,Int)={
+  def Validate(prg: List[Instruction]):Boolean={
     class ValidateError(msg:String) extends Exception
     def ValidateList(prg: List[Instruction]):(Int,Int) =
       prg.foldLeft(0,0)((a:(Int,Int),b:Instruction) =>
-        ((c:(Int,Int),d:(Int,Int)) =>
-          (c._1+d._1,c._2+d._2))(a,ValidateInst(b,a._1,a._2)))
+        ValidateInst(b,a._1,a._2))
+    def ValidateList2(prg: List[Instruction]):(Int,Int) ={
+      var res = (0,0)
+      for(b<- prg){
+        res = ValidateInst(b,res._1,res._2)
+      }
+      res
+    }
     def ValidateInst(ins:Instruction,op:Int,en:Int):(Int,Int) ={
-      if(op <0 || en < 0 ){throw new ValidateError("Stack underflow")}
+      if(op <0){throw new ValidateError("Stack underflow")}
+      if(en <0){throw new ValidateError("envStack underflow")}
       ins match{
         case Const(_) => (op+1,en)
         case Add | Sub | Mul | Div | Eq | Lt | Leq | And | Or => if(op<2){throw new ValidateError("BinOpExp invalid")}
@@ -22,7 +29,7 @@ object Validator {
         case Branch(thenlist,elselist) =>
           if(ValidateList(thenlist) != (1,0) || ValidateList(elselist) != (1,0)){
             throw new ValidateError("Branch invalid")}
-          (op-1,en)
+          (op,en)
         case Loop(condlist,bodylist) =>
           if(ValidateList(condlist) != (1,0) || ValidateList(bodylist) != (1,0)){
             throw new ValidateError("Loop invalid")}
@@ -42,7 +49,8 @@ object Validator {
       }
     }
     val validation = ValidateList(prg)
-    if(validation._1 <0 || validation._2 <0){throw new ValidateError("Stack underflow")} //final check, ValidateInst doesnt check if there is underflow after the final instance
-    validation
+    if(validation._1 <0 || validation._2 <0 ){throw new ValidateError("Stack underflow")} //final check, ValidateInst doesnt check if there is underflow after the final instance
+    if(validation._1 !=1 || validation._2 !=0 ){return false}
+    true
   }
 }
