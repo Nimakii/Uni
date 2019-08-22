@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.7)  15 MAY 2019 11:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.2.7)  17 MAY 2019 14:26
 entering extended mode
 **./A6.tex
 (A6.tex
@@ -813,23 +813,23 @@ LaTeX Info: Composite with undeclared \" in encoding LYG on input line 58.
 ) (A6.aux)
 \openout1 = `A6.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for LY/yfrak/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for LYG/ygoth/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 83.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for LY/yfrak/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for LYG/ygoth/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 86.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -870,7 +870,7 @@ File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 83.
+(lastpage)             ! on input line 86.
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count138
@@ -935,90 +935,290 @@ G,.JBIG2,.JB2,.eps]
 \c@lstlisting=\count144
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 85.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 88.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 85.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 88.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 85.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 88.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmsy.fd"
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 85.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 88.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omxlmex.fd"
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 85.
+(Font)              <12> on input line 88.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 85.
+(Font)              <8> on input line 88.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 85.
-LaTeX Font Info:    Try loading font information for U+msa on input line 85.
+(Font)              <6> on input line 88.
+LaTeX Font Info:    Try loading font information for U+msa on input line 88.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 85.
+LaTeX Font Info:    Try loading font information for U+msb on input line 88.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 85.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 88.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\jknappen\ursfs.fd"
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
-Underfull \hbox (badness 10000) in paragraph at lines 91--92
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 91--92
-
- []
-
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 94.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 94.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 94.
-[1
+) [1
 
 {C:/Users/Jens Kristian/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 96--97
 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 96--97
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
+
+ []
+
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 101.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 101.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 101.
+
+Overfull \hbox (0.65944pt too wide) in paragraph at lines 101--108
+[]$[]$
+ []
+
+
+Overfull \hbox (14.98523pt too wide) in paragraph at lines 148--150
+\T1/lmr/m/n/10 t.overlook=Sunny, $\OML/lmm/m/it/10 X[] \OT1/lmr/m/n/10 = \OMS/l
+msy/m/n/10 f\OT1/lmr/m/n/10 3\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 7\OML/lmm/m/it/
+10 ; \OT1/lmr/m/n/10 12\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 13\OML/lmm/m/it/10 ; 
+\OMS/lmsy/m/n/10 g$ \T1/lmr/m/n/10 the tup-les with t.overlook=Overcast and $\O
+ML/lmm/m/it/10 X[] \OT1/lmr/m/n/10 = \OMS/lmsy/m/n/10 f\OT1/lmr/m/n/10 4\OML/lm
+m/m/it/10 ; \OT1/lmr/m/n/10 5\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 6\OML/lmm/m/it/
+10 ; \OT1/lmr/m/n/10 10\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 14\OMS/lmsy/m/n/10 g$
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
+
+ []
+
+
+Overfull \hbox (12.11035pt too wide) detected at line 207
+[]
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 207--209
+
+ []
+
+
+Overfull \hbox (12.11035pt too wide) detected at line 251
+[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 251--253
+
+ []
+
+
+LaTeX Warning: File `DTree.jpg' not found on input line 257.
+
+
+! Package pdftex.def Error: File `DTree.jpg' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.257 ...ncludegraphics[scale = 0.0755]{DTree.jpg}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 257.
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1pcr.fd"
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+) [4]
+<centroids1.jpg, id=28, 514.92375pt x 464.4853pt>
+File: centroids1.jpg Graphic file (type jpg)
+<use centroids1.jpg>
+Package pdftex.def Info: centroids1.jpg  used on input line 268. on input line 
+268.
+Package pdftex.def Info: Requested size: 257.46124pt x 232.24208pt on input lin
+e 268.
+<updates.jpg, id=29, 514.92375pt x 464.4853pt>
+File: updates.jpg Graphic file (type jpg)
+<use updates.jpg>
+Package pdftex.def Info: updates.jpg  used on input line 284. on input line 284
+.
+Package pdftex.def Info: Requested size: 257.46124pt x 232.24208pt on input lin
+e 284.
+<centroids2.jpg, id=30, 514.92375pt x 464.4853pt>
+File: centroids2.jpg Graphic file (type jpg)
+<use centroids2.jpg>
+Package pdftex.def Info: centroids2.jpg  used on input line 286. on input line 
+286.
+Package pdftex.def Info: Requested size: 257.46124pt x 232.24208pt on input lin
+e 286.
+
+Overfull \hbox (8.98482pt too wide) in paragraph at lines 266--287
+\T1/lmr/m/n/10 Giving us clu-ster1= $\OMS/lmsy/m/n/10 f\OT1/lmr/m/n/10 (5\OML/l
+mm/m/it/10 ; \OT1/lmr/m/n/10 5)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (4\OML/lmm/m/
+it/10 ; \OT1/lmr/m/n/10 5)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (4\OML/lmm/m/it/10
+ ; \OT1/lmr/m/n/10 7)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (3\OML/lmm/m/it/10 ; \O
+T1/lmr/m/n/10 8)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (3\OML/lmm/m/it/10 ; \OT1/lm
+r/m/n/10 6)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (3\OML/lmm/m/it/10 ; \OT1/lmr/m/n
+/10 4)\OMS/lmsy/m/n/10 g$ \T1/lmr/m/n/10 and cluster2=$\OMS/lmsy/m/n/10 f\OT1/l
+mr/m/n/10 (9\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 5)\OML/lmm/m/it/10 ; \OT1/lmr/m/
+n/10 (9\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 1)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 
+(8\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 4)\OML/lmm/m/it/10 ; \OT1/lmr/m/n/10 (5\OM
+L/lmm/m/it/10 ; \OT1/lmr/m/n/10 1)\OMS/lmsy/m/n/10 g$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 266--287
+
+ []
+
+[5 <./centroids1.jpg>] [6 <./updates.jpg>] [7 <./centroids2.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 293--296
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 293--296
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 297--298
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 297--298
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 299--300
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 299--300
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 301--302
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--304
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 305--306
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 315--316
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
+
+ []
+
+[8] [9] [10]
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 362.
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 408.
+ [11] [12] [13] [14] 
 AED: lastpage setting LastPage
-[2] (A6.aux) ) 
+[15] (A6.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 9324 strings out of 493312
- 132920 string characters out of 3138874
- 244483 words of memory out of 3000000
- 12615 multiletter control sequences out of 15000+200000
- 78241 words of font info for 79 fonts, out of 3000000 for 9000
+ 9773 strings out of 493312
+ 136868 string characters out of 3138874
+ 391483 words of memory out of 3000000
+ 13048 multiletter control sequences out of 15000+200000
+ 83838 words of font info for 88 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,11n,94p,791b,303s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Pro
-gram Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX
- 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dv
-ips/lm/lm-ec.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx10.pfb>
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/l
-mr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb>
-Output written on A6.pdf (2 pages, 144383 bytes).
+ 60i,12n,94p,791b,1857s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}{C:/Program Files/Mi
+KTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dv
+ips/lm/lm-mathit.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files
+/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathex.enc}<C:/Program Files/MiKTeX 2.9/fonts
+/type1/public/lm/lmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/
+lmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/lm/lmmi5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/lm/lmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/public/lm/lmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lm
+r7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Progra
+m Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/urw/courier/ucrb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/c
+ourier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrro8a.
+pfb>
+Output written on A6.pdf (15 pages, 532954 bytes).
 PDF statistics:
- 43 PDF objects out of 1000 (max. 8388607)
+ 132 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -15,7 +15,7 @@ object DB6b {
 
   def td(prg: List[(Int,Int)]): Double = {
     val centroid = mean(prg)
-    val res = prg.foldLeft(0.0)((a:(Double),b:(Int, Int)) =>
+    val res = prg.foldLeft(0.0)((a:Double,b:(Int, Int)) =>
       a+math.pow(manD(b,centroid),2))
     math.pow(res,0.5)
   }

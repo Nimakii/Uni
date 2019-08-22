@@ -1,0 +1,35 @@
+Struktural induktion er på induktive datatyper sådan at man først viser udtrykket gælder for "base case" og dernæst tager man "inductive step"
+
+Her er en induktiv datatype vi gerne vil vise noget for
+sealed abstract class hej
+case object baseCase1 extends hej
+case object baseCase2 extends hej
+...
+case class ikkeBase1 extends hej
+case class ikkeBase2 extends hej
+
+Når vi så viser et eller andet udtryk via struktural induktion har vi en base case (jeg ville kalde det induktions start) og et induktions skridt:
+Base case: Du skal her vise at udtrykket gælder for alle base cases som du kan aflæse som case object.
+  Funktionelle funktioner som er defineret på hej vil se ud i stil med
+    def funktion(h: hej): returtype = h match{
+      case baseCase1 => noget kode
+      case baseCase2 => noget andet kode
+      ...
+      case ikkeBase1(he: hej) => mere kode
+      case ikkeBase2(he: hej) => endnu mere kode
+  du skal typisk i behandling af baseCase1 bruge 1-2 anvendelser af "noget kode"
+
+
+Når du har gjort det skal vi til induktions skridtet.
+Det er vigtigt at du beskriver induktions antagelsen, det kan Hr. Müeller godt lide.
+Så det er at udtrykke at H = ikkeBase1(he) eller H = ikkeBase2(he) der gælder det at
+whatever udtrykket nu er gælder for he, !ikke! for H.
+Også udtrykke det altså fx som vi netop snakkede om
+lad xs = Cons(ys,y) være givet, da giver induktionsantagelsen at
+length(append(ys,z)) = length(ys) + 1 for alle z
+
+Nu er du klar til at regne, og behandle de relevante ikkeBase cases.
+Her skal du fx i ikkeBase1 bruge "mere kode" et par gange, og helt sikkert induktions hypotesen.
+Husk at sige præcis hvad du bruger hvor, fx plejer man at skrive over lighedstegnet hvad man bruger
+IH for induktions hypotese, a def for append definition eller sådan noget,
+det er helt fint at bruge forkortelser så længe du tydeliggøre hvad de står for
