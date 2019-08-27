@@ -216,9 +216,5 @@ object Exercise122 {
     }
     println("Look here:")
     println(cyclic.take(60))
-
-
-
-
   }
 }
