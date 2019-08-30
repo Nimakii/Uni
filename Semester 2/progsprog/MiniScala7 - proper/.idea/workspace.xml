@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="500aa418-cf26-42e5-b60d-3985c1842317" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/miniscala/Ast.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/Ast.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/miniscala/Compiler.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/Compiler.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/miniscala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/Main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/miniscala/Test95.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/Test95.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/miniscala/TypeChecker.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/TypeChecker.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/miniscala/Validator.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/Validator.scala" afterDir="false" />
     </list>
     <list id="74dcf703-30a6-4a91-89d3-fb9627f340a1" name="abstractmachine1" comment="" />
-    <list id="57c7aa5c-3632-4294-a26d-3285d34e6686" name="abstractmachine2" comment="">
-      <change beforePath="$PROJECT_DIR$/src/miniscala/AbstractMachine.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/miniscala/AbstractMachine.scala" afterDir="false" />
-    </list>
+    <list id="57c7aa5c-3632-4294-a26d-3285d34e6686" name="abstractmachine2" comment="" />
     <list id="46a09f56-972e-4df7-8ef1-9bc264035f8e" name="lambda" comment="" />
     <list id="0d76170a-e7b4-40e3-8119-326003a9bf0c" name="miniscala2" comment="" />
     <list id="94c8d562-5c83-4814-a636-8139f50e610e" name="miniscala3" comment="" />
@@ -28,10 +22,48 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1106244779">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.84" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="scala" value="14" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Scala" value="14" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="scala" value="325" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Scala" value="325" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="MiniScala1" />
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/miniscala/hejmeddig.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="99">
+              <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+=======
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/miniscala/Validator.scala">
@@ -128,6 +160,7 @@
               <folding>
                 <element signature="e#19#54#0" expanded="true" />
               </folding>
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
             </state>
           </provider>
         </entry>
@@ -185,6 +218,13 @@
         <option value="$PROJECT_DIR$/src/miniscala/Ast.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Test95.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Main.scala" />
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/src/miniscala/TypeChecker.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/AbstractMachine.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/Validator.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/Compiler.scala" />
+        <option value="$PROJECT_DIR$/src/miniscala/hejmeddig.scala" />
+=======
         <option value="$PROJECT_DIR$/src/miniscala/Compiler.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/AbstractMachine.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Validator.scala" />
@@ -193,10 +233,17 @@
         <option value="$PROJECT_DIR$/src/miniscala/TypeChecker.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Unparser.scala" />
         <option value="$PROJECT_DIR$/src/miniscala/Vars.scala" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -224,6 +271,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -246,15 +295,23 @@
           <select />
         </subPane>
       </pane>
+<<<<<<< HEAD
+=======
       <pane id="PackagesPane" />
       <pane id="Scope" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< HEAD
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557841836890" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+=======
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557918711797" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../MiniScala1" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -508,17 +565,31 @@
       <workItem from="1557130305427" duration="15824000" />
       <workItem from="1557733063237" duration="23101000" />
       <workItem from="1557771294274" duration="7920000" />
+<<<<<<< HEAD
+      <workItem from="1557819937153" duration="10763000" />
+=======
       <workItem from="1557918390210" duration="535000" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="295380000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49701494" visible="true" weight="0.15625" />
+=======
     <option name="totallyTimeSpent" value="285152000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49701494" visible="true" weight="0.15831557" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
       <window_info id="Structure" order="1" sideWeight="0.50298506" side_tool="true" weight="0.1015625" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -587,6 +658,9 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.s" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/examples/calc3.s">
@@ -724,9 +798,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="36" column="13" lean-forward="true" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-          <folding>
-            <element signature="e#19#53#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -778,25 +849,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/Main.scala">
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="12540">
+          <caret line="380" column="109" lean-forward="true" selection-start-line="380" selection-start-column="2" selection-end-line="380" selection-end-column="109" />
+=======
         <state relative-caret-position="34">
           <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
           <folding>
             <element signature="e#19#54#0" expanded="true" />
           </folding>
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/miniscala/Interpreter.scala">
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="429">
+          <caret line="13" column="24" lean-forward="true" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+          <folding>
+            <element signature="e#19#54#0" expanded="true" />
+          </folding>
+=======
         <state relative-caret-position="440">
           <caret line="210" column="41" lean-forward="true" selection-start-line="210" selection-start-column="41" selection-end-line="210" selection-end-column="41" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/miniscala/TypeChecker.scala">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="476">
+          <caret line="185" column="31" lean-forward="true" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
+          <folding>
+            <element signature="e#19#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Validator.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="726">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/Compiler.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="66" column="23" lean-forward="true" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+          <folding>
+            <element signature="e#19#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/miniscala/hejmeddig.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+=======
         <state relative-caret-position="131">
           <caret line="85" column="52" lean-forward="true" selection-start-line="85" selection-start-column="52" selection-end-line="85" selection-end-column="52" />
         </state>
@@ -827,6 +942,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="18" column="47" lean-forward="true" selection-end-line="52" selection-end-column="1" />
+>>>>>>> 88f100226f65d2155768093c185ac0b31783937a
         </state>
       </provider>
     </entry>
