@@ -14,3 +14,5 @@ Name: DESKTOP-V9M34NU
 Address number 0: fe80::4cd0:3ecb:8d56:c7e%Ethernet 2
 Address number 1: 192.168.1.121
 */
+
+// cd C:\Users\tove\Desktop\Uni2\"Semester 3"\DSS\GoPlay
