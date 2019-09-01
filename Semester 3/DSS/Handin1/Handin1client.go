@@ -18,25 +18,37 @@ func handleConnection(conn net.Conn) { //Modtager og flood'er beskeder
 	defer conn.Close()
 	msg := &ToSend{}
 	for {
-		dec := gob.NewDecoder(conn) //decodes incomming messages
-		err := dec.Decode(msg) //this needs an interface thingy to decode onto
-							   //the &ToSend{} works, &string{} does not...
-							   //after this call msg is a pointer to the decoded message
+		dec := gob.NewDecoder(conn)
+		err := dec.Decode(msg)
 		if err != nil {return}
-		flood(msg.Msg) //ugly but functional
+		flood(msg.Msg)
+		/*msg, err := bufio.NewReader(conn).ReadString('\n')
+		if err != nil {
+			fmt.Println("Connection lost!")
+			return
+		} else {
+			dec := gob.NewDecoder(conn)
+			dec.Decode(msg)
+			flood(msg)
+		}*/
 	}
 }
 
 func flood(msg string) { //Sender nye input besked til alle forbindelser i "connectionList"
-	if(MessagesSent[msg]==true){ //uniqueness check, go does not have a set
+	//uniqueness check
+	if(MessagesSent[msg]==true){
 		return
+		//Do nothing. Maybe....
 	} else {
-		fmt.Println(msg+" flood reached") //prints once for yourself as well.. probs ez fix but am tired
+		fmt.Println(msg + " flood reached")
 		ts := &ToSend{}
 		ts.Msg = msg
 		for _, element := range connectionList {
-			enc := gob.NewEncoder(element) //encoder linked to the connection
-			enc.Encode(ts) //sends an encoding of ts through the connection
+			//fmt.Println("connectionClient")
+			//element.Write([]byte(msg))
+			enc := gob.NewEncoder(element)
+			//MessagesSent[msg] = true
+			enc.Encode(ts)
 		}
 		MessagesSent[msg] = true
 	}
@@ -50,15 +62,15 @@ func main() {
 
 func SetupMessenger(){ //Lader client skrive beskeder, som flood'es
 	for {
-		fmt.Print("> ")
 		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("> ")
 		text, _ := reader.ReadString('\n')
 		flood(strings.TrimSpace(text))
 	}
 }
 
 func SetupConnection() { //Lader nye clienter forbinde til eksisterende netværk. Ved fejl startes eget netværk
-	/*reader := bufio.NewReader(os.Stdin) commented out for faster testing
+	/*reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Please input target IP: ")
 	targetIP, _ := reader.ReadString('\n')
 	fmt.Print("Please input target port: ")
@@ -66,14 +78,15 @@ func SetupConnection() { //Lader nye clienter forbinde til eksisterende netværk
 	targetIP = strings.TrimSpace(targetIP) //trimspace fjerner mellemrum og linjeskift
 	targetPORT = strings.TrimSpace(targetPORT)
 	fmt.Println("Your target is: " + targetIP + ":" + targetPORT)
-	conn, connErr := net.Dial("tcp", targetIP + ":" + targetPORT)
+	conn, connErr := net.Dial("tcp", targetIP + ":" + targetPORT)*/
+	conn, connErr := net.Dial("tcp", "192.168.1.121:18081")
 	if connErr == nil {
 		fmt.Println("Connection established!")
 		connectionList = append(connectionList, conn)
 		go handleConnection(conn)
 	} else {
 		fmt.Println("Connection failed!")
-	}*/
+	}
 	go SetupListener()
 	SetupMessenger()
 }
@@ -91,7 +104,7 @@ func SetupListener() { //Opsæt af portaflytning.
 	connGoogle.Close()
 
 	fmt.Println("Setting up port listner.")
-	newListener, _ := net.Listen("tcp", ":18081")//Listen to port 18081
+	newListener, _ := net.Listen("tcp", ":18082")							//Listen to port 18081
 	defer newListener.Close()
 
 	fmt.Print("My connection info: ")

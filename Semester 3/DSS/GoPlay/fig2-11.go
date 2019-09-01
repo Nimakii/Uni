@@ -6,7 +6,7 @@ var sendernames = [5]string{"Alice", "Bob", "Chloe", "Dennis", "Elisa"}
 var receivernames = [5]string{"Frederik", "Gary", "Hailey", "Isabel", "Jesper"}
 
 func send(c chan string, myname string) {
-	for i:=0; i<1000; i++ {
+	for i:=0; i<10; i++ {
 		// you send on a channel using <-
 		c<- myname + "#" + strconv.Itoa(i)
 	}
