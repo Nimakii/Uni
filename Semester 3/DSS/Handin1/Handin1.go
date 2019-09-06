@@ -91,7 +91,7 @@ func SetupListener() { //Opsæt af portaflytning.
 	connGoogle.Close()
 
 	fmt.Println("Setting up port listner.")
-	newListener, _ := net.Listen("tcp", ":18081")//Listen to port 18081
+	newListener, _ := net.Listen("tcp", ":80")//Listen to port 18081
 	defer newListener.Close()
 
 	fmt.Print("My connection info: ")

@@ -1,0 +1,157 @@
+\documentclass{article}
+
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+
+\title{Human Computer Interaction Assignment 1}
+
+\author{
+  Thomas Damgaard Vinther\\
+  Department of Computer Science\\
+  \texttt{201303874@post.au.dk} \\
+  %% examples of more authors
+   \And
+  Jens Kristian Refsgaard Nielsen \\
+  Department of Computer Science\\
+  \texttt{201303862@post.au.dk} \\
+  %% \AND
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+}
+
+\begin{document}
+\maketitle
+\section{Application goal}
+\textbf{Scenario 1: }Imagine! It's 8 o'clock on a Monday morning. You're a little bit tired, groggy and you didn't have your coffee, because you thought you had a meeting at 8, but really, it was at 9. You're confused a little bit lost, you can't find your schedule due to the mess that is the reality of schedule management. You try calling your friend, colleague or study buddy, who doesn't pick up, it's a typical Monday morning for most Americans.  \\
+But what is that on the horizon \dots is it another shitty app? NO! It's [Insert name of generic shitty app here]!! With a superb scheduling manager, able to coordinate and find pockets of hitherto unused time, allowing you to minimize wasted time and maximize productivity. In the unfortunate case that one of your partners don't show up on time, [Insert name of generic shitty app here] allows you to query the location of the person to know if they are on their way or still hitting the snooze button, so you might do something productive instead of needlessly waiting. \\also handles location changes\\
+
+\textbf{Scenario 2: }John Smith Doe is working on a project. He has several, working in different teams. Out of nowhere a specification is changed and the team working on it needs to know and discuss it. He tries to lookup the schedules and caleandars for his team members, using the company system (the procedure would depend on the company system). He sends out an email proposing a time for the meeting, receiving a no from one of the key team members as there is another meeting with another group. Instead of retrying, John uses the proposed app. Opens it on his phone, clicks the: "Setup meeting" button from the first page, chooses the team he needs to setup the meeting with on the next page and is brought to an overview of the teams combined schedule, clearly showing where all team members have time. He receives a call, quickly takes it and hangs up again and is returned to the same page before the call. He clicks on one of those times that meets the desired length, and is prompted with a setup meeting window, he inserts the desired time and hits send. Within an hour all team members have received a notification, as they have all been model employees keeping their calendars updated, they all accept the meeting as it is within their parameters of when they are working. John gets a notification that all have accepted and the meeting is added to all the team members calendars.      
+
+The goal with this app, would be to make it: Easier to plan a meeting, without having to cross reference multiple apps, calendars and schedules. Easier to find each other in an ever expanding world. Making it easier to be more productive while keeping it simple and to the point. %making money by using the phone resources to mine bitcoin, and selling info to the russians \\
+This will benefit anyone with a need to coordinate schedules. From executives to busy families and stressed students. In an ever evolving world, where every business has to optimize time spent on actual work, making smart informed decisions, always trying to grow the company, the time should not be spent on planning meetings, making sure everyone is available, or having to wait needlessly on a colleague who you cannot find, or who cannot find you. Likewise when you are not working, time should not be spent again trying to plan who does what in the family, when do we do what and who actually has the time, as an ever changing schedule can make this hard. For the students, having several study groups with different people, taking different courses, having to meet different deadlines, can be a logistical nightmare and incredible time consuming. As you can see in section \ref{links} there is a wealth of sites that try to tackle this problem, making it evident that there is a need for this type of software. Furthermore the concept of keeping a calender has been around for more than a thousand years (source https://en.wikipedia.org/wiki/History\_of\_calendars), and with the advance of mobile technology we have a hitherto unseen opportunity to have technology coordinate calenders for us AND keep this information within arms reach at almost all times, as we do with our phones (source fx https://www.emarketer.com/content/us-time-spent-with-mobile-2019)
+Having to find each other as well, even after having made an arranged meeting point, can sometimes be more difficult than believed, as study places can suddenly be filled, rooms booked or lectures moved. One party could be delayed for various reasons, and be unable to or have difficulty communicating, for instance cycling, driving (source http://www.donttextdrive.com/) or similar annoyances. %F.ex. our own lecture\\
+
+Looking at the usability trade-offs, Time to learn, speed of performance and rate of errors by users, is in our perspective the most important usability measures. If the user is able to learn how to operate the app quickly and intuitively, it is much more likely that the user will continue to use the app. This is also dependent on speed of performance, if this is low, the user will spend to much time not being productive, which is exactly the opposite of what was intended of the app. This leads to rate of errors by users, as too many errors will also destroy the gained productivity and time promised by using the app, e.g. if the users inputs a meeting at the wrong time, the app cannot do what is intended. Looking at retention over time, which is of course important, but if the app is very fast to learn and intuitive the retention factor shouldn't be too much of a concern. Subjective satisfaction is always important, to maintain user usage, so the app aims to be pleasant on the eyes and to work smoothly, without errors and without annoying adds.
+
+
+\section{Target users}
+As the intended goal for the app, is to make it easier for almost all people to coordinate schedules/plan meetings and to find each other using GPS tracking. The target users ranges, as already mentioned briefly in the above, from employees, to families, to students, but actually to anyone who needs to do the above. \\
+%notbadidea317: 
+This will probably not include children as the target user would be their parents who have the main responsibility for their schedules, just as older adult users will not be a core demographic we intend to have use our app. Of course this is somewhat speculation. As soon as the app is released in an app store, anyone who needs the app described above, can download and use it. It is important to remember that there is no average user (as seen in the lectures). \\
+
+
+As it is anyone who could possibly use the functionalities of the app, it is important to use a streamlined and easy to use design, perhaps with customisation options. To accommodate this we could implement several ways of providing input for the app, for instance calendar integration such that the user only has to input a meeting once, or in the long term interfacing directly with client company calendars. Conversely also that inputting a meeting in our app will integrate it into the built in phone calendar, if the user wants it to do so.
+\\ If the small scale version of the app is successful we envision cooperating with companies to allow easy integration from company calendar/time keeping systems into the app, however this is very time consuming as each company uses different methods, so individually tailored solutions would have to be constructed. However if the company calendar system already has functionality that merges with phone calendars it should function perfectly by transitivity, if all parties implement two way synchronization.
+
+\section{Mobile features}
+
+
+As pr our first scenario we need location-awareness, to make users able to find the location of the other members of the group, this would be a clear benefit for the user, not having to call anyone and be able to find the desired person. We also need touch interaction, to be able to navigate the app. For instance when in scenario 2, John S. Doe must be able to navigate the app, accessing different sub menus to be able to setup the desired meeting proposal. Another feature we need for our application is push notifications, without them our scenario 2 will be very slow, as after proposing a meeting the team members must accept or decline. This would also be a benefit for the user, as it is very quick to accept the meeting, meaning they have time to do something else, thus keeping everyone productive and not bogged down with planning and endless mails back and forth. The onboard calendar is another feature we wish to use, and use a lot, understanding it, is really the key to our eventual success, we wish to interact with it heavily and quickly to achieve ease of use and avoid having to write every appointment in both the app and the onboard calendar.\\
+We shall not use database storage, as this is a potential security risk, and frankly none of our business. Instead we hope to maintain a small settings file on the individual device.\\
+Network connectivity will play an important role in communication between users
+
+\section{Activity log}
+
+\underline{Friday 23$^{\text{nd}}$ of August}
+\begin{itemize}
+    \item Collaboratively: 2 hours
+    \begin{itemize}
+        \item Idea brainstorming session
+    \end{itemize}
+\end{itemize}
+\underline{Saturday and sunday 23$^{\text{rd}}$ and 24$^{\text{th}}$ of August}
+\begin{itemize}
+    \item Jens Kristian: 2 hours
+    \begin{itemize}
+        \item Brainstorming with step dad
+    \end{itemize}
+    \item Thomas: 3 hours
+    \begin{itemize}
+        \item Brainstorming at various times with girlfriend, sister \& parents
+    \end{itemize}
+\end{itemize}
+\underline{Friday 30$^{\text{th}}$ of August}
+\begin{itemize}
+    \item Collaboratively: 3 hours
+    \begin{itemize}
+        \item Bouncing ideas with Ida-Larsen Ledet
+        \item Considering technical boundaries with Nathalie Bressa
+        \item Locking down the final idea
+        \item Writing scenario 1
+    \end{itemize}
+\end{itemize}
+\underline{Tuesday 2$^{\text{n}}$ of september}
+\begin{itemize}
+    \item Thomas: 2 hours
+    \begin{itemize}
+        \item Researching mobile phone usage, especially notification awareness and the importance of the location aspects of our app.
+    \end{itemize}
+\end{itemize}
+\underline{Thursday 5$^{\text{th}}$ of september}
+\begin{itemize}
+    \item Collaboratively: 5 hours
+        \begin{itemize}
+            \item Writing this report
+            \item Researching sources to support claims made
+            \item Expanding on the more subtle points of the features we want the app to have
+            \item Sketching important screens of the app
+        \end{itemize}
+\end{itemize}
+
+
+\section{Links}\label{links}
+http://skema.knakke.dk/201303874\\
+https://mitstudie.au.dk\\
+https://timetable.scitech.au.dk/apps/skema/udbud.asp?ID=6463271\\
+https://skema.secretman.dk\\
+https://studerende.au.dk/studier/fagportaler/fysik/undervisning/undervisningskalender-og-skema/\\
+http://studerende.au.dk/studier/fagportaler/aarhus-bss/timeplaner/\\
+https://scientia-publish-aarhus.azurewebsites.net/\#/app/find-timetable?category=11084e9e-6448-45ed-b90a-25eeb78cdae8\\
+https://www.reddit.com/r/AskReddit/comments/8f230f/people\_who\_keep\_their\_phone\_on\_silent\_or\_vibrate/ 
+%Not using paper calendar: 
+https://www.nytimes.com/2018/01/04/smarter-living/paper-planner-guide.html\\
+%Little bit silly, but about finding and spending time together: 
+https://www.productivesuperdad.com/spending-time-together/
+
+
+
+\bibliographystyle{unsrt}  
+%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+%%% and comment out the ``thebibliography'' section.
+
+
+%%% Comment out this section when you \bibliography{references} is enabled.
+\begin{thebibliography}{1}
+
+\bibitem{kour2014real}
+Shneiderman, Plaisant, Cohen, Jacobs and Elmqvist
+\newblock Designing the User Interface
+\newblock \textit{Strategies for Effective Human-Computer Interaction}
+
+
+\end{thebibliography}
+
+
+\end{document}
