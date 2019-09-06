@@ -23,6 +23,7 @@ func handleConnection(conn net.Conn) { //Modtager og flood'er beskeder
 							   //the &ToSend{} works, &string{} does not...
 							   //after this call msg is a pointer to the decoded message
 		if err != nil {return}
+		fmt.Println(msg.Msg)
 		flood(msg.Msg) //ugly but functional
 	}
 }
@@ -31,7 +32,7 @@ func flood(msg string) { //Sender nye input besked til alle forbindelser i "conn
 	if(MessagesSent[msg]==true){ //uniqueness check, go does not have a set
 		return
 	} else {
-		fmt.Println(msg+" flood reached") //prints once for yourself as well.. probs ez fix but am tired
+		//fmt.Println(msg+" flood reached") //prints once for yourself as well.. probs ez fix but am tired
 		ts := &ToSend{}
 		ts.Msg = msg
 		for _, element := range connectionList {

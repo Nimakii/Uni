@@ -1,0 +1,49 @@
+[ok] Red is first player
+    [ok] Blue is after RED
+    [ok] After blue it is red again
+
+[ok]Each round advances the age by 100 years
+    [ok]red wins in 3000BC
+    [ok]red wins exactly in 3000BC, not before
+
+[ok] There is ocean at (1,0)
+    [ok] There is hills at (0,1)
+    [ok] There is mountains at (2,2)
+    [ok] There is plains everywhere except from: (1,0), (0,1) & (2,2)
+
+[ok] Red has a city at (1,1)
+    [ok]Red city has a non growing population of 1
+
+
+[ok] Red has an archer at (2,0)
+    [ok] Blue has a legion at (3,2)
+    [ok] Red has a settler at (4,3)
+    [free] Only one unit is allowed on a tile at any time
+        we got this for free because we used a hashmap, that is injective.
+
+[ok] Units can move,
+        this was too ambitious so we made a Child Test
+    [ok] The red settler at (4,3) can move to (4,4)
+    [ok] The red settler at (4,3) cannot move to (6,6)
+    [ok] Units cannot move over oceans and mountain
+
+[ok] The attacking unit always wins.
+
+[ok] Blue has a city at (4.1)
+
+[ok]Red cannot move blue's units
+    [free]Blue cannot move reds units.
+[]Units attacking cities take them over for their owning player
+[ok]Units have attack and defense values dependant on type
+[ok]No friendly fire
+[]End of round maintenance
+    [ok]Cities produce 6 productions after a round has ended.
+        [ok]Accumulated production/treasury
+    []Unit production
+        []Selecting desired unit to be produced
+        []Unit produced when treasury reaches the unit cost.
+        []Unit spawn.
+    [] A unit cannot move more than once in a round
+
+
+

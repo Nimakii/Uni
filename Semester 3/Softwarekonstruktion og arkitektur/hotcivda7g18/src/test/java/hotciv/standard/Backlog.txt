@@ -1,0 +1,17 @@
+Backlog:
+
+[] Blue has a city at (4.1)
+    []Fake it code in gameImpl getCityAt method. Should be corrected in next iteration.
+
+[]Red cannot move blue's units
+[]Friendly fire might not be intended
+[]End of round maintenance
+    []Cities produce 6 productions after a round has ended.
+        []Accumulated production/treasury
+    []Unit production
+        []Selecting desired unit to be produced
+        []Unit produced when treasury reaches the unit cost.
+        []Unit spawn.
+    [] A unit cannot move more than once in a round
+
+
